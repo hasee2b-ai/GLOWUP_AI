@@ -1,61 +1,119 @@
 import { Link } from 'react-router-dom'
-import { Sparkles, Github, Twitter } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import Logo from './Logo.jsx'
+
+const linkBase =
+  'text-sm text-mute transition-colors hover:text-mist focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-sm'
+
+const ColumnHeading = ({ children }) => (
+  <h3 className="font-display text-xs font-semibold uppercase tracking-[0.14em] text-mist/70">
+    {children}
+  </h3>
+)
+
+function FooterColumn({ heading, children, className = '' }) {
+  return (
+    <div className={className}>
+      <ColumnHeading>{heading}</ColumnHeading>
+      <ul className="mt-5 space-y-3.5 text-sm md:mt-4 md:space-y-2.5">{children}</ul>
+    </div>
+  )
+}
 
 export default function Footer() {
   return (
     <footer className="border-t border-border/60 bg-surface/60">
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-14">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-y-10 lg:grid-cols-[1.25fr_1fr_1fr_1fr] lg:gap-x-10">
+          {/* Column 1 — Brand */}
+          <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <div className="flex items-center">
-              <Logo height={32} />
+              <Logo height={30} />
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-mute">
-              Your imagination, beautifully generated. Turn simple words into
-              extraordinary visuals with AI-powered image creation.
+            <p className="mt-5 text-sm leading-relaxed text-mute md:mt-4">
+              Turn your ideas into beautiful AI-generated artwork.
             </p>
-            <p className="mt-4 text-xs leading-relaxed text-mute/80">
-              Image generation requires a configured provider API key. GlowUp AI
-              does not store your generated images permanently.
+            <p className="mt-4 text-xs leading-relaxed text-mute/80 md:mt-3">
+              Images are generated on demand with AI. GlowUp AI does not store your
+              creations permanently.
             </p>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-mist/70">
-              Product
-            </h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              <li><Link to="/" className="text-mute hover:text-mist transition-colors">Home</Link></li>
-              <li><Link to="/create" className="text-mute hover:text-mist transition-colors">Create</Link></li>
-              <li><a href="/#features" className="text-mute hover:text-mist transition-colors">Features</a></li>
-            </ul>
-          </div>
+          {/* Column 2 — Create & Explore */}
+          <FooterColumn heading="Create & Explore" className="lg:pl-10">
+            <li>
+              <Link to="/create" className={linkBase}>
+                Create an Image
+              </Link>
+            </li>
+            <li>
+              <Link to="/#inspiration" className={linkBase}>
+                Inspiration Gallery
+              </Link>
+            </li>
+            <li>
+              <Link to="/#styles" className={linkBase}>
+                Creative Styles
+              </Link>
+            </li>
+            <li>
+              <Link to="/#how-it-works" className={linkBase}>
+                How It Works
+              </Link>
+            </li>
+            <li>
+              <Link to="/#gallery" className={linkBase}>
+                Artwork Gallery
+              </Link>
+            </li>
+          </FooterColumn>
 
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-mist/70">
-              Legal
-            </h3>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              <li><a href="#privacy" className="text-mute hover:text-mist transition-colors">Privacy information</a></li>
-              <li><a href="#terms" className="text-mute hover:text-mist transition-colors">Terms of use</a></li>
-            </ul>
-            <div className="mt-5 flex items-center gap-3">
-              <a href="#" aria-label="GitHub" className="rounded-lg border border-border p-2 text-mute hover:border-primary/50 hover:text-mist transition-colors">
-                <Github size={16} />
-              </a>
-              <a href="#" aria-label="Twitter" className="rounded-lg border border-border p-2 text-mute hover:border-primary/50 hover:text-mist transition-colors">
-                <Twitter size={16} />
-              </a>
-            </div>
-          </div>
+          {/* Column 3 — About & Resources */}
+          <FooterColumn heading="About & Resources">
+            <li>
+              <Link to="/#features" className={linkBase}>
+                Why GlowUp AI
+              </Link>
+            </li>
+            <li>
+              <Link to="/" className={linkBase}>
+                About the Studio
+              </Link>
+            </li>
+            <li>
+              <Link to="/#styles" className={linkBase}>
+                Prompt Inspiration
+              </Link>
+            </li>
+          </FooterColumn>
+
+          {/* Column 4 — Studio & Support */}
+          <FooterColumn heading="Studio & Support">
+            <li>
+              <Link to="/create" className={linkBase}>
+                Open the Studio
+              </Link>
+            </li>
+            <li>
+              <Link to="/create" className={linkBase}>
+                Image Generation
+              </Link>
+            </li>
+            <li>
+              <Link to="/#how-it-works" className={linkBase}>
+                Getting Started
+              </Link>
+            </li>
+          </FooterColumn>
         </div>
+      </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-mute/80 sm:flex-row">
+      {/* Bottom legal bar */}
+      <div className="border-t border-border/60">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-1 px-5 py-4 text-xs text-mute/80 sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} GlowUp AI. All rights reserved.</p>
-          <p className="inline-flex items-center gap-1.5">
-            <Sparkles size={13} className="text-primary" />
-            Crafted with AI-powered creativity
+          <p className="text-mute/70">
+            Premium AI image generation
           </p>
         </div>
       </div>

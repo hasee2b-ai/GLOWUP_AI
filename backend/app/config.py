@@ -34,8 +34,8 @@ MAX_PROMPT_LENGTH = int(os.getenv("MAX_PROMPT_LENGTH", "4000"))
 # Outbound request timeout (seconds). Image generation can be slow.
 REQUEST_TIMEOUT = float(os.getenv("REQUEST_TIMEOUT", "120"))
 
-# Maximum accepted request body size (bytes) — 1 MB is generous for JSON.
-MAX_REQUEST_SIZE = int(os.getenv("MAX_REQUEST_SIZE", str(1024 * 1024)))
+# Maximum accepted request body size (bytes) — 1 MB for JSON request bodies.
+MAX_REQUEST_SIZE = int(os.getenv("MAX_REQUEST_SIZE", str(1 * 1024 * 1024)))
 
 # Lightweight in-memory rate limiter settings (per client IP).
 RATE_LIMIT_WINDOW = int(os.getenv("RATE_LIMIT_WINDOW", "60"))

@@ -23,20 +23,20 @@ export default function Marquee() {
   const loop = [...ITEMS, ...ITEMS]
 
   return (
-    <div className="relative border-y border-border/60 bg-surface/50 py-5 overflow-hidden">
+    <div className="relative border-y border-border/60 bg-gradient-to-b from-surface/80 via-surface/40 to-surface/80 py-6 overflow-hidden">
       {/* edge fades */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-ink to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-ink to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-ink via-ink/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-ink via-ink/80 to-transparent" />
 
-      <div className="flex w-max animate-marquee items-center gap-4 hover:[animation-play-state:paused]">
+      <div className="flex w-max animate-[marquee_32s_linear_infinite] items-center gap-3 hover:[animation-play-state:paused]">
         {loop.map((item, i) => (
           <span
             key={`${item.label}-${i}`}
-            className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface-2 px-5 py-2.5 text-sm font-medium text-mute"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium text-mute shadow-sm transition-colors duration-300 hover:border-primary/30 hover:text-mist"
           >
-            <item.icon size={16} className="text-primary" />
+            <item.icon size={15} className="text-primary" />
             {item.label}
-            <span className="ml-1 h-1 w-1 rounded-full bg-secondary/60" />
+            <span className="ml-0.5 h-1 w-1 rounded-full bg-secondary/50" />
           </span>
         ))}
       </div>

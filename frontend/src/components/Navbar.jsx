@@ -51,9 +51,8 @@ export default function Navbar() {
         <div className="hidden md:block">
           <button
             onClick={goCreate}
-            className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:shadow-primary/30 hover:brightness-110 active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 rounded-full bg-mist px-5 py-2.5 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-mist/90 active:scale-[0.98]"
           >
-            <Sparkles size={16} />
             Start Creating
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
           </button>

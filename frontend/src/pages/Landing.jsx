@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Sparkles,
   ArrowRight,
@@ -10,6 +10,11 @@ import {
   Settings2,
   Download,
   ChevronDown,
+  Star,
+  Package,
+  Mountain,
+  Home,
+  Clapperboard,
 } from 'lucide-react'
 import Gallery from '../components/Gallery.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -59,90 +64,123 @@ const STEPS = [
   },
 ]
 
+const INSPIRATION = [
+  { src: '/a-captivating-and-conceptual-artwork-fea_ERqVwBiAW_2iiF6lBe94ww_gPGjWTMySsyWyHmptrsg5A.jpg', alt: 'Conceptual portrait blending a city skyline and a twilight landscape', label: 'Conceptual art' },
+  { src: '/high-level-description-a-high-angle-stud_bl-WTI6mUPeJmuXS4f7-pA_feGrl4-BQpOtA7BVwK50RQ.jpg', alt: 'A mask half-covered in vivid pink and purple florals', label: 'Mixed media' },
+  { src: '/high-level-description-a-mixed-media-bus_FeVLi-AkWf65QR62ODyPwQ_w8IW6v1AR3aAKpLAfRjj7Q.jpg', alt: 'An impressionist portrait with visible brushstrokes on a blush background', label: 'Editorial art' },
+  { src: '/high-level-description-an-impressionisti_O_M6We2xXBmE9_mx0ee27A_AfD8_GQ0T62kRzDVyWm3rQ.jpg', alt: 'An impressionist city street at dusk with wet pavement reflections', label: 'Cityscapes' },
+]
+
+const EXAMPLE_PROMPT = 'Close-up of an androgynous human face showing an expression of deep pain, created in a highly detailed origami technique with intricate paper folds, vibrant psychedelic colors.'
+
+const STYLES = [
+  { icon: Wand2, name: 'Fantasy', prompt: 'a majestic dragon coiled around a crystalline tower floating above a sea of clouds at twilight, epic fantasy digital painting' },
+  { icon: Star, name: 'Anime', prompt: 'a cheerful anime girl with turquoise hair standing in a field of lavender under a pastel sunset, soft cel shading' },
+  { icon: Package, name: 'Product photography', prompt: 'a minimalist product photograph of a matte black perfume bottle on a marble surface, soft studio lighting' },
+  { icon: Mountain, name: 'Landscapes', prompt: 'a serene mountain lake at dawn with soft pastel peaks reflected in still water, cinematic depth' },
+  { icon: Home, name: 'Interior design', prompt: 'a sunlit modern living room with floor-to-ceiling windows overlooking a calm ocean at golden hour' },
+  { icon: Clapperboard, name: 'Cinematic', prompt: 'a lone astronaut standing on a rocky alien planet, two moons in the sky, cinematic film still, dramatic rim lighting, anamorphic lens flare' },
+]
+
 export default function Landing() {
+  const navigate = useNavigate()
+
+  const tryPrompt = (text) => {
+    navigate(`/create?prompt=${encodeURIComponent(text)}`)
+  }
+
   return (
     <div>
       {/* ------------------------------ HERO ------------------------------ */}
-      <section className="relative overflow-hidden">
-        {/* soft gradient background */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-          <div className="absolute top-40 -left-32 h-[400px] w-[400px] rounded-full bg-secondary/10 blur-[100px]" />
-          <div className="absolute top-60 -right-32 h-[350px] w-[350px] rounded-full bg-highlight/10 blur-[100px]" />
-        </div>
-
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-16 sm:px-8 lg:grid-cols-2 lg:pb-28 lg:pt-24">
-          <Reveal variant="right">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
-              <Sparkles size={14} />
-              AI Image Generation
-            </span>
-            <h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-              Your imagination,
-              <br />
-              <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-                beautifully
-              </span>
-              <br />
-              brought to life.
+      <section className="relative">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-24 lg:pt-20">
+          <Reveal variant="up" className="lg:col-span-5">
+            <h1 className="font-display text-4xl font-bold leading-[1.12] tracking-tight text-mist sm:text-5xl xl:text-[3.5rem]">
+              Turn your ideas into images.
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-mute">
-              Transform simple words into extraordinary visuals. GlowUp AI turns
-              your text prompts into stunning, high-quality images in seconds.
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-mute sm:text-lg">
+              Describe what you imagine. GlowUp AI brings it to life.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-5">
               <Link
                 to="/create"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-primary to-secondary px-7 py-3.5 text-base font-semibold text-white shadow-xl shadow-primary/20 transition-all hover:shadow-primary/30 hover:brightness-110 active:scale-[0.98]"
+                className="group inline-flex items-center gap-2 rounded-full bg-mist px-6 py-3 text-sm font-semibold text-ink transition-all hover:bg-mist/90 active:scale-[0.98]"
               >
-                <Sparkles size={18} />
+                <Sparkles size={16} />
                 Create Your Image
-                <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
-                href="#features"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-7 py-3.5 text-base font-semibold text-mist shadow-sm transition-all hover:border-primary/50 hover:bg-surface-2"
+                href="#how-it-works"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-mist transition-colors hover:text-primary"
               >
-                Explore the Studio
+                See how it works
+                <ArrowRight size={14} />
               </a>
             </div>
           </Reveal>
 
-          <Reveal variant="left" delay={150} className="lg:pl-6">
-            <div className="group relative cursor-pointer overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-2xl shadow-primary/10 transition-all duration-300 hover:border-primary/40">
-              <div className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-primary/15 via-transparent to-secondary/15 blur-2xl" />
-              <img
-                src="/gallery-1.jpg"
-                alt="Featured generated artwork"
-                className="relative aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:aspect-[3/4]"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent p-6 pt-16">
-                <span className="text-xs font-medium uppercase tracking-wider text-mute">
-                  Featured artwork
-                </span>
-                <p className="mt-1 font-display text-lg font-semibold text-mist">
-                  Generated with GlowUp AI
-                </p>
+          <Reveal variant="up" delay={150} className="lg:col-span-7">
+            <div>
+              <div className="overflow-hidden rounded-2xl border border-border shadow-lg shadow-mist/8">
+                <img
+                  src="/hero.jpg"
+                  alt="AI-generated artwork created with GlowUp AI"
+                  className="aspect-[4/3] w-full object-cover"
+                />
               </div>
+              <p className="mt-3 text-xs text-mute">
+                Generated with GlowUp AI
+              </p>
             </div>
           </Reveal>
-        </div>
-
-        {/* scroll indicator */}
-        <div className="relative flex justify-center pb-8">
-          <a
-            href="#features"
-            aria-label="Scroll to features"
-            className="flex flex-col items-center gap-1.5 text-mute transition-colors hover:text-mist"
-          >
-            <span className="text-[10px] font-medium uppercase tracking-[0.2em]">Scroll</span>
-            <ChevronDown size={18} className="animate-bounce" />
-          </a>
         </div>
       </section>
 
       {/* ------------------------- STYLE MARQUEE ------------------------- */}
       <Marquee />
+
+      {/* ------------------------- CREATIVE STYLES ------------------------- */}
+      <section id="styles" className="relative scroll-mt-24 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Creative styles
+            </span>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              Jump-start your next idea
+            </h2>
+            <p className="mt-4 text-mute">
+              Choose a style to prefill a prompt, then edit it to make it yours
+              before generating.
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {STYLES.map((s, i) => (
+              <Reveal key={s.name} delay={i * 80} variant="up">
+                <button
+                  type="button"
+                  onClick={() => tryPrompt(s.prompt)}
+                  className="group flex h-full w-full items-start gap-4 rounded-2xl border border-border bg-surface p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                >
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-secondary/15 transition-transform duration-300 group-hover:scale-110">
+                    <s.icon size={20} className="text-primary" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-base font-semibold text-mist">
+                      {s.name}
+                    </span>
+                    <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-mute">
+                      {s.prompt}
+                    </span>
+                  </span>
+                </button>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ---------------------------- GALLERY ---------------------------- */}
       <section id="gallery" className="relative scroll-mt-24 py-20 lg:py-28">
@@ -202,58 +240,217 @@ export default function Landing() {
       <section id="how-it-works" className="relative scroll-mt-24 border-t border-border/60 py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
               How it works
             </span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              From idea to image in three steps
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+              Your imagination, in three simple steps.
             </h2>
+            <p className="mt-4 text-base leading-relaxed text-mute">
+              From your first idea to a finished image, creating something beautiful is simple.
+            </p>
           </Reveal>
 
-          <div className="relative mt-14 grid gap-6 md:grid-cols-3">
-            {/* connecting line */}
-            <div className="pointer-events-none absolute left-[16%] right-[16%] top-10 hidden h-px bg-gradient-to-r from-primary/30 via-secondary/30 to-primary/30 md:block" />
-            {STEPS.map((s, i) => (
-              <Reveal key={s.step} delay={i * 150} variant="up">
-                <div className="relative h-full rounded-2xl border border-border bg-surface p-7 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
-                  <div className="relative z-10 mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/15 to-secondary/15 ring-1 ring-border">
-                    <s.icon size={28} className="text-secondary" />
-                    <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-xs font-bold text-white shadow-lg shadow-primary/20">
-                      {i + 1}
+          <div className="relative mt-16 grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+            {/* Connecting line */}
+            <div className="pointer-events-none absolute left-[16%] right-[16%] top-8 hidden md:block">
+              <div className="relative h-px bg-gradient-to-r from-primary/25 via-primary/35 to-primary/25">
+                <span className="absolute -top-[3px] left-1/4 h-[7px] w-[7px] rounded-full border-2 border-primary/30 bg-surface" />
+                <span className="absolute -top-[3px] right-1/4 h-[7px] w-[7px] rounded-full border-2 border-primary/30 bg-surface" />
+              </div>
+            </div>
+
+            {/* Step 01 — Describe */}
+            <Reveal delay={0} variant="up">
+              <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
+                <div className="flex items-start justify-between">
+                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-primary/10 transition-colors duration-300 group-hover:text-primary/20">
+                    01
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                    <PenLine size={17} />
+                  </span>
+                </div>
+
+                {/* Prompt input preview */}
+                <div className="mt-6 rounded-xl border border-border bg-surface-2/50 p-4">
+                  <div className="flex items-center gap-2.5 rounded-lg border border-border bg-surface px-3.5 py-2.5">
+                    <Sparkles size={14} className="shrink-0 text-primary" />
+                    <span className="truncate text-xs text-mute">
+                      A serene mountain lake at dawn...
+                    </span>
+                    <span className="ml-auto h-3.5 w-px animate-pulse bg-primary/50" />
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">
+                      Cinematic
+                    </span>
+                    <span className="rounded-full bg-secondary/10 px-2.5 py-1 text-[10px] font-semibold text-secondary">
+                      Fantasy
+                    </span>
+                    <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-medium text-mute ring-1 ring-border">
+                      +4 more
                     </span>
                   </div>
-                  <h3 className="mt-5 font-display text-lg font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-mute">{s.desc}</p>
                 </div>
-              </Reveal>
-            ))}
+
+                <h3 className="mt-6 font-display text-lg font-semibold">Describe your idea</h3>
+                <p className="mt-2 text-sm leading-relaxed text-mute">
+                  Write a prompt or start with one of our curated examples.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Step 02 — Customize */}
+            <Reveal delay={150} variant="up">
+              <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
+                <div className="flex items-start justify-between">
+                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-secondary/10 transition-colors duration-300 group-hover:text-secondary/20">
+                    02
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/10 text-secondary ring-1 ring-secondary/15">
+                    <Settings2 size={17} />
+                  </span>
+                </div>
+
+                {/* Settings preview */}
+                <div className="mt-6 space-y-3.5 rounded-xl border border-border bg-surface-2/50 p-4">
+                  <div>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-mute">
+                      Aspect ratio
+                    </span>
+                    <div className="mt-1.5 flex gap-1.5">
+                      <span className="rounded-md bg-primary/15 px-3 py-1.5 text-[10px] font-semibold text-primary">
+                        1:1
+                      </span>
+                      <span className="rounded-md bg-surface px-3 py-1.5 text-[10px] font-medium text-mute ring-1 ring-border">
+                        3:4
+                      </span>
+                      <span className="rounded-md bg-surface px-3 py-1.5 text-[10px] font-medium text-mute ring-1 ring-border">
+                        4:3
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-medium text-mute">Enhance prompt</span>
+                    <span className="flex h-[18px] w-8 items-center rounded-full bg-primary/70 px-0.5">
+                      <span className="ml-auto h-3.5 w-3.5 rounded-full bg-white shadow-sm" />
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-medium text-mute">Watermark</span>
+                    <span className="flex h-[18px] w-8 items-center rounded-full bg-border px-0.5">
+                      <span className="h-3.5 w-3.5 rounded-full bg-white shadow-sm" />
+                    </span>
+                  </div>
+                </div>
+
+                <h3 className="mt-6 font-display text-lg font-semibold">Customize your creation</h3>
+                <p className="mt-2 text-sm leading-relaxed text-mute">
+                  Choose your aspect ratio, image count, and generation settings.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Step 03 — Generate & Download */}
+            <Reveal delay={300} variant="up">
+              <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
+                <div className="flex items-start justify-between">
+                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-highlight/15 transition-colors duration-300 group-hover:text-highlight/25">
+                    03
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-highlight/10 text-highlight ring-1 ring-highlight/15">
+                    <Download size={17} />
+                  </span>
+                </div>
+
+                {/* Image preview + download */}
+                <div className="mt-6 rounded-xl border border-border bg-surface-2/50 p-4">
+                  <div className="relative overflow-hidden rounded-lg">
+                    <img
+                      src="/card3image.jpg"
+                      alt="Generated image preview"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+                    <div className="absolute bottom-2.5 right-2.5 z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 shadow-md backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                      <Download size={14} className="text-mist" />
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between">
+                    <span className="truncate text-[10px] font-medium text-mute">mountain-lake-dawn.png</span>
+                    <span className="ml-2 shrink-0 text-[10px] font-semibold text-success">Ready</span>
+                  </div>
+                </div>
+
+                <h3 className="mt-6 font-display text-lg font-semibold">Generate & download</h3>
+                <p className="mt-2 text-sm leading-relaxed text-mute">
+                  Bring your idea to life and save your finished image.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ----------------------------- FINAL CTA ----------------------------- */}
-      <section className="relative scroll-mt-24 border-t border-border/60 py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <Reveal variant="scale">
-            <div className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-primary/10 via-surface to-secondary/10 px-8 py-16 text-center shadow-xl shadow-primary/5 sm:px-16 lg:py-20">
-              <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-[500px] -translate-x-1/2 rounded-full bg-primary/15 blur-[100px]" />
-              <div className="relative">
-                <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight sm:text-4xl">
-                  Ready to bring your ideas to life?
-                </h2>
-                <p className="mx-auto mt-4 max-w-xl text-mute">
-                  Open the studio, describe what you imagine, and let GlowUp AI
-                  handle the rest.
-                </p>
-                <Link
-                  to="/create"
-                  className="group mt-8 inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-primary to-secondary px-8 py-4 text-base font-semibold text-white shadow-xl shadow-primary/20 transition-all hover:shadow-primary/30 hover:brightness-110 active:scale-[0.98]"
-                >
-                  <Sparkles size={18} />
-                  Start Creating
-                  <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
+      {/* ------------------------- INSPIRATION ------------------------- */}
+      <section id="inspiration" className="relative scroll-mt-24 overflow-hidden py-20 lg:py-28">
+        {/* soft gradient wash */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-40 right-0 h-[500px] w-[600px] rounded-full bg-secondary/10 blur-[120px]" />
+          <div className="absolute -bottom-32 left-0 h-[400px] w-[500px] rounded-full bg-primary/10 blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+          <Reveal>
+            <span className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+              <span className="h-px w-8 bg-primary/40" />
+              Made with GlowUp AI
+            </span>
+            <h2 className="mt-4 max-w-xl font-serif text-4xl font-semibold leading-[1.15] tracking-tight text-mist sm:text-5xl">
+              A little inspiration goes a long way.
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-mute">
+              Explore the kinds of worlds you can create with a single prompt.
+            </p>
+          </Reveal>
+
+          {/* artwork cards */}
+          <Reveal delay={120} className="mt-12">
+            <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
+              {INSPIRATION.map((item) => (
+                <div key={item.src}>
+                  <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      loading="lazy"
+                      className="aspect-[4/5] w-full object-cover"
+                    />
+                  </div>
+                  <span className="mt-3 block text-sm font-medium text-mute">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          {/* prompt bar */}
+          <Reveal delay={200} className="mt-14 flex justify-end">
+            <div className="flex w-full max-w-xl flex-col items-stretch gap-4 rounded-2xl border border-border bg-surface/80 p-5 shadow-lg shadow-primary/5 backdrop-blur sm:flex-row sm:items-center sm:gap-4 sm:px-6 sm:py-5">
+              <span className="flex flex-1 items-start gap-2.5 text-sm leading-relaxed text-mute sm:items-center">
+                <Sparkles size={16} className="mt-0.5 shrink-0 text-primary" />
+                <span className="break-words">{EXAMPLE_PROMPT}</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => tryPrompt(EXAMPLE_PROMPT)}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:shadow-primary/30 hover:brightness-110 active:scale-[0.98]"
+              >
+                Try this prompt
+                <ArrowRight size={15} />
+              </button>
             </div>
           </Reveal>
         </div>

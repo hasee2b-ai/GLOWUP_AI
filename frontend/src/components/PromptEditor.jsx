@@ -1,5 +1,5 @@
-import { Eraser, Lightbulb } from 'lucide-react'
-import { EXAMPLE_PROMPTS, MAX_PROMPT_LENGTH } from '../utils/constants.js'
+import { Eraser } from 'lucide-react'
+import { MAX_PROMPT_LENGTH } from '../utils/constants.js'
 
 export default function PromptEditor({ prompt, onChange, onGenerate, loading }) {
   const remaining = MAX_PROMPT_LENGTH - prompt.length
@@ -38,26 +38,6 @@ export default function PromptEditor({ prompt, onChange, onGenerate, loading }) 
         >
           {prompt.length}/{MAX_PROMPT_LENGTH}
         </span>
-      </div>
-
-      {/* Example prompts */}
-      <div className="mt-4">
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-mute">
-          <Lightbulb size={13} className="text-primary" />
-          Try an example
-        </p>
-        <div className="mt-2.5 flex flex-wrap gap-2">
-          {EXAMPLE_PROMPTS.map((ex) => (
-            <button
-              key={ex.id}
-              type="button"
-              onClick={() => onChange(ex.prompt)}
-              className="rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-xs font-medium text-mute transition-all hover:border-primary/50 hover:text-mist"
-            >
-              {ex.label}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   )

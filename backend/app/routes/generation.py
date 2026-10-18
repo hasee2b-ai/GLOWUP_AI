@@ -5,8 +5,15 @@ from typing import Dict, List
 
 from fastapi import APIRouter, HTTPException, Request
 
-from ..config import RATE_LIMIT_MAX, RATE_LIMIT_WINDOW
-from ..schemas import GenerateRequest, GenerateResponse, ImageResult
+from ..config import (
+    MAX_IMAGES,
+    MAX_PROMPT_LENGTH,
+    MIN_IMAGES,
+    RATE_LIMIT_MAX,
+    RATE_LIMIT_WINDOW,
+    SUPPORTED_SIZES,
+)
+from ..schemas import GenerateResponse, ImageResult
 from ..services.sensenova import ProviderError, generate_images
 
 logger = logging.getLogger(__name__)
@@ -45,9 +52,39 @@ def health() -> Dict[str, object]:
 
 
 @router.post("/api/generate", response_model=GenerateResponse)
-def generate(req: GenerateRequest, request: Request) -> GenerateResponse:
+async def generate(req: Request) -> GenerateResponse:
     """Generate images from a text prompt via the SenseNova provider."""
-    client = request.client.host if request.client else "unknown"
+    # Parse JSON body manually to avoid pydantic dependency in routes
+    import json
+    try:
+        body = json.loads(await req.body())
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body.")
+
+    prompt = body.get("prompt", "").strip()
+    if not prompt:
+        raise HTTPException(status_code=422, detail="Prompt must not be empty.")
+    if len(prompt) > MAX_PROMPT_LENGTH:
+        raise HTTPException(status_code=422, detail=f"Prompt exceeds {MAX_PROMPT_LENGTH} characters.")
+
+    size = body.get("size", "1024x1024")
+    if size not in SUPPORTED_SIZES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unsupported size '{size}'. Supported: {sorted(SUPPORTED_SIZES)}",
+        )
+
+    n = body.get("n", 1)
+    if not isinstance(n, int) or n < MIN_IMAGES or n > MAX_IMAGES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Image count must be between {MIN_IMAGES} and {MAX_IMAGES}.",
+        )
+
+    prompt_extend = body.get("prompt_extend", True)
+    watermark = body.get("watermark", True)
+
+    client = req.client.host if req.client else "unknown"
     if not _rate_limit(client):
         logger.warning("Rate limit exceeded for client %s", client)
         raise HTTPException(
@@ -57,11 +94,11 @@ def generate(req: GenerateRequest, request: Request) -> GenerateResponse:
 
     try:
         images = generate_images(
-            prompt=req.prompt,
-            size=req.size,
-            n=req.n,
-            prompt_extend=req.prompt_extend,
-            watermark=req.watermark,
+            prompt=prompt,
+            size=size,
+            n=n,
+            prompt_extend=prompt_extend,
+            watermark=watermark,
         )
     except ProviderError as exc:
         logger.error("Generation failed: %s", exc.message)
@@ -70,5 +107,5 @@ def generate(req: GenerateRequest, request: Request) -> GenerateResponse:
     return GenerateResponse(
         success=True,
         images=[ImageResult(**img) for img in images],
-        prompt=req.prompt,
+        prompt=prompt,
     )

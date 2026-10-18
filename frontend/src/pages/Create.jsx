@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Sparkles, AlertCircle, Wand2, Zap } from 'lucide-react'
 import { generateImage, checkHealth } from '../services/api.js'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
@@ -14,14 +15,24 @@ const HISTORY_LIMIT = 12
 
 export default function Create() {
   const toast = useToast()
+  const [searchParams] = useSearchParams()
 
-  const [prompt, setPrompt] = useState('')
+  // Always land at the top of the page when navigating here (e.g. from a
+  // prompt card on the landing page) instead of the browser keeping scroll.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
+
+  // Prefill the prompt from ?prompt= (e.g. "Try this prompt" on the landing
+  // page) without auto-generating — the user still presses Generate.
+  const [prompt, setPrompt] = useState(() => searchParams.get('prompt') || '')
   const [settings, setSettings] = useState({
     size: '1024x1024',
     n: 1,
     promptExtend: true,
     watermark: true,
   })
+
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
@@ -64,12 +75,11 @@ export default function Create() {
           prompt_extend: cfg.promptExtend,
           watermark: cfg.watermark,
         })
-        if (id !== reqId.current) return // superseded by a newer request
+        if (id !== reqId.current) return
         setResult(data)
         setStatus('success')
         toast.success('Your image is ready')
 
-        // Prepend to session history (capped).
         const entry = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
           prompt: data.prompt,

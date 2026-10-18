@@ -19,7 +19,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
   const [failed, setFailed] = useState(false)
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-border bg-surface shadow-lg shadow-primary/10">
+    <div className="group relative">
       {failed ? (
         <div className="flex h-64 flex-col items-center justify-center gap-2 p-6 text-center">
           <AlertTriangle size={26} className="text-secondary" />
@@ -30,7 +30,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
         <img
           src={image.url}
           alt={`Generated variation ${index + 1}`}
-          className="h-72 w-full object-contain"
+          className="block h-auto w-full"
           loading="lazy"
           onError={() => setFailed(true)}
         />
@@ -164,21 +164,6 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
         <div className="ml-auto flex items-center gap-2">
           <button
             type="button"
-            onClick={async () => {
-              try {
-                await copyText(result.prompt)
-                toast.success('Prompt copied to clipboard')
-              } catch {
-                toast.error('Could not copy to clipboard')
-              }
-            }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-mute transition-colors hover:border-primary/50 hover:text-mist"
-          >
-            {copied ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-            {copied ? 'Copied' : 'Copy prompt'}
-          </button>
-          <button
-            type="button"
             onClick={onRegenerate}
             className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-1.5 text-xs font-semibold text-white transition-all hover:brightness-110"
           >
@@ -198,7 +183,7 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
 
       {/* images */}
       <div className="p-5">
-        <div className={`grid gap-4 ${multi ? 'sm:grid-cols-2' : 'mx-auto max-w-sm grid-cols-1'}`}>
+        <div className={`grid gap-4 ${multi ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
           {images.map((img, i) => (
             <ImageCard
               key={`${img.url.slice(0, 48)}-${i}`}
