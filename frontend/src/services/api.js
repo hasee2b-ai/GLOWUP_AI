@@ -1,7 +1,7 @@
 // Centralized API service for the GlowUp AI backend.
 // The backend URL is read from a Vite env var (never contains secrets).
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
 
 async function parseError(res) {
   let message = `Request failed (${res.status})`
