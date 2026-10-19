@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react'
 
 const ToastContext = createContext(null)
@@ -26,11 +26,19 @@ export function ToastProvider({ children }) {
     [dismiss]
   )
 
-  const value = {
-    success: (m, d) => push(m, 'success', d),
-    error: (m, d) => push(m, 'error', d),
-    info: (m, d) => push(m, 'info', d),
-  }
+  // Memoize the context value so adding/removing a toast (which rerenders this
+  // provider) does not change the identity of `toast` for consumers. An
+  // unstable value would rerun any effect depending on it — e.g. the
+  // health-check effect in Create.jsx would loop: check -> error toast ->
+  // provider rerender -> new value -> effect rerun.
+  const value = useMemo(
+    () => ({
+      success: (m, d) => push(m, 'success', d),
+      error: (m, d) => push(m, 'error', d),
+      info: (m, d) => push(m, 'info', d),
+    }),
+    [push]
+  )
 
   return (
     <ToastContext.Provider value={value}>
