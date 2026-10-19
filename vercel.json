@@ -1,3 +1,4 @@
+
 {
   "version": 2,
   "builds": [
@@ -19,11 +20,10 @@
       "dest": "api/main.py"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "handle": "filesystem"
     },
     {
-      "src": "/((?!api/|assets/).*)",
+      "src": "/(.*)",
       "dest": "/index.html"
     }
   ]
