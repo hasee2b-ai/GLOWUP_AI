@@ -1,7 +1,7 @@
 // Centralized API service for the GlowUp AI backend.
 // The backend URL is read from a Vite env var (never contains secrets).
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '')
 
 async function parseError(res) {
   let message = `Request failed (${res.status})`
