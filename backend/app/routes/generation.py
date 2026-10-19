@@ -93,7 +93,7 @@ async def generate(req: Request) -> GenerateResponse:
         )
 
     try:
-        images = generate_images(
+        images = await generate_images(
             prompt=prompt,
             size=size,
             n=n,

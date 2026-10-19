@@ -22,6 +22,26 @@ from ..config import (
 
 logger = logging.getLogger(__name__)
 
+# Shared async HTTP client, created lazily on first use so importing this
+# module never requires a running event loop. It is reused across requests
+# for connection pooling and closed on app shutdown (see app/main.py).
+_client: Optional[httpx.AsyncClient] = None
+
+
+def _get_client() -> httpx.AsyncClient:
+    global _client
+    if _client is None:
+        _client = httpx.AsyncClient()
+    return _client
+
+
+async def close_client() -> None:
+    """Close the shared client and release its connections (app shutdown)."""
+    global _client
+    if _client is not None:
+        await _client.aclose()
+        _client = None
+
 
 class ProviderError(Exception):
     """An error originating from (or communicating with) the provider.
@@ -181,14 +201,18 @@ def _parse_response(data: Any) -> List[Dict[str, Any]]:
     return images
 
 
-def generate_images(
+async def generate_images(
     prompt: str,
     size: str,
     n: int,
     prompt_extend: bool,
     watermark: bool,
 ) -> List[Dict[str, Any]]:
-    """Call the SenseNova image-generation endpoint and return normalized images."""
+    """Call the SenseNova image-generation endpoint and return normalized images.
+
+    Uses the shared async client so a slow provider response does not block the
+    event loop (and therefore unrelated requests such as /api/health).
+    """
     if not SENSENOVA_API_KEY:
         raise ProviderError(
             "The server is missing the SenseNova API key. Configure SENSENOVA_API_KEY.",
@@ -218,7 +242,9 @@ def generate_images(
     )
 
     try:
-        resp = httpx.post(url, json=payload, headers=headers, timeout=REQUEST_TIMEOUT)
+        resp = await _get_client().post(
+            url, json=payload, headers=headers, timeout=REQUEST_TIMEOUT
+        )
     except httpx.TimeoutException:
         logger.error("Provider request timed out after %ss", REQUEST_TIMEOUT)
         raise ProviderError(

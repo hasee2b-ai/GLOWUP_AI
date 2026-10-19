@@ -57,6 +57,14 @@ def _log_startup() -> None:
     )
 
 
+@app.on_event("shutdown")
+async def _close_provider_client() -> None:
+    """Release the shared SenseNova HTTP client's connections on shutdown."""
+    from .services.sensenova import close_client
+
+    await close_client()
+
+
 def run() -> None:
     """Run the development server with uvicorn."""
     import uvicorn
