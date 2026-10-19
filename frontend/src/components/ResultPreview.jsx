@@ -36,8 +36,8 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
         />
       )}
 
-      {/* hover overlay with actions */}
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-ink/95 via-ink/60 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      {/* hover overlay with actions — always visible on mobile, hover-gated on desktop */}
+      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-ink/95 via-ink/60 to-transparent p-3 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
         <div className="flex items-center gap-1.5">
           <button
             type="button"

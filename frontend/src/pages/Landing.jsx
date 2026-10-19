@@ -251,7 +251,7 @@ export default function Landing() {
             </p>
           </Reveal>
 
-          <div className="relative mt-16 grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+          <div className="relative mt-12 grid gap-6 md:mt-16 md:grid-cols-3 md:gap-6 lg:gap-8">
             {/* Connecting line */}
             <div className="pointer-events-none absolute left-[16%] right-[16%] top-8 hidden md:block">
               <div className="relative h-px bg-gradient-to-r from-primary/25 via-primary/35 to-primary/25">
@@ -264,7 +264,7 @@ export default function Landing() {
             <Reveal delay={0} variant="up">
               <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
                 <div className="flex items-start justify-between">
-                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-primary/10 transition-colors duration-300 group-hover:text-primary/20">
+                  <span className="font-display text-[2.5rem] font-extrabold leading-none tracking-tight text-primary/10 transition-colors duration-300 group-hover:text-primary/20 md:text-[3.25rem]">
                     01
                   </span>
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
@@ -305,7 +305,7 @@ export default function Landing() {
             <Reveal delay={150} variant="up">
               <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
                 <div className="flex items-start justify-between">
-                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-secondary/10 transition-colors duration-300 group-hover:text-secondary/20">
+                  <span className="font-display text-[2.5rem] font-extrabold leading-none tracking-tight text-secondary/10 transition-colors duration-300 group-hover:text-secondary/20 md:text-[3.25rem]">
                     02
                   </span>
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/10 text-secondary ring-1 ring-secondary/15">
@@ -356,7 +356,7 @@ export default function Landing() {
             <Reveal delay={300} variant="up">
               <div className="group relative h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 sm:p-7">
                 <div className="flex items-start justify-between">
-                  <span className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-highlight/15 transition-colors duration-300 group-hover:text-highlight/25">
+                  <span className="font-display text-[2.5rem] font-extrabold leading-none tracking-tight text-highlight/15 transition-colors duration-300 group-hover:text-highlight/25 md:text-[3.25rem]">
                     03
                   </span>
                   <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-highlight/10 text-highlight ring-1 ring-highlight/15">
