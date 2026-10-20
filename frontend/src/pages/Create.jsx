@@ -133,11 +133,12 @@ export default function Create() {
   }
 
   const handleSelectHistory = (item) => {
-    // History stores thumbnails (see runGeneration), so this restores the
-    // lightweight preview and prompt rather than a full-resolution image.
-    setResult({ success: true, images: item.images || [], prompt: item.prompt })
-    setStatus('success')
-    setPrompt(item.prompt)
+    // Clicking a history item loads its prompt into the editor for reuse. It
+    // must not replace or downgrade the current result: history stores
+    // low-resolution thumbnails, so the full-resolution preview is left as-is.
+    // Copying to the clipboard stays with the dedicated copy control in
+    // HistoryStrip.
+    setPrompt(item.prompt || '')
   }
 
   const handleClearHistory = () => {
