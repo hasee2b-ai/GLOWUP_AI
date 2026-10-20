@@ -4,7 +4,7 @@ import { Sparkles, AlertCircle, Wand2, Zap } from 'lucide-react'
 import { generateImage, checkHealth } from '../services/api.js'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { useToast } from '../components/Toast.jsx'
-import { copyText } from '../utils/helpers.js'
+import { copyText, makeThumbnail } from '../utils/helpers.js'
 import PromptEditor from '../components/PromptEditor.jsx'
 import SettingsPanel from '../components/SettingsPanel.jsx'
 import ResultPreview from '../components/ResultPreview.jsx'
@@ -80,11 +80,29 @@ export default function Create() {
         setStatus('success')
         toast.success('Your image is ready')
 
+        // Persist only small thumbnails, never the full-resolution base64
+        // payloads: 12 entries x up to 4 multi-MB data URLs would exhaust the
+        // browser's localStorage quota. A selected history item restores its
+        // thumbnail (not the full-resolution image); press Regenerate for a
+        // fresh high-resolution result.
+        //
+        // History recording is isolated from the generation result so that a
+        // thumbnail/storage failure can never turn a successful generation into
+        // an error. Metadata is recorded even when thumbnails cannot be built.
         const entry = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
           prompt: data.prompt,
-          images: data.images,
+          images: [],
           timestamp: Date.now(),
+        }
+        try {
+          const thumbnails = await Promise.all(
+            (data.images || []).map((image) => makeThumbnail(image.url))
+          )
+          entry.images = thumbnails.filter(Boolean)
+        } catch (thumbErr) {
+          // Keep the prompt/timestamp metadata; HistoryStrip shows a placeholder.
+          console.warn('Could not build history thumbnails; recording metadata only.', thumbErr)
         }
         setHistory((prev) => [entry, ...prev].slice(0, HISTORY_LIMIT))
       } catch (err) {
@@ -115,7 +133,9 @@ export default function Create() {
   }
 
   const handleSelectHistory = (item) => {
-    setResult({ success: true, images: item.images, prompt: item.prompt })
+    // History stores thumbnails (see runGeneration), so this restores the
+    // lightweight preview and prompt rather than a full-resolution image.
+    setResult({ success: true, images: item.images || [], prompt: item.prompt })
     setStatus('success')
     setPrompt(item.prompt)
   }

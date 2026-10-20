@@ -1,4 +1,4 @@
-import { History, Trash2, Copy } from 'lucide-react'
+import { History, Trash2, Copy, Image } from 'lucide-react'
 import { formatTimestamp } from '../utils/helpers.js'
 import { useToast } from './Toast.jsx'
 
@@ -26,7 +26,8 @@ export default function HistoryStrip({ history, selectedId, onSelect, onClear, o
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {history.map((item) => {
-          const first = item.images[0]
+          const first = item.images?.[0]
+          const thumb = first?.url
           const active = item.id === selectedId
           return (
             <button
@@ -40,12 +41,18 @@ export default function HistoryStrip({ history, selectedId, onSelect, onClear, o
               }`}
               aria-label={`Select generation from ${formatTimestamp(item.timestamp)}`}
             >
-              <img
-                src={first.url}
-                alt={item.prompt}
-                className="aspect-square w-full object-cover"
-                loading="lazy"
-              />
+              {thumb ? (
+                <img
+                  src={thumb}
+                  alt={item.prompt}
+                  className="aspect-square w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="flex aspect-square w-full items-center justify-center bg-mist/5">
+                  <Image size={20} className="text-mute/40" />
+                </div>
+              )}
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 to-transparent px-2.5 pb-2 pt-6">
                 <span className="block truncate text-[11px] text-mist">{item.prompt}</span>
                 <span className="text-[10px] text-mute/60">{formatTimestamp(item.timestamp)}</span>

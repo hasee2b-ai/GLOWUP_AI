@@ -15,7 +15,7 @@ function Meta({ icon: Icon, children }) {
   )
 }
 
-function ImageCard({ image, index, onCopyPrompt, copied }) {
+function ImageCard({ image, index, onCopyPrompt, copied, thumbnailOnly }) {
   const [failed, setFailed] = useState(false)
 
   return (
@@ -45,7 +45,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
             className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-ink/60 px-3 py-2 text-xs font-medium text-mist backdrop-blur transition-colors hover:border-primary/50 hover:bg-ink"
           >
             <Download size={14} />
-            Save
+            {thumbnailOnly ? 'Save thumbnail' : 'Save'}
           </button>
           <button
             type="button"
@@ -149,12 +149,18 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
   const images = result?.images || []
   const multi = images.length > 1
   const first = images[0]
+  // A restored history entry holds only downscaled thumbnails (marked when
+  // created in helpers.makeThumbnail), so no full-resolution original exists.
+  // Freshly generated and legacy entries are unmarked and keep the normal UI.
+  const thumbnailOnly = images.length > 0 && images.every((img) => img?.isThumbnail === true)
 
   return (
     <div className={`${panel} animate-fade-in`}>
       {header(
         'Result',
-        `${images.length} ${images.length === 1 ? 'image' : 'images'} generated`
+        thumbnailOnly
+          ? 'Preview only — regenerate for full resolution'
+          : `${images.length} ${images.length === 1 ? 'image' : 'images'} generated`
       )}
 
       {/* metadata bar */}
@@ -190,6 +196,7 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
               image={img}
               index={i}
               copied={copied}
+              thumbnailOnly={thumbnailOnly}
               onCopyPrompt={async () => {
                 try {
                   await copyText(result.prompt)
