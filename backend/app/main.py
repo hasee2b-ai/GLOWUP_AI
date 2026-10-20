@@ -1,8 +1,10 @@
 """GlowUp AI backend application entry point."""
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from .config import BACKEND_HOST, BACKEND_PORT, FRONTEND_ORIGIN, MAX_REQUEST_SIZE
 from .routes import generation
@@ -31,13 +33,50 @@ app.add_middleware(
 app.include_router(generation.router)
 
 
+@app.exception_handler(RequestValidationError)
+async def _validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Return validation failures as a string ``detail``.
+
+    FastAPI's default body-validation error uses a list of errors, but the
+    frontend's error parser only understands a string ``detail`` (and expects
+    400 for malformed JSON). Preserve that contract.
+    """
+    errors = exc.errors()
+    status_code = 422
+    detail = "Invalid request."
+    if errors:
+        err = errors[0]
+        loc = err.get("loc") or []
+        field = loc[-1] if loc else ""
+        err_type = err.get("type", "")
+        if err_type in ("json_invalid", "json_decode"):
+            status_code = 400
+            detail = "Invalid JSON body."
+        elif field == "prompt":
+            if err_type in ("missing", "string_too_short"):
+                detail = "Prompt must not be empty."
+            else:
+                detail = _clean_validation_message(err.get("msg", "Prompt is invalid."))
+        elif field == "size":
+            detail = _clean_validation_message(err.get("msg", "Unsupported size."))
+        elif field == "n":
+            detail = _clean_validation_message(err.get("msg", "Invalid image count."))
+        else:
+            detail = _clean_validation_message(err.get("msg", "Invalid request."))
+    return JSONResponse(status_code=status_code, content={"detail": detail})
+
+
+def _clean_validation_message(msg):
+    if isinstance(msg, str) and msg.startswith("Value error, "):
+        return msg[len("Value error, "):]
+    return msg
+
+
 @app.middleware("http")
 async def limit_request_size(request, call_next):
     """Reject request bodies larger than MAX_REQUEST_SIZE."""
     content_length = request.headers.get("content-length")
     if content_length and int(content_length) > MAX_REQUEST_SIZE:
-        from fastapi.responses import JSONResponse
-
         return JSONResponse(
             status_code=413,
             content={"detail": "Request body too large."},

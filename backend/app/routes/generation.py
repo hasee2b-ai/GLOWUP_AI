@@ -5,15 +5,8 @@ from typing import Dict, List
 
 from fastapi import APIRouter, HTTPException, Request
 
-from ..config import (
-    MAX_IMAGES,
-    MAX_PROMPT_LENGTH,
-    MIN_IMAGES,
-    RATE_LIMIT_MAX,
-    RATE_LIMIT_WINDOW,
-    SUPPORTED_SIZES,
-)
-from ..schemas import GenerateResponse, ImageResult
+from ..config import RATE_LIMIT_MAX, RATE_LIMIT_WINDOW
+from ..schemas import GenerateRequest, GenerateResponse, ImageResult
 from ..services.sensenova import ProviderError, generate_images
 
 logger = logging.getLogger(__name__)
@@ -52,38 +45,11 @@ def health() -> Dict[str, object]:
 
 
 @router.post("/api/generate", response_model=GenerateResponse)
-async def generate(req: Request) -> GenerateResponse:
-    """Generate images from a text prompt via the SenseNova provider."""
-    # Parse JSON body manually to avoid pydantic dependency in routes
-    import json
-    try:
-        body = json.loads(await req.body())
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid JSON body.")
+async def generate(req: Request, payload: GenerateRequest) -> GenerateResponse:
+    """Generate images from a text prompt via the SenseNova provider.
 
-    prompt = body.get("prompt", "").strip()
-    if not prompt:
-        raise HTTPException(status_code=422, detail="Prompt must not be empty.")
-    if len(prompt) > MAX_PROMPT_LENGTH:
-        raise HTTPException(status_code=422, detail=f"Prompt exceeds {MAX_PROMPT_LENGTH} characters.")
-
-    size = body.get("size", "1024x1024")
-    if size not in SUPPORTED_SIZES:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Unsupported size '{size}'. Supported: {sorted(SUPPORTED_SIZES)}",
-        )
-
-    n = body.get("n", 1)
-    if not isinstance(n, int) or n < MIN_IMAGES or n > MAX_IMAGES:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Image count must be between {MIN_IMAGES} and {MAX_IMAGES}.",
-        )
-
-    prompt_extend = body.get("prompt_extend", True)
-    watermark = body.get("watermark", True)
-
+    The request body is validated by the ``GenerateRequest`` Pydantic model.
+    """
     client = req.client.host if req.client else "unknown"
     if not _rate_limit(client):
         logger.warning("Rate limit exceeded for client %s", client)
@@ -94,11 +60,11 @@ async def generate(req: Request) -> GenerateResponse:
 
     try:
         images = await generate_images(
-            prompt=prompt,
-            size=size,
-            n=n,
-            prompt_extend=prompt_extend,
-            watermark=watermark,
+            prompt=payload.prompt,
+            size=payload.size,
+            n=payload.n,
+            prompt_extend=payload.prompt_extend,
+            watermark=payload.watermark,
         )
     except ProviderError as exc:
         logger.error("Generation failed: %s", exc.message)
@@ -107,5 +73,5 @@ async def generate(req: Request) -> GenerateResponse:
     return GenerateResponse(
         success=True,
         images=[ImageResult(**img) for img in images],
-        prompt=prompt,
+        prompt=payload.prompt,
     )

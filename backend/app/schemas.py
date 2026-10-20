@@ -13,7 +13,9 @@ class GenerateRequest(BaseModel):
     The API key is never accepted from the browser.
     """
 
-    prompt: str = Field(..., min_length=1, max_length=MAX_PROMPT_LENGTH)
+    # Length is enforced after trimming (in prompt_not_blank) so surrounding
+    # whitespace does not count against MAX_PROMPT_LENGTH.
+    prompt: str = Field(..., min_length=1)
     size: str = "1024x1024"
     n: int = 1
     prompt_extend: bool = True
@@ -25,6 +27,8 @@ class GenerateRequest(BaseModel):
         v = v.strip()
         if not v:
             raise ValueError("Prompt must not be empty or whitespace only.")
+        if len(v) > MAX_PROMPT_LENGTH:
+            raise ValueError(f"Prompt exceeds {MAX_PROMPT_LENGTH} characters.")
         return v
 
     @field_validator("size")
