@@ -1,4 +1,4 @@
-import { Sparkles, Droplet } from 'lucide-react'
+import { Sparkles, Droplet, ChevronDown } from 'lucide-react'
 import { ASPECT_RATIOS, IMAGE_COUNTS } from '../utils/constants.js'
 
 function Toggle({ label, hint, checked, onChange, icon: Icon }) {
@@ -90,28 +90,29 @@ export default function SettingsPanel({ settings, onChange }) {
 
       {/* Image count */}
       <div>
-        <span className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-mute">
+        <label
+          htmlFor="image-count"
+          className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-mute"
+        >
           Images
-        </span>
-        <div className="grid grid-cols-3 gap-2">
-          {IMAGE_COUNTS.map((c) => {
-            const active = settings.n === c
-            return (
-              <button
-                key={c}
-                type="button"
-                onClick={() => set({ n: c })}
-                aria-pressed={active}
-                className={`rounded-xl border py-2.5 text-sm font-semibold transition-all ${
-                  active
-                    ? 'border-primary/60 bg-primary/10 text-mist shadow-md shadow-primary/10'
-                    : 'border-border bg-surface-2 text-mute hover:border-mist/25'
-                }`}
-              >
-                {c}
-              </button>
-            )
-          })}
+        </label>
+        <div className="relative">
+          <select
+            id="image-count"
+            value={settings.n}
+            onChange={(e) => set({ n: Number(e.target.value) })}
+            className="w-full appearance-none rounded-xl border border-border bg-surface-2 px-4 py-3 pr-11 text-sm font-medium text-mist transition-colors hover:border-mist/25 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+          >
+            {IMAGE_COUNTS.map((c) => (
+              <option key={c} value={c}>
+                {c} {c === 1 ? 'image' : 'images'}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={16}
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-mute"
+          />
         </div>
       </div>
 
