@@ -204,7 +204,7 @@ return an appropriate HTTP status code and a safe, user-readable `detail`.
 | Parameter        | Supported values                          |
 | ---------------- | ----------------------------------------- |
 | `size`           | `1024x1024`, `1024x1536`, `1536x1024`     |
-| `n`              | `1`, `2`, `4`                              |
+| `n`              | `1`, `2`                                   |
 | `prompt_extend`  | `true` / `false`                           |
 | `watermark`      | `true` / `false`                           |
 

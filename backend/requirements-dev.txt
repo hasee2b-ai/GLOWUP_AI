@@ -1,0 +1,4 @@
+# Development / testing-only dependencies (not needed to run the server).
+# Install alongside requirements.txt when working on or running the test suite:
+#   pip install -r requirements.txt -r requirements-dev.txt
+pytest>=8,<9

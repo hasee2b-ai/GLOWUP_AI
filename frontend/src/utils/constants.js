@@ -6,6 +6,6 @@ export const ASPECT_RATIOS = [
   { id: 'landscape', label: 'Landscape', size: '1536x1024', hint: '3:2' },
 ]
 
-export const IMAGE_COUNTS = [1, 2, 4]
+export const IMAGE_COUNTS = [1, 2]
 
 export const MAX_PROMPT_LENGTH = 4000

@@ -1,0 +1,182 @@
+"""Tests for the SenseNova provider service.
+
+These tests mock the outbound HTTP client entirely: no real SenseNova API calls
+are made and no real credentials are required. They verify that the service
+fans out multiple requested images into single-image provider requests, keeps
+concurrency bounded, and propagates provider failures safely.
+"""
+import asyncio
+import inspect
+import sys
+from pathlib import Path
+
+import httpx
+import pytest
+from pydantic import ValidationError
+
+# Make the backend package importable when pytest is run from backend/.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.schemas import GenerateRequest  # noqa: E402
+from app.services import sensenova  # noqa: E402
+
+# A valid 1x1 PNG (base64) so response normalization has real image bytes.
+PNG_B64 = (
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+)
+
+
+class FakeResponse:
+    def __init__(self, status_code=200, payload=None, text=""):
+        self.status_code = status_code
+        self._payload = payload
+        self.text = text
+
+    def json(self):
+        if isinstance(self._payload, Exception):
+            raise self._payload
+        return self._payload
+
+
+def _ok_payload():
+    return {"data": [{"b64_json": PNG_B64}]}
+
+
+class FakeClient:
+    """Records provider calls and replies via a queued handler."""
+
+    def __init__(self, handler):
+        self._handler = handler
+        self.calls = []
+
+    async def post(self, url, json=None, headers=None, timeout=None):
+        self.calls.append(
+            {"url": url, "json": json, "headers": headers, "timeout": timeout}
+        )
+        result = self._handler(len(self.calls), json)
+        if inspect.isawaitable(result):
+            result = await result
+        return result
+
+
+@pytest.fixture(autouse=True)
+def _fake_key(monkeypatch):
+    """Use a non-secret placeholder key so no real credential can leak."""
+    monkeypatch.setattr(sensenova, "SENSENOVA_API_KEY", "test-key-not-secret")
+    yield
+
+
+def _run(coro):
+    return asyncio.run(coro)
+
+
+# --- Single-image behavior is preserved ------------------------------------
+
+
+def test_n1_makes_one_request_with_n1(monkeypatch):
+    client = FakeClient(lambda i, payload: FakeResponse(200, _ok_payload()))
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    images = _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert len(client.calls) == 1
+    sent = client.calls[0]["json"]
+    assert sent["n"] == 1
+    assert sent["prompt"] == "a cat"
+    assert sent["size"] == "1024x1024"
+    assert sent["prompt_extend"] is True
+    assert sent["watermark"] is True
+    assert sent["response_format"] == "b64_json"
+    assert len(images) == 1
+    assert images[0]["mime_type"] == "image/png"
+
+
+# --- Two-image fan-out ------------------------------------------------------
+
+
+def test_n2_makes_two_requests_with_n1_and_combines(monkeypatch):
+    client = FakeClient(lambda i, payload: FakeResponse(200, _ok_payload()))
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    images = _run(sensenova.generate_images("a dog", "1024x1536", 2, False, False))
+
+    assert len(client.calls) == 2
+    assert all(call["json"]["n"] == 1 for call in client.calls)
+    assert all(call["json"]["prompt"] == "a dog" for call in client.calls)
+    assert all(call["json"]["prompt_extend"] is False for call in client.calls)
+    assert all(call["json"]["watermark"] is False for call in client.calls)
+    assert len(images) == 2
+    assert all(img["mime_type"] == "image/png" for img in images)
+
+
+def test_concurrency_is_bounded(monkeypatch):
+    in_flight = 0
+    max_in_flight = 0
+
+    async def handler(i, payload):
+        nonlocal in_flight, max_in_flight
+        in_flight += 1
+        max_in_flight = max(max_in_flight, in_flight)
+        await asyncio.sleep(0.01)
+        in_flight -= 1
+        return FakeResponse(200, _ok_payload())
+
+    client = FakeClient(handler)
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    # n=4 here exercises the internal fan-out cap; request validation rejects
+    # n>2 at the API boundary (covered by the schema tests below).
+    images = _run(sensenova.generate_images("a bird", "1024x1024", 4, True, True))
+
+    assert sensenova.MAX_PROVIDER_CONCURRENCY == 2
+    assert max_in_flight <= 2
+    assert len(client.calls) == 4
+    assert len(images) == 4
+
+
+# --- Failures propagate safely ---------------------------------------------
+
+
+def test_provider_error_propagates(monkeypatch):
+    def handler(i, payload):
+        if i == 2:
+            return FakeResponse(
+                400, {"error": {"message": "invalid n, should be in [1, 1]"}}
+            )
+        return FakeResponse(200, _ok_payload())
+
+    client = FakeClient(handler)
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a bird", "1024x1024", 2, True, True))
+
+    assert "invalid n" in str(excinfo.value.message)
+
+
+def test_timeout_propagates_as_safe_error(monkeypatch):
+    class TimeoutClient:
+        async def post(self, *args, **kwargs):
+            raise httpx.TimeoutException("boom")
+
+    monkeypatch.setattr(sensenova, "_get_client", lambda: TimeoutClient())
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("x", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 504
+    assert "too long" in str(excinfo.value.message)
+
+
+# --- Request validation -----------------------------------------------------
+
+
+def test_schema_accepts_1_and_2():
+    assert GenerateRequest(prompt="x", n=1).n == 1
+    assert GenerateRequest(prompt="x", n=2).n == 2
+
+
+@pytest.mark.parametrize("n", [0, 3, 4, 100])
+def test_schema_rejects_out_of_range(n):
+    with pytest.raises(ValidationError):
+        GenerateRequest(prompt="x", n=n)

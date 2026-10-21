@@ -28,7 +28,7 @@ SUPPORTED_SIZES = {
     "1536x1024",   # Landscape
 }
 MIN_IMAGES = 1
-MAX_IMAGES = 4
+MAX_IMAGES = 2
 MAX_PROMPT_LENGTH = int(os.getenv("MAX_PROMPT_LENGTH", "4000"))
 
 # Outbound request timeout (seconds). Image generation can be slow.

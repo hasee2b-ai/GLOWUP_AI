@@ -5,6 +5,7 @@ the request, maps provider errors to safe, user-readable messages, and normalize
 the response (base64 or URL) into a browser-usable form. It never logs the API
 key or other secrets.
 """
+import asyncio
 import base64
 import binascii
 import logging
@@ -21,6 +22,11 @@ from ..config import (
 )
 
 logger = logging.getLogger(__name__)
+
+# The provider accepts only one image per request, so multiple requested images
+# are produced by issuing several single-image calls. This cap bounds how many
+# of those calls may be in flight at once, protecting the provider's rate limits.
+MAX_PROVIDER_CONCURRENCY = 2
 
 # Shared async HTTP client, created lazily on first use so importing this
 # module never requires a running event loop. It is reused across requests
@@ -201,44 +207,34 @@ def _parse_response(data: Any) -> List[Dict[str, Any]]:
     return images
 
 
-async def generate_images(
+async def _request_single_image(
+    url: str,
+    headers: Dict[str, str],
     prompt: str,
     size: str,
-    n: int,
     prompt_extend: bool,
     watermark: bool,
 ) -> List[Dict[str, Any]]:
-    """Call the SenseNova image-generation endpoint and return normalized images.
+    """Issue one provider request for a single image and normalize the result.
 
+    The provider only supports one image per request, so ``n`` is always 1.
     Uses the shared async client so a slow provider response does not block the
     event loop (and therefore unrelated requests such as /api/health).
     """
-    if not SENSENOVA_API_KEY:
-        raise ProviderError(
-            "The server is missing the SenseNova API key. Configure SENSENOVA_API_KEY.",
-            status_code=500,
-        )
-
-    url = f"{SENSENOVA_BASE_URL}{SENSENOVA_IMAGE_ENDPOINT}"
-    headers = {
-        "Authorization": f"Bearer {SENSENOVA_API_KEY}",
-        "Content-Type": "application/json",
-    }
     payload = {
         "model": SENSENOVA_IMAGE_MODEL,
         "prompt": prompt,
         "size": size,
-        "n": n,
+        "n": 1,
         "response_format": "b64_json",
         "watermark": watermark,
         "prompt_extend": prompt_extend,
     }
 
     logger.info(
-        "Requesting image generation (model=%s, size=%s, n=%s)",
+        "Requesting image generation (model=%s, size=%s, n=1)",
         SENSENOVA_IMAGE_MODEL,
         size,
-        n,
     )
 
     try:
@@ -262,3 +258,42 @@ async def generate_images(
         _raise_for_status(resp)
 
     return _parse_response(resp.json())
+
+
+async def generate_images(
+    prompt: str,
+    size: str,
+    n: int,
+    prompt_extend: bool,
+    watermark: bool,
+) -> List[Dict[str, Any]]:
+    """Generate ``n`` images via the SenseNova provider.
+
+    The provider accepts only one image per request, so ``n`` images are
+    produced by issuing ``n`` single-image requests and combining their
+    results. Requests run with bounded concurrency (``MAX_PROVIDER_CONCURRENCY``).
+    If any request fails, its ``ProviderError`` propagates unchanged so the
+    caller never silently receives fewer images than requested.
+    """
+    if not SENSENOVA_API_KEY:
+        raise ProviderError(
+            "The server is missing the SenseNova API key. Configure SENSENOVA_API_KEY.",
+            status_code=500,
+        )
+
+    url = f"{SENSENOVA_BASE_URL}{SENSENOVA_IMAGE_ENDPOINT}"
+    headers = {
+        "Authorization": f"Bearer {SENSENOVA_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    semaphore = asyncio.Semaphore(MAX_PROVIDER_CONCURRENCY)
+
+    async def run_one() -> List[Dict[str, Any]]:
+        async with semaphore:
+            return await _request_single_image(
+                url, headers, prompt, size, prompt_extend, watermark
+            )
+
+    batches = await asyncio.gather(*(run_one() for _ in range(n)))
+    return [image for batch in batches for image in batch]
