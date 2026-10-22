@@ -257,7 +257,23 @@ async def _request_single_image(
     if resp.status_code != 200:
         _raise_for_status(resp)
 
-    return _parse_response(resp.json())
+    try:
+        body = resp.json()
+    except ValueError:
+        # Covers json.JSONDecodeError (invalid JSON) and empty/unparseable
+        # bodies. The raw body is deliberately excluded from the log and the
+        # error so no provider content or credentials can reach the client.
+        logger.error(
+            "Provider returned a %s response with an unparseable body.",
+            resp.status_code,
+        )
+        raise ProviderError(
+            "The image provider returned an invalid response. Please try again later.",
+            status_code=502,
+            provider_status=resp.status_code,
+        ) from None
+
+    return _parse_response(body)
 
 
 async def generate_images(

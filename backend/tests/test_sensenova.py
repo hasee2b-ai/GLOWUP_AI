@@ -7,6 +7,7 @@ concurrency bounded, and propagates provider failures safely.
 """
 import asyncio
 import inspect
+import json
 import sys
 from pathlib import Path
 
@@ -166,6 +167,50 @@ def test_timeout_propagates_as_safe_error(monkeypatch):
 
     assert excinfo.value.status_code == 504
     assert "too long" in str(excinfo.value.message)
+
+
+# --- Success responses with invalid bodies ---------------------------------
+
+
+def _decode_error():
+    """A realistic json.JSONDecodeError as raised by resp.json()."""
+    return json.JSONDecodeError("Expecting value", "<html>oops</html>", 0)
+
+
+def test_invalid_json_body_becomes_provider_error(monkeypatch):
+    body = "<html>internal gateway leak</html>"
+    client = FakeClient(lambda i, payload: FakeResponse(200, _decode_error(), text=body))
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 502
+    assert excinfo.value.provider_status == 200
+    # No raw provider content may leak to the client.
+    assert body not in str(excinfo.value.message)
+
+
+def test_empty_body_becomes_provider_error(monkeypatch):
+    client = FakeClient(lambda i, payload: FakeResponse(200, _decode_error(), text=""))
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 502
+
+
+def test_valid_json_still_follows_existing_path(monkeypatch):
+    """Regression: a valid JSON success body parses as before."""
+    client = FakeClient(lambda i, payload: FakeResponse(200, _ok_payload()))
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    images = _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert len(images) == 1
+    assert images[0]["mime_type"] == "image/png"
+    assert images[0]["url"].startswith("data:image/png;base64,")
 
 
 # --- Request validation -----------------------------------------------------
