@@ -152,7 +152,76 @@ def test_provider_error_propagates(monkeypatch):
     with pytest.raises(sensenova.ProviderError) as excinfo:
         _run(sensenova.generate_images("a bird", "1024x1024", 2, True, True))
 
-    assert "invalid n" in str(excinfo.value.message)
+    # Provider-supplied text must NOT reach the client; only the generic
+    # upstream message does (provider_status keeps it diagnosable server-side).
+    assert "invalid n" not in str(excinfo.value.message)
+    assert excinfo.value.status_code == 502
+    assert excinfo.value.provider_status == 400
+
+
+# --- Upstream errors are sanitized before reaching the frontend -------------
+
+
+@pytest.mark.parametrize("provider_status", [401, 403, 404])
+def test_config_failures_are_generic_502(monkeypatch, provider_status):
+    """Provider 401/403/404 must not reveal setup details to the frontend."""
+    leaky_detail = (
+        "invalid api key: sk-abc123 ... check your account config at https://..."
+    )
+    client = FakeClient(
+        lambda i, payload: FakeResponse(
+            provider_status, {"error": {"message": leaky_detail}}
+        )
+    )
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 502
+    assert excinfo.value.provider_status == provider_status
+    assert leaky_detail not in excinfo.value.message
+    # No internal setup hints in the client-facing message.
+    for hint in ("api key", "API key", "endpoint", "model", "account"):
+        assert hint not in excinfo.value.message
+
+
+def test_non_json_error_body_is_not_leaked(monkeypatch):
+    body = "<html>502 Bad Gateway <pre>internal stacktrace sk-leak</pre></html>"
+    client = FakeClient(
+        lambda i, payload: FakeResponse(
+            500, json.JSONDecodeError("Expecting value", body, 0), text=body
+        )
+    )
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 502
+    assert body not in excinfo.value.message
+
+
+def test_provider_429_keeps_specific_client_message(monkeypatch):
+    """Known, client-actionable provider rate limit stays specific."""
+    client = FakeClient(
+        lambda i, payload: FakeResponse(429, {"error": {"message": "slow down"}})
+    )
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a cat", "1024x1024", 1, True, True))
+
+    assert excinfo.value.status_code == 429
+    assert "Rate limit" in excinfo.value.message
+    assert "slow down" not in excinfo.value.message
+
+
+def test_application_validation_errors_are_untouched():
+    """Application-generated validation errors keep their specific messages."""
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", n=5)
+    assert "between 1 and 2" in str(excinfo.value)
 
 
 def test_timeout_propagates_as_safe_error(monkeypatch):
