@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Logo from './Logo.jsx'
+import ParticleText from './ParticleText/ParticleText.jsx'
 
 const linkBase =
   'text-sm text-mute transition-colors hover:text-mist focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-sm'
@@ -21,8 +23,59 @@ function FooterColumn({ heading, children, className = '' }) {
 }
 
 export default function Footer() {
+  // Mount the particle animation only when the footer is first reached, so the
+  // formation intro plays exactly once at that moment.
+  const introRef = useRef(null)
+  const [introVisible, setIntroVisible] = useState(false)
+
+  useEffect(() => {
+    const node = introRef.current
+    if (!node) return undefined
+    if (typeof IntersectionObserver === 'undefined') {
+      setIntroVisible(true)
+      return undefined
+    }
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setIntroVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.25 }
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <footer className="border-t border-border/60 bg-surface/60">
+      {/* Interactive particle headline — black particles on white */}
+      <div
+        ref={introRef}
+        style={{
+          width: '100%',
+          minHeight: '300px',
+          height: 'clamp(300px, 21vw, 96vw)',
+          background: '#ffffff'
+        }}
+      >
+        {introVisible && (
+          <ParticleText
+            text="Glowup Ai"
+            color="#000000"
+            highlightColor="#00ffcc"
+            intro="gather"
+            trigger="mount"
+            shape="circle"
+            glow
+            density={4}
+            particleSize={2}
+            fontSize="17vw"
+          />
+        )}
+      </div>
+
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-14">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-y-10 lg:grid-cols-[1.25fr_1fr_1fr_1fr] lg:gap-x-10">
           {/* Column 1 — Brand */}
