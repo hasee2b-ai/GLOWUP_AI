@@ -6,7 +6,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from .config import BACKEND_HOST, BACKEND_PORT, FRONTEND_ORIGIN, MAX_REQUEST_SIZE
+from .config import BACKEND_HOST, BACKEND_PORT, FRONTEND_ORIGINS, MAX_REQUEST_SIZE
 from .routes import generation
 
 logging.basicConfig(
@@ -21,10 +21,11 @@ app = FastAPI(
     description="Premium AI image-generation platform backend.",
 )
 
-# Narrow CORS: only the configured frontend origin is allowed.
+# Narrow CORS: only the configured frontend origins are allowed
+# (FRONTEND_ORIGIN env var, comma-separated; defaults to localhost in dev).
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_ORIGIN],
+    allow_origins=FRONTEND_ORIGINS,
     allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],

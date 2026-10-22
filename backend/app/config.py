@@ -16,7 +16,15 @@ SENSENOVA_IMAGE_MODEL = os.getenv("SENSENOVA_IMAGE_MODEL", "sensenova-u1.5-lite"
 SENSENOVA_IMAGE_ENDPOINT = os.getenv("SENSENOVA_IMAGE_ENDPOINT", "/images/generations")
 
 # --- Server / CORS --------------------------------------------------------
-FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "*")
+# Comma-separated list of allowed browser origins (e.g.
+# "https://app.example.com,http://localhost:5173"). Falls back to the local
+# dev server when unset; never defaults to "*".
+DEFAULT_FRONTEND_ORIGINS = ["http://localhost:5173"]
+FRONTEND_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("FRONTEND_ORIGIN", "").split(",")
+    if origin.strip()
+] or list(DEFAULT_FRONTEND_ORIGINS)
 BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1")
 BACKEND_PORT = int(os.getenv("BACKEND_PORT", "8000"))
 
