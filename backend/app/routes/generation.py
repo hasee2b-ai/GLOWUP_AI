@@ -16,20 +16,73 @@ router = APIRouter()
 # Lightweight in-memory rate limiter (sliding window, per client IP).
 # NOTE: This is a simple guard against accidental excessive usage. It is NOT a
 # distributed, production-grade rate limiter and resets on server restart.
+# On serverless (Vercel) each function instance keeps its own buckets, so the
+# effective global limit is per instance and cold starts clear all state.
 # ---------------------------------------------------------------------------
 _rate_buckets: Dict[str, List[float]] = {}
+
+# Upper bound on tracked client buckets so the table cannot grow without
+# limit (e.g. many distinct client addresses across the process lifetime).
+MAX_TRACKED_CLIENTS = 10_000
+
+# Timestamp of the last opportunistic sweep of idle buckets (see
+# _evict_idle_clients). Throttled so the O(n) scan runs at most once per
+# rate-limit window rather than on every admission.
+_last_sweep = 0.0
+
+
+def _evict_idle_clients(now: float) -> None:
+    """Drop buckets with no activity inside the current window.
+
+    Timestamps are appended in order, so the last entry is the most recent
+    activity recorded for that client.
+    """
+    global _last_sweep
+    _last_sweep = now
+    window_start = now - RATE_LIMIT_WINDOW
+    idle = [
+        key
+        for key, times in _rate_buckets.items()
+        if not times or times[-1] <= window_start
+    ]
+    for key in idle:
+        del _rate_buckets[key]
 
 
 def _rate_limit(key: str) -> bool:
     """Return True if the request is within the limit, False otherwise."""
     now = time.time()
     window_start = now - RATE_LIMIT_WINDOW
-    bucket = _rate_buckets.setdefault(key, [])
-    # Evict timestamps outside the current window.
-    _rate_buckets[key] = [t for t in bucket if t > window_start]
-    if len(_rate_buckets[key]) >= RATE_LIMIT_MAX:
+    bucket = _rate_buckets.get(key)
+    if bucket is not None:
+        # Evict timestamps outside the current window.
+        bucket = [t for t in bucket if t > window_start]
+        if not bucket:
+            # Fully expired: forget the client instead of keeping an empty
+            # bucket around indefinitely.
+            del _rate_buckets[key]
+        else:
+            _rate_buckets[key] = bucket
+    if bucket is None or not bucket:
+        # New (or fully expired) client. Opportunistically sweep idle
+        # buckets, throttled to at most once per window so the O(n) scan
+        # does not run on every request.
+        if now - _last_sweep >= RATE_LIMIT_WINDOW:
+            _evict_idle_clients(now)
+        # Bound the table before growing it, evicting the
+        # least-recently-active clients if still at capacity.
+        if len(_rate_buckets) >= MAX_TRACKED_CLIENTS:
+            _evict_idle_clients(now)
+        if len(_rate_buckets) >= MAX_TRACKED_CLIENTS:
+            overflow = len(_rate_buckets) - MAX_TRACKED_CLIENTS + 1
+            oldest = sorted(_rate_buckets, key=lambda k: _rate_buckets[k][-1])
+            for stale_key in oldest[:overflow]:
+                del _rate_buckets[stale_key]
+        bucket = []
+        _rate_buckets[key] = bucket
+    if len(bucket) >= RATE_LIMIT_MAX:
         return False
-    _rate_buckets[key].append(now)
+    bucket.append(now)
     return True
 
 
@@ -50,6 +103,13 @@ async def generate(req: Request, payload: GenerateRequest) -> GenerateResponse:
 
     The request body is validated by the ``GenerateRequest`` Pydantic model.
     """
+    # Conservative client identification: use only the socket peer address.
+    # We deliberately do NOT read X-Forwarded-For / X-Real-IP because there is
+    # no explicit trusted-proxy configuration, and those headers are
+    # client-spoofable. Limitation: behind a proxy or serverless platform the
+    # peer address is the proxy itself, so all such requests may share one
+    # bucket. Resolving that safely requires trusted-proxy configuration,
+    # which is out of scope for this focused change.
     client = req.client.host if req.client else "unknown"
     if not _rate_limit(client):
         logger.warning("Rate limit exceeded for client %s", client)
