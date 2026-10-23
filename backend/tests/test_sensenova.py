@@ -339,3 +339,73 @@ def test_schema_rejects_unknown_fields():
         GenerateRequest(prompt="x", unknown_field="oops")
     assert "Extra inputs are not permitted" in str(excinfo.value)
     assert "unknown_field" in str(excinfo.value)
+
+
+# --- Partial failure handling (Issue #8) ------------------------------------
+
+
+def test_partial_failure_first_succeeds_second_fails(monkeypatch):
+    """When the first request succeeds and the second fails, the failure
+    propagates but both requests complete (no cancellation of the second)."""
+    call_order = []
+
+    def handler(i, payload):
+        call_order.append(i)
+        if i == 2:
+            return FakeResponse(500, {"error": {"message": "internal error"}})
+        return FakeResponse(200, _ok_payload())
+
+    client = FakeClient(handler)
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a bird", "1024x1024", 2, True, True))
+
+    assert excinfo.value.status_code == 502
+    assert excinfo.value.provider_status == 500
+    # Both calls should complete (no early cancellation)
+    assert call_order == [1, 2]
+    assert len(client.calls) == 2
+
+
+def test_partial_failure_first_fails_second_succeeds(monkeypatch):
+    """When the first request fails and the second succeeds, the failure
+    propagates but the second request still completes."""
+    call_order = []
+
+    def handler(i, payload):
+        call_order.append(i)
+        if i == 1:
+            return FakeResponse(500, {"error": {"message": "internal error"}})
+        return FakeResponse(200, _ok_payload())
+
+    client = FakeClient(handler)
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a bird", "1024x1024", 2, True, True))
+
+    assert excinfo.value.status_code == 502
+    # Both calls should complete
+    assert call_order == [1, 2]
+    assert len(client.calls) == 2
+
+
+def test_total_failure_all_requests_fail(monkeypatch):
+    """When all requests fail, the first error is raised."""
+    call_order = []
+
+    def handler(i, payload):
+        call_order.append(i)
+        return FakeResponse(500, {"error": {"message": f"error {i}"}})
+
+    client = FakeClient(handler)
+    monkeypatch.setattr(sensenova, "_get_client", lambda: client)
+
+    with pytest.raises(sensenova.ProviderError) as excinfo:
+        _run(sensenova.generate_images("a bird", "1024x1024", 2, True, True))
+
+    assert excinfo.value.status_code == 502
+    assert excinfo.value.provider_status == 500
+    assert call_order == [1, 2]
+    assert len(client.calls) == 2

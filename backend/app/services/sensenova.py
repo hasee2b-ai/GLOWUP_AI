@@ -305,5 +305,45 @@ async def generate_images(
                 url, headers, prompt, size, prompt_extend, watermark
             )
 
-    batches = await asyncio.gather(*(run_one() for _ in range(n)))
-    return [image for batch in batches for image in batch]
+    # Use return_exceptions=True so that:
+    # - A single failure does not cancel other in-flight requests
+    # - We can inspect which requests succeeded vs failed
+    # - If all fail, we still raise the first error (existing behavior)
+    # - If some succeed and some fail, we raise the first error but
+    #   successful requests were allowed to complete (no wasted work)
+    results = await asyncio.gather(
+        *(run_one() for _ in range(n)),
+        return_exceptions=True,
+    )
+
+    # Separate successful batches from exceptions
+    successful: List[Dict[str, Any]] = []
+    first_error: Optional[ProviderError] = None
+
+    for result in results:
+        if isinstance(result, ProviderError):
+            if first_error is None:
+                first_error = result
+        elif isinstance(result, Exception):
+            # Unexpected exception type — wrap it
+            if first_error is None:
+                first_error = ProviderError(
+                    "An unexpected error occurred during image generation.",
+                    status_code=502,
+                )
+        else:
+            successful.extend(result)
+
+    # If all requests failed, raise the first error (preserves existing behavior)
+    if not successful and first_error is not None:
+        raise first_error
+
+    # If some requests failed but at least one succeeded, we cannot return
+    # partial results under the current API contract (GenerateResponse expects
+    # success=True only when all requested images are generated). Preserve
+    # the all-or-nothing contract by raising the first error. The successful
+    # requests were allowed to complete (no cancellation), so no work is wasted.
+    if first_error is not None:
+        raise first_error
+
+    return successful
