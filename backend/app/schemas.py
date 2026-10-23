@@ -1,7 +1,7 @@
 """Pydantic request/response models for the GlowUp AI backend."""
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .config import MAX_IMAGES, MAX_PROMPT_LENGTH, MIN_IMAGES, SUPPORTED_SIZES
 
@@ -12,6 +12,8 @@ class GenerateRequest(BaseModel):
     The schema intentionally matches only the settings the frontend exposes.
     The API key is never accepted from the browser.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     # Length is enforced after trimming (in prompt_not_blank) so surrounding
     # whitespace does not count against MAX_PROMPT_LENGTH.
@@ -40,6 +42,22 @@ class GenerateRequest(BaseModel):
             )
         return v
 
+    @field_validator("n", mode="before")
+    @classmethod
+    def n_strict_int(cls, v):
+        # Reject bools explicitly (bool is subclass of int in Python)
+        if isinstance(v, bool):
+            raise ValueError("Image count must be an integer, not a boolean.")
+        # Reject strings (including numeric strings)
+        if isinstance(v, str):
+            raise ValueError("Image count must be an integer, not a string.")
+        # Reject floats (including whole-number floats like 1.0)
+        if isinstance(v, float):
+            raise ValueError("Image count must be an integer, not a float.")
+        # Pydantic will coerce other types (e.g. Decimal) to int; the range
+        # validator below will catch out-of-range values.
+        return v
+
     @field_validator("n")
     @classmethod
     def n_in_range(cls, v: int) -> int:
@@ -47,6 +65,14 @@ class GenerateRequest(BaseModel):
             raise ValueError(
                 f"Image count must be between {MIN_IMAGES} and {MAX_IMAGES}."
             )
+        return v
+
+    @field_validator("prompt_extend", "watermark", mode="before")
+    @classmethod
+    def bool_strict(cls, v):
+        # Only accept actual JSON booleans; reject strings like "true"/"false"
+        if isinstance(v, str):
+            raise ValueError("Must be a boolean (true/false), not a string.")
         return v
 
 

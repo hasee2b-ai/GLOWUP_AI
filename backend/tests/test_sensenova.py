@@ -294,3 +294,48 @@ def test_schema_accepts_1_and_2():
 def test_schema_rejects_out_of_range(n):
     with pytest.raises(ValidationError):
         GenerateRequest(prompt="x", n=n)
+
+
+# --- Strict type validation (Issue #7) --------------------------------------
+
+
+@pytest.mark.parametrize("bad_n", [True, False])
+def test_schema_rejects_boolean_for_n(bad_n):
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", n=bad_n)
+    assert "not a boolean" in str(excinfo.value)
+
+
+@pytest.mark.parametrize("bad_n", [1.0, 1.5, 2.0])
+def test_schema_rejects_float_for_n(bad_n):
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", n=bad_n)
+    assert "not a float" in str(excinfo.value)
+
+
+@pytest.mark.parametrize("bad_n", ["1", "2", "0", "3"])
+def test_schema_rejects_string_for_n(bad_n):
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", n=bad_n)
+    assert "not a string" in str(excinfo.value)
+
+
+@pytest.mark.parametrize("field", ["prompt_extend", "watermark"])
+@pytest.mark.parametrize("bad_val", ["true", "false", "True", "False", "1", "0", "yes", "no"])
+def test_schema_rejects_string_for_boolean_fields(field, bad_val):
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", **{field: bad_val})
+    assert "not a string" in str(excinfo.value)
+
+
+def test_schema_accepts_actual_booleans():
+    r = GenerateRequest(prompt="x", prompt_extend=True, watermark=False)
+    assert r.prompt_extend is True
+    assert r.watermark is False
+
+
+def test_schema_rejects_unknown_fields():
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", unknown_field="oops")
+    assert "Extra inputs are not permitted" in str(excinfo.value)
+    assert "unknown_field" in str(excinfo.value)
