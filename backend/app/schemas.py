@@ -70,9 +70,10 @@ class GenerateRequest(BaseModel):
     @field_validator("prompt_extend", "watermark", mode="before")
     @classmethod
     def bool_strict(cls, v):
-        # Only accept actual JSON booleans; reject strings like "true"/"false"
-        if isinstance(v, str):
-            raise ValueError("Must be a boolean (true/false), not a string.")
+        # Only accept actual JSON booleans (Python bool); reject strings,
+        # numbers (0/1), null, and any other types.
+        if not isinstance(v, bool):
+            raise ValueError("Must be a boolean (true/false).")
         return v
 
 

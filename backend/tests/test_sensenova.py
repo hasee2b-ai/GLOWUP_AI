@@ -325,7 +325,15 @@ def test_schema_rejects_string_for_n(bad_n):
 def test_schema_rejects_string_for_boolean_fields(field, bad_val):
     with pytest.raises(ValidationError) as excinfo:
         GenerateRequest(prompt="x", **{field: bad_val})
-    assert "not a string" in str(excinfo.value)
+    assert "Must be a boolean" in str(excinfo.value)
+
+
+@pytest.mark.parametrize("field", ["prompt_extend", "watermark"])
+@pytest.mark.parametrize("bad_val", [0, 1])
+def test_schema_rejects_numeric_for_boolean_fields(field, bad_val):
+    with pytest.raises(ValidationError) as excinfo:
+        GenerateRequest(prompt="x", **{field: bad_val})
+    assert "Must be a boolean" in str(excinfo.value)
 
 
 def test_schema_accepts_actual_booleans():
