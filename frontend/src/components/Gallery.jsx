@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
 
 const IMAGES = [
-  { src: '/gallery-1.jpg', alt: 'Generated artwork 1' },
-  { src: '/gallery-2.jpg', alt: 'Generated artwork 2' },
-  { src: '/gallery-3.jpg', alt: 'Generated artwork 3' },
-  { src: '/gallery-4.jpg', alt: 'Generated artwork 4' },
-  { src: '/gallery-5.jpg', alt: 'Generated artwork 5' },
-  { src: '/gallery-6.jpg', alt: 'Generated artwork 6' },
+  { src: '/gallery-1.webp', alt: 'Generated artwork 1' },
+  { src: '/gallery-2.webp', alt: 'Generated artwork 2' },
+  { src: '/gallery-3.webp', alt: 'Generated artwork 3' },
+  { src: '/gallery-4.webp', alt: 'Generated artwork 4' },
+  { src: '/gallery-5.webp', alt: 'Generated artwork 5' },
+  { src: '/gallery-6.webp', alt: 'Generated artwork 6' },
 ]
 
 /**

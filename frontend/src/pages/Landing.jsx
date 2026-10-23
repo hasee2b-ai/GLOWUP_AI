@@ -65,10 +65,10 @@ const STEPS = [
 ]
 
 const INSPIRATION = [
-  { src: '/a-captivating-and-conceptual-artwork-fea_ERqVwBiAW_2iiF6lBe94ww_gPGjWTMySsyWyHmptrsg5A.jpg', alt: 'Conceptual portrait blending a city skyline and a twilight landscape', label: 'Conceptual art' },
-  { src: '/high-level-description-a-high-angle-stud_bl-WTI6mUPeJmuXS4f7-pA_feGrl4-BQpOtA7BVwK50RQ.jpg', alt: 'A mask half-covered in vivid pink and purple florals', label: 'Mixed media' },
-  { src: '/high-level-description-a-mixed-media-bus_FeVLi-AkWf65QR62ODyPwQ_w8IW6v1AR3aAKpLAfRjj7Q.jpg', alt: 'An impressionist portrait with visible brushstrokes on a blush background', label: 'Editorial art' },
-  { src: '/high-level-description-an-impressionisti_O_M6We2xXBmE9_mx0ee27A_AfD8_GQ0T62kRzDVyWm3rQ.jpg', alt: 'An impressionist city street at dusk with wet pavement reflections', label: 'Cityscapes' },
+  { src: '/a-captivating-and-conceptual-artwork-fea_ERqVwBiAW_2iiF6lBe94ww_gPGjWTMySsyWyHmptrsg5A.webp', alt: 'Conceptual portrait blending a city skyline and a twilight landscape', label: 'Conceptual art' },
+  { src: '/high-level-description-a-high-angle-stud_bl-WTI6mUPeJmuXS4f7-pA_feGrl4-BQpOtA7BVwK50RQ.webp', alt: 'A mask half-covered in vivid pink and purple florals', label: 'Mixed media' },
+  { src: '/high-level-description-a-mixed-media-bus_FeVLi-AkWf65QR62ODyPwQ_w8IW6v1AR3aAKpLAfRjj7Q.webp', alt: 'An impressionist portrait with visible brushstrokes on a blush background', label: 'Editorial art' },
+  { src: '/high-level-description-an-impressionisti_O_M6We2xXBmE9_mx0ee27A_AfD8_GQ0T62kRzDVyWm3rQ.webp', alt: 'An impressionist city street at dusk with wet pavement reflections', label: 'Cityscapes' },
 ]
 
 const EXAMPLE_PROMPT = 'Close-up of an androgynous human face showing an expression of deep pain, created in a highly detailed origami technique with intricate paper folds, vibrant psychedelic colors.'
@@ -124,7 +124,7 @@ export default function Landing() {
             <div>
               <div className="overflow-hidden rounded-2xl border border-border shadow-lg shadow-mist/8">
                 <img
-                  src="/hero.jpg"
+                  src="/hero.webp"
                   alt="AI-generated artwork created with GlowUp AI"
                   className="aspect-[4/3] w-full object-cover"
                 />
@@ -368,7 +368,7 @@ export default function Landing() {
                 <div className="mt-6 rounded-xl border border-border bg-surface-2/50 p-4">
                   <div className="relative overflow-hidden rounded-lg">
                     <img
-                      src="/card3image.jpg"
+                      src="/card3image.webp"
                       alt="Generated image preview"
                       className="aspect-[4/3] w-full object-cover"
                     />

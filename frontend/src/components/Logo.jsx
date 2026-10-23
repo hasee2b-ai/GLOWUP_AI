@@ -102,7 +102,7 @@ export default function Logo({ height = 32 }) {
         aria-hidden="true"
       >
         <img
-          src="/logo-full.png"
+          src="/logo-full.webp"
           alt="GlowUp AI"
           height={height}
           className="shrink-0 object-contain"
