@@ -120,6 +120,55 @@ body {
   background: #d4cfe0;
 }
 
+/* ---------------------------------------------------------------------------
+ * StaggeredMenu (React Bits) — used as the mobile menu inside <Navbar>.
+ * The component brings its own absolute header, which we overlay onto the
+ * existing navbar, so it must:
+ *  - hide its logo (the navbar already renders <Logo />) while keeping the
+ *    toggle pinned to the right edge (margin-left: auto)
+ *  - match the navbar height (64px) and gutters so the toggle lands exactly
+ *    where the old hamburger button was
+ *  - scale the demo's 4rem panel type down on phones, otherwise long labels
+ *    like "How it works" overflow a 375px screen
+ * Specificity is deliberately one level above the component's own <style>
+ * block (.sm-scope .navbar-stagger ...), which is injected later in the DOM.
+ * ------------------------------------------------------------------------- */
+.sm-scope .navbar-stagger .staggered-menu-header {
+  height: 64px;
+  padding: 0 1.25rem;
+  align-items: center;
+}
+.sm-scope .navbar-stagger .sm-logo {
+  display: none;
+}
+.sm-scope .navbar-stagger .sm-toggle {
+  margin-left: auto;
+}
+/* The component's focus ring is white — invisible on the light navbar. */
+.sm-scope .navbar-stagger .sm-toggle:focus-visible {
+  outline-color: var(--color-primary);
+}
+
+@media (min-width: 640px) {
+  .sm-scope .navbar-stagger .staggered-menu-header {
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .sm-scope .navbar-stagger .staggered-menu-panel {
+    padding: 5.5em 1.5em 2em 1.5em;
+  }
+  .sm-scope .navbar-stagger .sm-panel-item {
+    font-size: 2.2rem;
+    letter-spacing: -1.5px;
+  }
+  .sm-scope .navbar-stagger .sm-panel-list[data-numbering] .sm-panel-item::after {
+    right: 1.5em;
+    font-size: 14px;
+  }
+}
+
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,

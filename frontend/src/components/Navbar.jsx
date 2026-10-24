@@ -1,18 +1,44 @@
-import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Menu, X, Sparkles, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import Logo from './Logo.jsx'
+import StaggeredMenu from './StaggeredMenu.jsx'
 
 const linkBase =
   'text-sm font-medium text-mute hover:text-mist transition-colors px-1 py-1'
 
+// Entries shown inside the StaggeredMenu panel (mobile only).
+const MENU_ITEMS = [
+  { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
+  { label: 'Features', ariaLabel: 'View features', link: '/#features' },
+  { label: 'How it works', ariaLabel: 'See how it works', link: '/#how-it-works' },
+  { label: 'Create', ariaLabel: 'Open the creation studio', link: '/create' },
+]
+
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
   const goCreate = () => {
-    setOpen(false)
     navigate('/create')
+  }
+
+  // Panel links are plain <a> elements; keep the app's SPA behaviour
+  // (smooth-scroll for same-page section links, client-side route changes).
+  const handleMenuItemClick = (item, _index, event) => {
+    event?.preventDefault?.()
+    if (item.link.startsWith('/#')) {
+      const id = item.link.slice(2)
+      if (window.location.pathname === '/') {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+      navigate('/')
+      window.setTimeout(
+        () => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }),
+        80
+      )
+      return
+    }
+    navigate(item.link)
   }
 
   return (
@@ -57,44 +83,31 @@ export default function Navbar() {
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
           </button>
         </div>
-
-        {/* Mobile toggle */}
-        <button
-          className="inline-flex items-center justify-center rounded-lg p-2 text-mist hover:bg-mist/5 md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label="Toggle navigation menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
       </nav>
 
-      {/* Mobile menu */}
-      {open && (
-        <div className="border-t border-border/60 bg-ink/95 px-5 pb-5 pt-2 md:hidden animate-fade-in">
-          <div className="flex flex-col gap-1">
-            <NavLink to="/" end onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-mute hover:bg-mist/5 hover:text-mist">
-              Home
-            </NavLink>
-            <a href="/#features" onClick={(e) => { e.preventDefault(); setOpen(false); navigate('/'); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 50) }} className="rounded-lg px-3 py-2.5 text-sm font-medium text-mute hover:bg-mist/5 hover:text-mist">
-              Features
-            </a>
-            <a href="/#how-it-works" onClick={(e) => { e.preventDefault(); setOpen(false); navigate('/'); setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 50) }} className="rounded-lg px-3 py-2.5 text-sm font-medium text-mute hover:bg-mist/5 hover:text-mist">
-              How it works
-            </a>
-            <NavLink to="/create" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-mute hover:bg-mist/5 hover:text-mist">
-              Create
-            </NavLink>
-            <button
-              onClick={goCreate}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-semibold text-white"
-            >
-              <Sparkles size={16} />
-              Start Creating
-            </button>
-          </div>
-        </div>
-      )}
+      {/*
+        Mobile menu: React Bits StaggeredMenu replaces the old hamburger +
+        dropdown (visible below md, desktop nav above is untouched).
+        The wrapper spans the viewport from the navbar down so the panel opens
+        full-height; it is click-through, while the toggle and the panel opt
+        back in. overflow-hidden clips the panel/prelayers that park off the
+        right edge while closed (the non-fixed mode has no clipping of its own).
+      */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[100dvh] overflow-hidden md:hidden">
+        <StaggeredMenu
+          position="right"
+          items={MENU_ITEMS}
+          displaySocials={false}
+          displayItemNumbering
+          colors={['#e9dfff', '#8b5cf6']}
+          accentColor="#8b5cf6"
+          menuButtonColor="#242033"
+          openMenuButtonColor="#242033"
+          logoUrl="/logo-full.webp"
+          className="navbar-stagger"
+          onItemClick={handleMenuItemClick}
+        />
+      </div>
     </header>
   )
 }

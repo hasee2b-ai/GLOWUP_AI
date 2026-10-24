@@ -3,21 +3,21 @@ import CircularGallery from './CircularGallery.jsx'
 const ARTWORKS = [
   {
     image: '/gallery-1.webp',
-    text: 'Curious Kitten',
-    description: 'A silver-coated kitten pausing mid-explore on a hand-woven rug.',
-    alt: 'Curious silver kitten sitting on a woven rug',
-  },
-  {
-    image: '/gallery-2.webp',
     text: 'Lotus Pond',
     description: 'An ink-wash study of lotus blooms drifting across a quiet pond.',
     alt: 'Traditional ink painting of lotus flowers on a pond',
   },
   {
-    image: '/gallery-3.webp',
+    image: '/gallery-2.webp',
     text: 'Little Gentleman',
     description: 'Round glasses, a paper moustache and a very serious bow tie.',
     alt: 'Laughing boy in round glasses, fake moustache and a red bow tie',
+  },
+  {
+    image: '/gallery-3.webp',
+    text: 'Spirit Pond',
+    description: 'A fox-eared shrine maiden scattering feed for glowing koi beneath the blossoms.',
+    alt: 'Shrine maiden with fox ears feeding luminous koi in a forest pond',
   },
   {
     image: '/gallery-4.webp',
@@ -34,7 +34,7 @@ const ARTWORKS = [
   {
     image: '/gallery-6.webp',
     text: 'Neon Samurai',
-    description: 'Chrome armour and a glowing blade in a rain-soaked neon alley.',
+    description: 'White armour and a glowing blade in a rain-soaked neon alley.',
     alt: 'Cyberpunk samurai with a glowing sword in a neon-lit rainy alley',
   },
   {
