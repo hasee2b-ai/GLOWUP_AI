@@ -54,6 +54,15 @@ async def _validation_exception_handler(request: Request, exc: RequestValidation
         if err_type in ("json_invalid", "json_decode"):
             status_code = 400
             detail = "Invalid JSON body."
+        elif err_type == "missing" and list(loc) == ["body"]:
+            # An empty body (or one that parsed to ``null``) under a JSON
+            # content type is reported by FastAPI as the whole body being
+            # "missing" rather than a decode error. Treat it as malformed JSON
+            # so clients get the same controlled 400 as other malformed bodies
+            # (matching the pre-Pydantic behaviour: json.loads(b"") -> 400),
+            # not a confusing 422 schema error.
+            status_code = 400
+            detail = "Invalid JSON body."
         elif field == "prompt":
             if err_type in ("missing", "string_too_short"):
                 detail = "Prompt must not be empty."
