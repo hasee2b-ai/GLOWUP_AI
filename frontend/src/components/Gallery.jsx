@@ -78,7 +78,7 @@ const ARTWORKS = [
  */
 export default function Gallery() {
   return (
-    <div className="h-[430px] sm:h-[550px] lg:h-[700px]">
+    <div className="h-[340px] sm:h-[440px] lg:h-[560px]">
       <CircularGallery
         items={ARTWORKS}
         bend={2.6}
@@ -86,7 +86,7 @@ export default function Gallery() {
         font="bold 30px Manrope"
         fontUrl="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
         borderRadius={0.06}
-        itemSize={0.92}
+        itemSize={1.07}
         scrollEase={0.06}
         autoScroll={0.35}
       />

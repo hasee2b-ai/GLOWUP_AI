@@ -484,9 +484,7 @@ const CircularGallery = ({
       state.spacing = spacing;
       const introEase = 1 - Math.pow(1 - state.intro, 3);
       const scroll = state.scroll + (1 - introEase) * spacing * 1.6;
-      // GLOWUP TWEAK: was 0.06 — smaller edge margin gives the opened
-      // image more of the gallery box to fill when a card is clicked.
-      const margin = Math.max(16, Math.min(view.width, view.height) * 0.035);
+      const margin = Math.max(20, Math.min(view.width, view.height) * 0.06);
       const baseLabel = h * 0.072 * fontScale(fontRef.current);
       const openFrame = item => {
         const aspect = textureFor(item.image).aspect || w / h;
