@@ -1,98 +1,95 @@
-import { useState } from 'react'
-import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
+import CircularGallery from './CircularGallery.jsx'
 
-const IMAGES = [
-  { src: '/gallery-1.webp', alt: 'Generated artwork 1' },
-  { src: '/gallery-2.webp', alt: 'Generated artwork 2' },
-  { src: '/gallery-3.webp', alt: 'Generated artwork 3' },
-  { src: '/gallery-4.webp', alt: 'Generated artwork 4' },
-  { src: '/gallery-5.webp', alt: 'Generated artwork 5' },
-  { src: '/gallery-6.webp', alt: 'Generated artwork 6' },
+const ARTWORKS = [
+  {
+    image: '/gallery-1.webp',
+    text: 'Curious Kitten',
+    description: 'A silver-coated kitten pausing mid-explore on a hand-woven rug.',
+    alt: 'Curious silver kitten sitting on a woven rug',
+  },
+  {
+    image: '/gallery-2.webp',
+    text: 'Lotus Pond',
+    description: 'An ink-wash study of lotus blooms drifting across a quiet pond.',
+    alt: 'Traditional ink painting of lotus flowers on a pond',
+  },
+  {
+    image: '/gallery-3.webp',
+    text: 'Little Gentleman',
+    description: 'Round glasses, a paper moustache and a very serious bow tie.',
+    alt: 'Laughing boy in round glasses, fake moustache and a red bow tie',
+  },
+  {
+    image: '/gallery-4.webp',
+    text: 'Golden Hour Ride',
+    description: 'Sunset light washing over a quiet evening train ride.',
+    alt: 'Anime illustration of a girl watching the sunset from a train',
+  },
+  {
+    image: '/gallery-5.webp',
+    text: 'Crimson Moon',
+    description: 'A hooded swordsman under a blood-red moon, drawn in stark ink.',
+    alt: 'Manga-style hooded swordsman on a bridge beneath a red moon',
+  },
+  {
+    image: '/gallery-6.webp',
+    text: 'Neon Samurai',
+    description: 'Chrome armour and a glowing blade in a rain-soaked neon alley.',
+    alt: 'Cyberpunk samurai with a glowing sword in a neon-lit rainy alley',
+  },
+  {
+    image:
+      '/high-level-description-a-romantic-rococo_3rurGI48VtCN8nnx6_6TLg_Lq7dWnpjQV-6axGXi1RkmQ.jpg',
+    text: 'Parasol Frog',
+    description:
+      'A tree frog holding court beneath a lace parasol in a rain-washed rococo garden.',
+    alt: 'Green tree frog under a pink lace parasol in a gilded garden',
+  },
+  {
+    image:
+      '/high-level-description-an-unfinished-arc_eYE3AEYsX9-5AV1ZXQPZdg_3l8i19BOTOeFPvGEY0W8xA.jpg',
+    text: 'City Stroll',
+    description:
+      'A lone cat crossing a rain-slicked avenue beneath a glowing skyline.',
+    alt: 'Watercolour sketch of a black cat on a New York avenue at night',
+  },
+  {
+    image:
+      '/high-level-description-a-photorealistic-_4-jT9CLJXnuk-U3Wy3_f_w_2AtSei-wTcWcBJHEtSwWmg.jpg',
+    text: 'Jupiter Rising',
+    description:
+      'Two explorers filming a rover sortie with Jupiter filling the sky.',
+    alt: 'Photoreal astronauts on a moon with Jupiter looming overhead',
+  },
+  {
+    image:
+      '/a-luminous-impasto-art-nouveau-oil-paint_2RCSBeEaW_aZC6GW4k4cjg_yaqghDrxS2iOViyXWkfeDA.jpg',
+    text: 'Daisy Meadow',
+    description:
+      'A child pausing to hold a single bloom while a white butterfly drifts by.',
+    alt: 'Oil painting of a girl holding a daisy in a field of wildflowers',
+  },
 ]
 
 /**
- * Large masonry gallery of real generated artwork with a lightbox.
- * Uses CSS columns so the varying portrait heights flow naturally.
+ * Artwork showcase rendered as a curved, draggable WebGL carousel
+ * (React Bits CircularGallery). Drag or scroll to move along the arc,
+ * click a card to open it full size, click again or press Escape to close.
  */
 export default function Gallery() {
-  const [lightbox, setLightbox] = useState(null)
-
-  const open = (i) => setLightbox(i)
-  const close = () => setLightbox(null)
-  const prev = (e) => { e.stopPropagation(); setLightbox((i) => (i - 1 + IMAGES.length) % IMAGES.length) }
-  const next = (e) => { e.stopPropagation(); setLightbox((i) => (i + 1) % IMAGES.length) }
-
   return (
-    <>
-      <div className="columns-2 gap-5 sm:columns-3 lg:columns-3">
-        {IMAGES.map((img, i) => (
-          <button
-            key={img.src}
-            type="button"
-            onClick={() => open(i)}
-            className="group relative mb-5 block w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-md shadow-primary/5 transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
-            aria-label={`View ${img.alt}`}
-          >
-            <img
-              src={img.src}
-              alt={img.alt}
-              loading="lazy"
-              className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <span className="absolute inset-0 flex items-center justify-center bg-mist/0 opacity-0 transition-all duration-300 group-hover:bg-mist/10 group-hover:opacity-100">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow-lg backdrop-blur-sm">
-                <Expand size={20} className="text-mist" />
-              </span>
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* Lightbox */}
-      {lightbox !== null && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm animate-fade-in"
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image viewer"
-        >
-          <button
-            type="button"
-            onClick={close}
-            aria-label="Close viewer"
-            className="absolute right-5 top-5 rounded-full border border-border bg-surface p-2.5 text-mist shadow-md transition-colors hover:border-primary/50 hover:text-mist"
-          >
-            <X size={20} />
-          </button>
-          <button
-            type="button"
-            onClick={prev}
-            aria-label="Previous image"
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-border bg-surface p-3 text-mist shadow-md transition-colors hover:border-primary/50 hover:text-mist"
-          >
-            <ChevronLeft size={22} />
-          </button>
-          <figure className="max-h-[85vh] max-w-3xl" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={IMAGES[lightbox].src}
-              alt={IMAGES[lightbox].alt}
-              className="max-h-[80vh] w-auto rounded-xl border border-border object-contain shadow-2xl shadow-primary/10"
-            />
-            <figcaption className="mt-3 text-center text-sm text-mute">
-              {IMAGES[lightbox].alt} · {lightbox + 1} / {IMAGES.length}
-            </figcaption>
-          </figure>
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next image"
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-border bg-surface p-3 text-mist shadow-md transition-colors hover:border-primary/50 hover:text-mist"
-          >
-            <ChevronRight size={22} />
-          </button>
-        </div>
-      )}
-    </>
+    <div className="h-[430px] sm:h-[550px] lg:h-[700px]">
+      <CircularGallery
+        items={ARTWORKS}
+        bend={2.6}
+        textColor="#242033"
+        font="bold 30px Manrope"
+        fontUrl="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
+        borderRadius={0.06}
+        itemSize={0.92}
+        scrollEase={0.06}
+        autoScroll={0.35}
+      />
+    </div>
   )
 }

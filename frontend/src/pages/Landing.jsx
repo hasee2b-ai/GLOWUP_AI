@@ -193,7 +193,7 @@ export default function Landing() {
               Artwork generated with GlowUp AI
             </h2>
             <p className="mt-4 text-mute">
-              A selection of visuals created in the studio. Click any image to view it up close.
+              A selection of visuals created in the studio. Drag to explore the arc, then click any piece to view it up close.
             </p>
           </Reveal>
           <Reveal delay={120} className="mt-14">
