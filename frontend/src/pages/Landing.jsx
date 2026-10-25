@@ -10,15 +10,11 @@ import {
   Settings2,
   Download,
   ChevronDown,
-  Star,
-  Package,
-  Mountain,
-  Home,
-  Clapperboard,
 } from 'lucide-react'
 import Gallery from '../components/Gallery.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Marquee from '../components/Marquee.jsx'
+import ChromaGrid from '../components/ChromaGrid.jsx'
 
 const FEATURES = [
   {
@@ -73,13 +69,19 @@ const INSPIRATION = [
 
 const EXAMPLE_PROMPT = 'Close-up of an androgynous human face showing an expression of deep pain, created in a highly detailed origami technique with intricate paper folds, vibrant psychedelic colors.'
 
+/*
+ * Creative-style prompt cards. Each one prefills the prompt on click; the grid
+ * itself is rendered by ChromaGrid (React Bits), which needs an image + accent
+ * per card, so the lucide icons these cards used to show are replaced by
+ * artwork already shipped in /public.
+ */
 const STYLES = [
-  { icon: Wand2, name: 'Fantasy', prompt: 'a majestic dragon coiled around a crystalline tower floating above a sea of clouds at twilight, epic fantasy digital painting' },
-  { icon: Star, name: 'Anime', prompt: 'a cheerful anime girl with turquoise hair standing in a field of lavender under a pastel sunset, soft cel shading' },
-  { icon: Package, name: 'Product photography', prompt: 'a minimalist product photograph of a matte black perfume bottle on a marble surface, soft studio lighting' },
-  { icon: Mountain, name: 'Landscapes', prompt: 'a serene mountain lake at dawn with soft pastel peaks reflected in still water, cinematic depth' },
-  { icon: Home, name: 'Interior design', prompt: 'a sunlit modern living room with floor-to-ceiling windows overlooking a calm ocean at golden hour' },
-  { icon: Clapperboard, name: 'Cinematic', prompt: 'a lone astronaut standing on a rocky alien planet, two moons in the sky, cinematic film still, dramatic rim lighting, anamorphic lens flare' },
+  { name: 'Fantasy', image: '/fantasy.jpg', accent: '#8b5cf6', prompt: 'a fairytale castle with tall spires and terracotta roofs rising out of a misty pine forest, low clouds wrapping the towers, epic fantasy digital painting' },
+  { name: 'Anime', image: '/gallery-4.webp', accent: '#f4a7c5', prompt: 'an anime girl watching the golden-hour sunset from a train window, warm light spilling across her face, soft cel shading, nostalgic slice-of-life illustration' },
+  { name: 'Product photography', image: '/high-level-description-a-photorealistic-_4-jT9CLJXnuk-U3Wy3_f_w_2AtSei-wTcWcBJHEtSwWmg.jpg', accent: '#67e8f9', prompt: 'two astronauts in white spacesuits filming a rover sortie on a dusty moon with Jupiter filling the sky, photorealistic sci-fi photography, crisp detail' },
+  { name: 'Landscapes', image: '/gallery-1.webp', accent: '#10b981', prompt: 'a traditional ink-wash painting of lotus blooms drifting across a still pond, soft grey brushwork with pale pink petals, minimalist East Asian landscape' },
+  { name: 'Interior design', image: '/high-level-description-an-unfinished-arc_eYE3AEYsX9-5AV1ZXQPZdg_3l8i19BOTOeFPvGEY0W8xA.jpg', accent: '#f59e0b', prompt: 'a loose watercolour sketch of a black cat crossing a rain-slicked city avenue at night, glowing skyline and wet pavement reflections, warm window light' },
+  { name: 'Cinematic', image: '/cinematic.jpg', accent: '#f43f5e', prompt: 'a cinematic portrait lit by hard rim light against a dark teal backdrop, wind-blown hair and shallow depth of field, dramatic film-still colour grade' },
 ]
 
 export default function Landing() {
@@ -156,29 +158,19 @@ export default function Landing() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {STYLES.map((s, i) => (
-              <Reveal key={s.name} delay={i * 80} variant="up">
-                <button
-                  type="button"
-                  onClick={() => tryPrompt(s.prompt)}
-                  className="group flex h-full w-full items-start gap-4 rounded-2xl border border-border bg-surface p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-secondary/15 transition-transform duration-300 group-hover:scale-110">
-                    <s.icon size={20} className="text-primary" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-display text-base font-semibold text-mist">
-                      {s.name}
-                    </span>
-                    <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-mute">
-                      {s.prompt}
-                    </span>
-                  </span>
-                </button>
-              </Reveal>
-            ))}
-          </div>
+          {/* ChromaGrid spotlight effect; clicking a card prefills its prompt */}
+          <Reveal delay={120} variant="up" className="mt-12">
+            <ChromaGrid
+              theme="light"
+              items={STYLES.map((s) => ({
+                image: s.image,
+                title: s.name,
+                subtitle: s.prompt,
+                accent: s.accent,
+                onClick: () => tryPrompt(s.prompt),
+              }))}
+            />
+          </Reveal>
         </div>
       </section>
 

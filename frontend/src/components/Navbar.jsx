@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Logo from './Logo.jsx'
 import StaggeredMenu from './StaggeredMenu.jsx'
+import StarBorder from './StarBorder.jsx'
 
 const linkBase =
   'text-sm font-medium text-mute hover:text-mist transition-colors px-1 py-1'
@@ -75,13 +76,13 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:block">
-          <button
+          <StarBorder
             onClick={goCreate}
-            className="group inline-flex items-center gap-2 rounded-full bg-mist px-5 py-2.5 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-mist/90 active:scale-[0.98]"
+            className="group focus-visible:outline-[color:var(--color-primary)]!"
           >
             Start Creating
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-          </button>
+          </StarBorder>
         </div>
       </nav>
 
