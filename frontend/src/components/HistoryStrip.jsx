@@ -71,7 +71,7 @@ export default function HistoryStrip({ history, selectedId, onSelect, onClear, o
                     onCopyPrompt(item.prompt)
                   }
                 }}
-                className="absolute right-1.5 top-1.5 rounded-md bg-ink/70 p-1.5 text-mute opacity-0 backdrop-blur transition-opacity hover:text-mist group-hover:opacity-100"
+                className="absolute right-1.5 top-1.5 rounded-md bg-ink/70 p-1.5 text-mute backdrop-blur transition-opacity hover:text-mist md:opacity-0 md:group-hover:opacity-100"
               >
                 <Copy size={12} />
               </span>

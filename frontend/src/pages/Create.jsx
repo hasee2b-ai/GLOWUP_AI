@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Sparkles, AlertCircle, Wand2, Zap } from 'lucide-react'
+import { Sparkles, Wand2, Zap } from 'lucide-react'
 import { generateImage, checkHealth } from '../services/api.js'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { useToast } from '../components/Toast.jsx'
@@ -213,12 +213,6 @@ export default function Create() {
                 <Sparkles size={18} className={loading ? 'animate-pulse' : ''} />
                 {loading ? 'Generating...' : 'Generate Image'}
               </button>
-              {status === 'error' && (
-                <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-secondary/20 bg-secondary/10 px-4 py-3 text-sm text-mist animate-fade-in">
-                  <AlertCircle size={16} className="mt-0.5 shrink-0 text-secondary" />
-                  <span>{error}</span>
-                </div>
-              )}
             </div>
           </section>
         </div>
