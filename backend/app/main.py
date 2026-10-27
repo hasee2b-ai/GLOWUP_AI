@@ -1,5 +1,6 @@
 """GlowUp AI backend application entry point."""
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -16,10 +17,38 @@ logging.basicConfig(
 )
 logger = logging.getLogger("glowup")
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Startup/shutdown hooks, replacing the deprecated ``on_event`` handlers.
+
+    Startup (before ``yield``) logs the listen address and whether the paid
+    provider is configured; shutdown (after ``yield``, in ``finally`` so it
+    still runs if the surrounding context exits with an error) releases the
+    shared SenseNova HTTP client's connections. Order and behaviour match the
+    previous ``@app.on_event`` handlers exactly.
+    """
+    from .config import SENSENOVA_API_KEY
+
+    logger.info(
+        "GlowUp AI backend starting on %s:%s (provider configured: %s)",
+        BACKEND_HOST,
+        BACKEND_PORT,
+        bool(SENSENOVA_API_KEY),
+    )
+    try:
+        yield
+    finally:
+        from .services.sensenova import close_client
+
+        await close_client()
+
+
 app = FastAPI(
     title="GlowUp AI",
     version="1.0.0",
     description="Premium AI image-generation platform backend.",
+    lifespan=lifespan,
 )
 
 # Narrow CORS: only the configured frontend origins are allowed
@@ -163,26 +192,6 @@ async def _send_error_json(scope, send, status_code: int, detail: str) -> None:
 
 
 app.add_middleware(BodySizeLimitMiddleware, max_size=MAX_REQUEST_SIZE)
-
-
-@app.on_event("startup")
-def _log_startup() -> None:
-    from .config import SENSENOVA_API_KEY
-
-    logger.info(
-        "GlowUp AI backend starting on %s:%s (provider configured: %s)",
-        BACKEND_HOST,
-        BACKEND_PORT,
-        bool(SENSENOVA_API_KEY),
-    )
-
-
-@app.on_event("shutdown")
-async def _close_provider_client() -> None:
-    """Release the shared SenseNova HTTP client's connections on shutdown."""
-    from .services.sensenova import close_client
-
-    await close_client()
 
 
 def run() -> None:

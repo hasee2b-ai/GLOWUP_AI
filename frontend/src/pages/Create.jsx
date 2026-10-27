@@ -38,6 +38,10 @@ export default function Create() {
   const [error, setError] = useState(null)
   const [copied, setCopied] = useState(false)
   const [history, setHistory] = useLocalStorage(HISTORY_KEY, [])
+  // The history entry currently highlighted in HistoryStrip. The generation
+  // API response carries no `id`, so this tracks the locally generated entry
+  // IDs instead (see runGeneration / handleSelectHistory).
+  const [selectedId, setSelectedId] = useState(null)
 
   const copyTimer = useRef(null)
   const reqId = useRef(0)
@@ -82,9 +86,8 @@ export default function Create() {
 
         // Persist only small thumbnails, never the full-resolution base64
         // payloads: 12 entries x up to 4 multi-MB data URLs would exhaust the
-        // browser's localStorage quota. A selected history item restores its
-        // thumbnail (not the full-resolution image); press Regenerate for a
-        // fresh high-resolution result.
+        // browser's localStorage quota. (Selecting a history item only loads
+        // its prompt — see handleSelectHistory — it does not restore images.)
         //
         // History recording is isolated from the generation result so that a
         // thumbnail/storage failure can never turn a successful generation into
@@ -105,6 +108,8 @@ export default function Create() {
           console.warn('Could not build history thumbnails; recording metadata only.', thumbErr)
         }
         setHistory((prev) => [entry, ...prev].slice(0, HISTORY_LIMIT))
+        // Highlight the entry just created (entry.id is generated locally).
+        setSelectedId(entry.id)
       } catch (err) {
         if (id !== reqId.current) return
         setError(err.message || 'Something went wrong. Please try again.')
@@ -139,10 +144,14 @@ export default function Create() {
     // Copying to the clipboard stays with the dedicated copy control in
     // HistoryStrip.
     setPrompt(item.prompt || '')
+    // Keep the highlight on the entry the user just picked so it matches the
+    // prompt now loaded in the editor.
+    setSelectedId(item.id ?? null)
   }
 
   const handleClearHistory = () => {
     setHistory([])
+    setSelectedId(null)
     toast.info('History cleared')
   }
 
@@ -159,6 +168,21 @@ export default function Create() {
   }
 
   const loading = status === 'loading'
+
+  // Count images, not generation entries: an entry holds one or two images.
+  // Tolerates legacy/corrupt entries whose images field is missing or invalid.
+  const imageCount = (Array.isArray(history) ? history : []).reduce(
+    (total, entry) => total + (Array.isArray(entry?.images) ? entry.images.length : 0),
+    0
+  )
+
+  // Highlight only an entry that still exists: the selection is dropped when
+  // history is cleared or the entry has been trimmed past HISTORY_LIMIT.
+  const activeId =
+    selectedId &&
+    (Array.isArray(history) ? history : []).some((entry) => entry?.id === selectedId)
+      ? selectedId
+      : null
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 lg:py-12">
@@ -179,7 +203,7 @@ export default function Create() {
         {history.length > 0 && (
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-xs text-mute">
             <Zap size={13} className="text-primary" />
-            {history.length} image{history.length === 1 ? '' : 's'} this session
+            {imageCount} image{imageCount === 1 ? '' : 's'} in history
           </div>
         )}
       </div>
@@ -223,6 +247,7 @@ export default function Create() {
             status={status}
             result={result}
             error={error}
+            n={settings.n}
             onRegenerate={handleRegenerate}
             onCopyPrompt={() => handleCopyPrompt(result?.prompt || prompt)}
             copied={copied}
@@ -233,7 +258,7 @@ export default function Create() {
       {/* ------------------------- History ------------------------- */}
       <HistoryStrip
         history={history}
-        selectedId={result?.id}
+        selectedId={activeId}
         onSelect={handleSelectHistory}
         onClear={handleClearHistory}
         onCopyPrompt={handleCopyPrompt}

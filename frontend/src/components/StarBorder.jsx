@@ -105,9 +105,9 @@ const project = (shape, px, py) => {
   let offset = 0;
   shape.segments.forEach(segment => {
     if (segment.length > 0) {
-      let s = 0;
-      let x = 0;
-      let y = 0;
+      let s;
+      let x;
+      let y;
       if (segment.angle === null) {
         s = clamp((px - segment.x) * segment.dx + (py - segment.y) * segment.dy, 0, segment.length);
         x = segment.x + segment.dx * s;

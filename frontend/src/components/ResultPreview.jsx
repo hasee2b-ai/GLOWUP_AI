@@ -15,7 +15,7 @@ function Meta({ icon: Icon, children }) {
   )
 }
 
-function ImageCard({ image, index, onCopyPrompt, copied, thumbnailOnly }) {
+function ImageCard({ image, index, onCopyPrompt, copied }) {
   const [failed, setFailed] = useState(false)
 
   return (
@@ -45,7 +45,7 @@ function ImageCard({ image, index, onCopyPrompt, copied, thumbnailOnly }) {
             className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-ink/60 px-3 py-2 text-xs font-medium text-mist backdrop-blur transition-colors hover:border-primary/50 hover:bg-ink"
           >
             <Download size={14} />
-            {thumbnailOnly ? 'Save thumbnail' : 'Save'}
+            Save
           </button>
           <button
             type="button"
@@ -63,7 +63,7 @@ function ImageCard({ image, index, onCopyPrompt, copied, thumbnailOnly }) {
 
 /* ---------- Main preview panel ---------- */
 
-export default function ResultPreview({ status, result, error, onRegenerate, onCopyPrompt, copied }) {
+export default function ResultPreview({ status, result, error, n, onRegenerate, copied }) {
   const toast = useToast()
 
   const panel =
@@ -103,6 +103,15 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
 
   /* Loading */
   if (status === 'loading') {
+    // Placeholder count must reflect the count being requested now, not the
+    // previous result — falling back to that result, then 1, when the prop is
+    // missing or invalid.
+    const count =
+      Number.isInteger(n) && n > 0
+        ? n
+        : Array.isArray(result?.images) && result.images.length > 0
+          ? result.images.length
+          : 1
     return (
       <div className={panel}>
         {header('Generating', 'Bringing your idea to life...')}
@@ -111,8 +120,8 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
             <RefreshCw size={16} className="animate-spin text-primary" />
             <p className="text-sm text-mist">Creating your image...</p>
           </div>
-          <div className={`grid gap-4 ${result && result.images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-            {(result ? result.images : Array.from({ length: 1 })).map((_, i) => (
+          <div className={`grid gap-4 ${count > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {Array.from({ length: count }).map((_, i) => (
               <Skeleton key={i} className="h-64 w-full" />
             ))}
           </div>
@@ -149,18 +158,12 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
   const images = result?.images || []
   const multi = images.length > 1
   const first = images[0]
-  // A restored history entry holds only downscaled thumbnails (marked when
-  // created in helpers.makeThumbnail), so no full-resolution original exists.
-  // Freshly generated and legacy entries are unmarked and keep the normal UI.
-  const thumbnailOnly = images.length > 0 && images.every((img) => img?.isThumbnail === true)
 
   return (
     <div className={`${panel} animate-fade-in`}>
       {header(
         'Result',
-        thumbnailOnly
-          ? 'Preview only — regenerate for full resolution'
-          : `${images.length} ${images.length === 1 ? 'image' : 'images'} generated`
+        `${images.length} ${images.length === 1 ? 'image' : 'images'} generated`
       )}
 
       {/* metadata bar */}
@@ -196,7 +199,6 @@ export default function ResultPreview({ status, result, error, onRegenerate, onC
               image={img}
               index={i}
               copied={copied}
-              thumbnailOnly={thumbnailOnly}
               onCopyPrompt={async () => {
                 try {
                   await copyText(result.prompt)

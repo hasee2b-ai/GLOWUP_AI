@@ -66,6 +66,8 @@ glowup-ai/
 │   │   └── index.css
 │   ├── index.html
 │   ├── package.json
+│   ├── eslint.config.js     # ESLint 10 flat config (npm run lint)
+│   ├── .env.example         # optional VITE_API_BASE_URL
 │   └── vite.config.js
 ├── backend/
 │   ├── app/
@@ -74,8 +76,13 @@ glowup-ai/
 │   │   ├── schemas.py       # Pydantic request/response models
 │   │   ├── routes/          # /api/health, /api/generate
 │   │   └── services/        # sensenova.py (provider integration)
-│   ├── requirements.txt
+│   ├── requirements.txt     # includes ../requirements.txt (single source)
+│   ├── requirements-dev.txt # pytest (development only)
 │   └── .env.example
+├── api/
+│   └── main.py              # Vercel function entry point (exports `app`)
+├── requirements.txt         # canonical runtime pins (read by Vercel)
+├── vercel.json              # Vercel build + rewrite configuration
 ├── .gitignore
 └── README.md
 ```
@@ -100,6 +107,17 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
+> Runtime dependencies are declared in exactly one place: the root
+> [`requirements.txt`](./requirements.txt) (the file Vercel reads for Python
+> dependency detection). `backend/requirements.txt` just includes it.
+
+For development — running the backend test suite — also install the dev
+requirements:
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
 ### Configure the API key
 
 Copy the example environment file and fill in your **own** key:
@@ -107,6 +125,13 @@ Copy the example environment file and fill in your **own** key:
 ```bash
 cp .env.example .env
 ```
+
+> This copies [`backend/.env.example`](./backend/.env.example), which holds the
+> main backend settings (the key is a placeholder). There is **no root-level
+> `.env.example`** — each directory has its own: `backend/.env.example` here and
+> [`frontend/.env.example`](./frontend/.env.example) for the frontend (below).
+> Optional tunables (request timeout, body-size cap, rate-limit window, prompt
+> length) fall back to their defaults in `backend/app/config.py`.
 
 Edit `.env`:
 
@@ -155,6 +180,26 @@ npm run dev
 ```
 
 The app is available at `http://localhost:5173` (Vite's default port).
+
+---
+
+## Testing & linting
+
+Backend tests — from `backend/`, with the dev requirements installed:
+
+```bash
+python -m pytest -q
+```
+
+Frontend checks — from `frontend/`:
+
+```bash
+npm run lint     # ESLint 10 (flat config in eslint.config.js)
+npm run build    # production bundle -> dist/
+```
+
+`npm run lint` currently reports outstanding findings in existing components;
+they have not been cleaned up yet.
 
 ---
 
@@ -213,6 +258,40 @@ value is unsupported, the backend returns a clear validation error.
 
 ---
 
+## Deploying to Vercel
+
+The repository already ships the deployment configuration:
+
+- **`vercel.json`** — installs and builds the frontend
+  (`npm ci --prefix frontend`, `npm run build --prefix frontend`), serves
+  `frontend/dist`, rewrites `/api/(.*)` to the `api/main` function and every
+  other path to `/index.html` for client-side routing.
+- **`api/main.py`** — the serverless entry point that re-exports the FastAPI
+  `app`.
+- **Root [`requirements.txt`](./requirements.txt)** — the file Vercel reads for
+  Python dependencies (`backend/requirements.txt` is only a local pointer).
+
+Set these in the Vercel project's environment variables:
+
+| Variable            | Value                                                                                                                                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SENSENOVA_API_KEY` | Your SenseNova key (server-side only). Without it, `/api/health` reports `provider_configured: false` and image generation fails.                                      |
+| `FRONTEND_ORIGIN`   | The **deployed frontend origin**, e.g. `https://your-project.vercel.app` — exact scheme and host, no trailing slash; comma-separate several origins if needed.         |
+
+- `FRONTEND_ORIGIN` falls back to `http://localhost:5173` when unset
+  (`backend/app/config.py`), so a deployed frontend on another origin must set
+  it explicitly; never use `*`.
+- Leave `VITE_API_BASE_URL` unset in production — the frontend then calls
+  same-origin `/api/...`.
+- Other server settings (request timeout, body-size cap, rate-limit window)
+  have working defaults; see `backend/app/config.py`.
+
+> **Not verified:** no deployment from this repository has been performed or
+> tested. The points above document the existing configuration and the settings
+> a deployment requires — they do not report a working deployment.
+
+---
+
 ## Security considerations
 
 - The SenseNova API key is stored **only** in the backend `.env` and is never
@@ -221,7 +300,9 @@ value is unsupported, the backend returns a clear validation error.
 - Prompts are trimmed, length-limited, and validated; sizes and counts are
   allow-listed.
 - A lightweight in-memory rate limiter guards the generation endpoint. **This is
-  not a distributed, production-grade rate limiter** and resets on restart.
+  not a distributed, production-grade rate limiter**: it resets on restart, and
+  on serverless each function instance keeps its own buckets, so the effective
+  limit is per instance rather than global.
 - Request bodies are capped at 1 MB.
 - No authentication or billing is implemented in this version; the endpoints are
   not protected against all abuse.
@@ -251,3 +332,9 @@ value is unsupported, the backend returns a clear validation error.
   deployments.
 - The real SenseNova integration is only verified when a valid, locally configured
   API key is present and a real request succeeds.
+- **Image response size remains an open risk.** Images are returned inline as
+  base64 `data:` URLs: one real 1536×1024 PNG measured ≈4.7 MiB once encoded,
+  which would exceed the ≈4.5 MiB response limit associated with Vercel
+  functions. The platform's exact limit and byte accounting are not verified, so
+  this is **plausible but not confirmed** — and no mitigation (object storage,
+  returning URLs, downscaling) is implemented.

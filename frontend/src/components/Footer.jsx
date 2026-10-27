@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Sparkles } from 'lucide-react'
 import Logo from './Logo.jsx'
 import ParticleText from './ParticleText/ParticleText.jsx'
 

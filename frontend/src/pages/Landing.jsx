@@ -9,7 +9,6 @@ import {
   PenLine,
   Settings2,
   Download,
-  ChevronDown,
 } from 'lucide-react'
 import Gallery from '../components/Gallery.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -36,27 +35,6 @@ const FEATURES = [
     icon: Layers,
     title: 'Your Creative Workspace',
     desc: 'Generate multiple images and revisit recent results during your session.',
-  },
-]
-
-const STEPS = [
-  {
-    icon: PenLine,
-    step: '01',
-    title: 'Describe your idea',
-    desc: 'Type a prompt or pick one of our curated examples to get started.',
-  },
-  {
-    icon: Settings2,
-    step: '02',
-    title: 'Customize settings',
-    desc: 'Tune the aspect ratio, image count, and generation options.',
-  },
-  {
-    icon: Download,
-    step: '03',
-    title: 'Generate & download',
-    desc: 'Watch your idea come to life, then save it straight to your device.',
   },
 ]
 

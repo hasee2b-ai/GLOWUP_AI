@@ -1,5 +1,7 @@
-fastapi==0.143.0
-uvicorn[standard]==0.34.0
-pydantic==2.14.0
-httpx==0.28.1
-python-dotenv==1.0.1
+# Runtime dependencies are declared in exactly one place: the repository-root
+# requirements.txt. Vercel reads that root file for Python dependency
+# detection, so the real version pins must stay there (a `-r` include in the
+# ROOT file fails Vercel's requirements.txt parser). This file only includes
+# it, so the documented local command keeps working unchanged:
+#   cd backend && pip install -r requirements.txt
+-r ../requirements.txt

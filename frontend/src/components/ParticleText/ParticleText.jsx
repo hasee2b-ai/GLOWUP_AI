@@ -44,7 +44,10 @@ const waitForFonts = async font => {
 
   try {
     await document.fonts.load(font);
-  } catch {}
+  } catch {
+    // A failed load() is non-fatal (unsupported/invalid font); the
+    // fonts.ready wait below still settles either way.
+  }
 
   await document.fonts.ready;
 };

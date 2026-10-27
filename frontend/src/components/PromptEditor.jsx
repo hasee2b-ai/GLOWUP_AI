@@ -1,7 +1,7 @@
 import { Eraser } from 'lucide-react'
 import { MAX_PROMPT_LENGTH } from '../utils/constants.js'
 
-export default function PromptEditor({ prompt, onChange, onGenerate, loading }) {
+export default function PromptEditor({ prompt, onChange }) {
   const remaining = MAX_PROMPT_LENGTH - prompt.length
   const nearLimit = remaining <= 200
 
