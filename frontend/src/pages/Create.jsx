@@ -37,14 +37,13 @@ export default function Create() {
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
   const [copied, setCopied] = useState(false)
-  const [history, setHistory] = useLocalStorage(HISTORY_KEY, [])
-  // The history entry currently highlighted in HistoryStrip. The generation
-  // API response carries no `id`, so this tracks the locally generated entry
-  // IDs instead (see runGeneration / handleSelectHistory).
-  const [selectedId, setSelectedId] = useState(null)
+  const [history, setHistory] = useLocalStorage(HISTORY_KEY, [], { normalize: true })
 
+  const currentEntryRef = useRef(null)
+  const clearVersionRef = useRef(0)
+  const generationCommitVersionRef = useRef(0)
+  const userSelectedIdRef = useRef(null)
   const copyTimer = useRef(null)
-  const reqId = useRef(0)
 
   // Warn if the backend/provider is not configured.
   useEffect(() => {
@@ -68,9 +67,10 @@ export default function Create() {
 
   const runGeneration = useCallback(
     async (promptText, cfg) => {
-      const id = ++reqId.current
       setStatus('loading')
       setError(null)
+      const clearVersionAtStart = clearVersionRef.current
+      const generationVersion = ++generationCommitVersionRef.current
       try {
         const data = await generateImage({
           prompt: promptText,
@@ -79,10 +79,6 @@ export default function Create() {
           prompt_extend: cfg.promptExtend,
           watermark: cfg.watermark,
         })
-        if (id !== reqId.current) return
-        setResult(data)
-        setStatus('success')
-        toast.success('Your image is ready')
 
         // Persist only small thumbnails, never the full-resolution base64
         // payloads: 12 entries x up to 4 multi-MB data URLs would exhaust the
@@ -104,14 +100,31 @@ export default function Create() {
           )
           entry.images = thumbnails.filter(Boolean)
         } catch (thumbErr) {
-          // Keep the prompt/timestamp metadata; HistoryStrip shows a placeholder.
-          console.warn('Could not build history thumbnails; recording metadata only.', thumbErr)
+        // Keep the prompt/timestamp metadata; HistoryStrip shows a placeholder.
+        console.warn('Could not build history thumbnails; recording metadata only.', thumbErr)
         }
-        setHistory((prev) => [entry, ...prev].slice(0, HISTORY_LIMIT))
-        // Highlight the entry just created (entry.id is generated locally).
-        setSelectedId(entry.id)
+
+        if (clearVersionRef.current !== clearVersionAtStart) {
+          return
+        }
+
+        setHistory((prev) => {
+          const safePrev = Array.isArray(prev) ? prev : []
+          const next = [entry, ...safePrev]
+          if (next.length > HISTORY_LIMIT) {
+            next.length = HISTORY_LIMIT
+          }
+          return next
+        })
+
+        if (generationCommitVersionRef.current === generationVersion) {
+          currentEntryRef.current = entry
+          setResult(data)
+          setStatus('success')
+          toast.success('Your image is ready')
+        }
       } catch (err) {
-        if (id !== reqId.current) return
+        if (generationCommitVersionRef.current !== generationVersion) return
         setError(err.message || 'Something went wrong. Please try again.')
         setStatus('error')
       }
@@ -144,14 +157,14 @@ export default function Create() {
     // Copying to the clipboard stays with the dedicated copy control in
     // HistoryStrip.
     setPrompt(item.prompt || '')
-    // Keep the highlight on the entry the user just picked so it matches the
-    // prompt now loaded in the editor.
-    setSelectedId(item.id ?? null)
+    userSelectedIdRef.current = item.id ?? null
   }
 
   const handleClearHistory = () => {
+    currentEntryRef.current = null
+    userSelectedIdRef.current = null
+    clearVersionRef.current = clearVersionRef.current + 1
     setHistory([])
-    setSelectedId(null)
     toast.info('History cleared')
   }
 
@@ -176,13 +189,24 @@ export default function Create() {
     0
   )
 
-  // Highlight only an entry that still exists: the selection is dropped when
-  // history is cleared or the entry has been trimmed past HISTORY_LIMIT.
-  const activeId =
-    selectedId &&
-    (Array.isArray(history) ? history : []).some((entry) => entry?.id === selectedId)
-      ? selectedId
-      : null
+  const historyList = Array.isArray(history) ? history : []
+  const userSelectedId = userSelectedIdRef.current
+  const userEntryExists =
+    userSelectedId != null && historyList.some((entry) => entry?.id === userSelectedId)
+  const effectiveUserSelection = userEntryExists ? userSelectedId : null
+
+  let activeId = null
+  if (effectiveUserSelection != null) {
+    activeId = effectiveUserSelection
+  } else {
+    const latest = currentEntryRef.current
+    if (
+      latest != null &&
+      historyList.some((entry) => entry?.id === latest.id)
+    ) {
+      activeId = latest.id
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 lg:py-12">

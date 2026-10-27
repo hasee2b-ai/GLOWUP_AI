@@ -10,26 +10,70 @@ import { useCallback, useState } from 'react'
  * so the current session keeps working. Array values are trimmed (oldest
  * first) and the write retried, so at least the most recent data survives
  * rather than the whole write being lost silently.
+ *
+ * For values that are expected to be arrays (such as the session history), the
+ * hook now normalizes whatever is in storage into a safe array on read, and the
+ * update callback safely handles a non-array previous value. That prevents
+ * malformed JSON and valid-but-unexpected JSON values (null, strings, numbers,
+ * or plain objects) from crashing the Create page or HistoryStrip. Existing
+ * valid history arrays are preserved as-is; only corrupted or unexpected values
+ * are replaced with an empty array so the rest of the app keeps running.
  */
-export function useLocalStorage(key, initialValue) {
+
+const HISTORY_KEY = 'glowup.history'
+
+const isValidHistoryEntry = (entry) =>
+  entry != null && typeof entry === 'object' && !Array.isArray(entry)
+
+const isHistoryArray = (value) =>
+  Array.isArray(value) && value.every(isValidHistoryEntry)
+
+export function useLocalStorage(key, initialValue, { normalize = false } = {}) {
   const [value, setValue] = useState(() => {
+    let parsed
     try {
       const raw = window.localStorage.getItem(key)
-      return raw !== null ? JSON.parse(raw) : initialValue
+      parsed = raw !== null ? JSON.parse(raw) : initialValue
     } catch {
-      return initialValue
+      parsed = initialValue
     }
+
+    if (!normalize) return parsed
+
+    if (key === HISTORY_KEY) {
+      if (!Array.isArray(parsed)) {
+        return []
+      }
+      const filtered = parsed.filter(isValidHistoryEntry)
+      return filtered
+    }
+    return parsed
   })
 
   const set = useCallback(
     (next) => {
       setValue((prev) => {
-        const resolved = typeof next === 'function' ? next(prev) : next
+        let resolved
+        if (typeof next === 'function') {
+          resolved = next(prev)
+        } else {
+          resolved = next
+        }
+
+        // History updates must tolerate a corrupted previous value without
+        // throwing, while still appending/building on top of a non-array
+        // baseline when callers use functional updates.
+        if (key === HISTORY_KEY) {
+          if (!Array.isArray(resolved)) {
+            resolved = []
+          }
+        }
+
         persist(key, resolved)
         return resolved
       })
     },
-    [key]
+    [key],
   )
 
   const remove = useCallback(() => {
@@ -43,6 +87,10 @@ export function useLocalStorage(key, initialValue) {
 
   return [value, set, remove]
 }
+
+// Keep `isHistoryArray` available for future callers that may want to
+// validate stored history using the same heuristics as this module.
+export { isHistoryArray }
 
 function persist(key, value) {
   let candidate = value
