@@ -1,11 +1,12 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Logo from './Logo.jsx'
 import StaggeredMenu from './StaggeredMenu.jsx'
 import StarBorder from './StarBorder.jsx'
 
 const linkBase =
-  'text-sm font-medium text-mute hover:text-mist transition-colors px-1 py-1'
+  'text-sm font-medium text-mist hover:text-primary transition-colors px-1 py-1'
 
 // Entries shown inside the StaggeredMenu panel (mobile only).
 const MENU_ITEMS = [
@@ -17,6 +18,31 @@ const MENU_ITEMS = [
 
 export default function Navbar() {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const headerRef = useRef(null)
+  const [merged, setMerged] = useState(pathname === '/')
+
+  // Expose live navbar height so the hero can pull up exactly underneath it.
+  useLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return undefined
+    const apply = () =>
+      document.documentElement.style.setProperty('--nav-h', `${el.offsetHeight}px`)
+    apply()
+    const ro = new ResizeObserver(apply)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // Transparent only at the very top of the landing page (hero sits behind it);
+  // frosted bar returns on scroll or any other route so content stays legible.
+  useLayoutEffect(() => {
+    const update = () =>
+      setMerged(pathname === '/' && window.scrollY <= 64 && !!document.getElementById('hero'))
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [pathname])
 
   const goCreate = () => {
     navigate('/create')
@@ -43,7 +69,14 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-ink/80 backdrop-blur-xl">
+    <header
+      ref={headerRef}
+      className={`sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        merged
+          ? 'border-transparent bg-transparent'
+          : 'border-border/60 bg-ink/80 backdrop-blur-xl'
+      }`}
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 sm:px-8">
         <Link to="/" className="flex items-center" aria-label="GlowUp AI home">
           <Logo height={36} />

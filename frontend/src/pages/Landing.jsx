@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   Sparkles,
   ArrowRight,
@@ -10,6 +10,7 @@ import {
   Settings2,
   Download,
 } from 'lucide-react'
+import Hero03 from '../components/originkit/hero-03.tsx'
 import Gallery from '../components/Gallery.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Marquee from '../components/Marquee.jsx'
@@ -71,51 +72,10 @@ export default function Landing() {
 
   return (
     <div>
-      {/* ------------------------------ HERO ------------------------------ */}
-      <section className="relative">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-24 lg:pt-20">
-          <Reveal variant="up" className="lg:col-span-5">
-            <h1 className="font-display text-4xl font-bold leading-[1.12] tracking-tight text-mist sm:text-5xl xl:text-[3.5rem]">
-              Turn your ideas into images.
-            </h1>
-            <p className="mt-5 max-w-sm text-base leading-relaxed text-mute sm:text-lg">
-              Describe what you imagine. GlowUp AI brings it to life.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-5">
-              <Link
-                to="/create"
-                className="group inline-flex items-center gap-2 rounded-full bg-mist px-6 py-3 text-sm font-semibold text-ink transition-all hover:bg-mist/90 active:scale-[0.98]"
-              >
-                <Sparkles size={16} />
-                Create Your Image
-                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <a
-                href="#how-it-works"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-mist transition-colors hover:text-primary"
-              >
-                See how it works
-                <ArrowRight size={14} />
-              </a>
-            </div>
-          </Reveal>
-
-          <Reveal variant="up" delay={150} className="lg:col-span-7">
-            <div>
-              <div className="overflow-hidden rounded-2xl border border-border shadow-lg shadow-mist/8">
-                <img
-                  src="/hero.webp"
-                  alt="AI-generated artwork created with GlowUp AI"
-                  className="aspect-[4/3] w-full object-cover"
-                />
-              </div>
-              <p className="mt-3 text-xs text-mute">
-                Generated with GlowUp AI
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* ------------------------------ HERO ------------------------------
+ Originkit hero-03. The app's <Navbar /> stays in App.jsx above this
+         section — the kit's own navbar is deliberately not rendered. */}
+      <Hero03 onCreate={() => navigate('/create')} />
 
       {/* ------------------------- STYLE MARQUEE ------------------------- */}
       <Marquee />
