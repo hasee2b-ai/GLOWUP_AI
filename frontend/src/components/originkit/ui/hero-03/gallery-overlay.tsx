@@ -11,11 +11,11 @@ function asset(file: string) {
 }
 
 const TUNNEL_IMAGES = [
-  { src: asset("portraits-portrait-01.png"), alt: "Editorial portrait" },
-  { src: asset("portraits-portrait-03.png"), alt: "Studio portrait" },
-  { src: asset("portraits-portrait-06.png"), alt: "Fashion portrait" },
-  { src: asset("portraits-portrait-08.png"), alt: "Action portrait" },
-  { src: asset("portraits-portrait-04.png"), alt: "Lifestyle portrait" },
+  { src: asset("portraits-portrait-01.webp"), alt: "Editorial portrait" },
+  { src: asset("portraits-portrait-03.webp"), alt: "Studio portrait" },
+  { src: asset("portraits-portrait-06.webp"), alt: "Fashion portrait" },
+  { src: asset("portraits-portrait-08.webp"), alt: "Action portrait" },
+  { src: asset("portraits-portrait-04.webp"), alt: "Lifestyle portrait" },
 ];
 
 const EASE_OUT = [0.215, 0.61, 0.355, 1] as const;

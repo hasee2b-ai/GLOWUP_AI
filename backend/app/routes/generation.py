@@ -14,6 +14,9 @@ router = APIRouter()
 
 # ---------------------------------------------------------------------------
 # Lightweight in-memory rate limiter (sliding window, per client IP).
+# Capacity is measured in IMAGES, not requests: a request consumes one slot
+# per requested image (the validated ``n``, 1..MAX_IMAGES), so a single
+# request cannot bypass the limit by generating several paid images at once.
 # NOTE: This is a simple guard against accidental excessive usage. It is NOT a
 # distributed, production-grade rate limiter and resets on server restart.
 # On serverless (Vercel) each function instance keeps its own buckets, so the
@@ -49,10 +52,23 @@ def _evict_idle_clients(now: float) -> None:
         del _rate_buckets[key]
 
 
-def _rate_limit(key: str) -> bool:
-    """Return True if the request is within the limit, False otherwise."""
+def _rate_limit(key: str, cost: int = 1) -> bool:
+    """Return True if ``cost`` image slots fit in the window, False otherwise.
+
+    ``cost`` is the number of paid images the request wants to generate (the
+    validated ``n``). Capacity is checked BEFORE recording anything, so a
+    rejected request never mutates the bucket — its accounting stays exactly
+    as it was before the rejected attempt.
+
+    Each admitted slot is recorded as one timestamp at ``now``; timestamps
+    stay ordered, so window expiry, idle sweeps, and least-recently-active
+    eviction behave exactly as with one-timestamp-per-request accounting.
+    """
     now = time.time()
     window_start = now - RATE_LIMIT_WINDOW
+    # The schema already guarantees n >= 1; clamp defensively so a bad cost
+    # can never admit a request for free (cost 0) or record negative slots.
+    cost = max(1, int(cost))
     bucket = _rate_buckets.get(key)
     if bucket is not None:
         # Evict timestamps outside the current window.
@@ -61,9 +77,14 @@ def _rate_limit(key: str) -> bool:
             # Fully expired: forget the client instead of keeping an empty
             # bucket around indefinitely.
             del _rate_buckets[key]
+            bucket = None
         else:
             _rate_buckets[key] = bucket
-    if bucket is None or not bucket:
+    # Admission test runs before any state is written: a rejection must not
+    # create a bucket or append timestamps.
+    if bucket is not None and len(bucket) + cost > RATE_LIMIT_MAX:
+        return False
+    if bucket is None:
         # New (or fully expired) client. Opportunistically sweep idle
         # buckets, throttled to at most once per window so the O(n) scan
         # does not run on every request.
@@ -80,9 +101,12 @@ def _rate_limit(key: str) -> bool:
                 del _rate_buckets[stale_key]
         bucket = []
         _rate_buckets[key] = bucket
-    if len(bucket) >= RATE_LIMIT_MAX:
-        return False
-    bucket.append(now)
+        # A brand-new bucket starts empty, so only the cost itself can
+        # exceed the limit (e.g. cost > RATE_LIMIT_MAX).
+        if cost > RATE_LIMIT_MAX:
+            del _rate_buckets[key]
+            return False
+    bucket.extend([now] * cost)
     return True
 
 
@@ -111,8 +135,14 @@ async def generate(req: Request, payload: GenerateRequest) -> GenerateResponse:
     # bucket. Resolving that safely requires trusted-proxy configuration,
     # which is out of scope for this focused change.
     client = req.client.host if req.client else "unknown"
-    if not _rate_limit(client):
-        logger.warning("Rate limit exceeded for client %s", client)
+    # Charge the limiter in images: payload.n is already validated to be
+    # 1..MAX_IMAGES, so a request for 2 images consumes 2 slots.
+    if not _rate_limit(client, cost=payload.n):
+        logger.warning(
+            "Rate limit exceeded for client %s (requested %d images)",
+            client,
+            payload.n,
+        )
         raise HTTPException(
             status_code=429,
             detail="Too many requests. Please slow down and try again shortly.",
