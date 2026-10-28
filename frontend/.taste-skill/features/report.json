@@ -1,0 +1,2583 @@
+{
+ "url": "http://localhost:5173",
+ "at": "2026-10-28T14:04:36.231Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.95,
+    0.57,
+    0.51,
+    0.85,
+    0.58,
+    0.51,
+    0.66,
+    0.85
+   ],
+   "motion": {
+    "elements": 59,
+    "css": 2,
+    "transitions": 19,
+    "scripted": 38,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6528,
+     "screens": 7.3,
+     "words": 594,
+     "img": 20,
+     "video": 0,
+     "canvas": 4,
+     "svg": 29,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 17,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "fantasy.jpg",
+      "fantasy.jpg",
+      "gallery-4.webp",
+      "gallery-4.webp",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "gallery-1.webp",
+      "gallery-1.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "chars": 28,
+     "lines": 2,
+     "size": 68,
+     "vw": 4.7,
+     "font": "Instrument Serif",
+     "weight": 400,
+     "tracking": -0.03,
+     "leading": 1.03,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.35,
+     "top": 283,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "lines": 2,
+     "size": 68,
+     "font": "Instrument Serif"
+    },
+    "headings": [
+     {
+      "text": "Turn your ideas into images.",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 68,
+      "vw": 4.7,
+      "font": "Instrument Serif",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.03,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.35,
+      "top": 283,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Jump-start your next idea",
+      "words": 4,
+      "chars": 25,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.47,
+      "top": 1140,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Artwork generated with GlowUp AI",
+      "words": 5,
+      "chars": 32,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.47,
+      "top": 2191,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Everything you need to create",
+      "words": 5,
+      "chars": 29,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.47,
+      "top": 3172,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Your imagination, in three simple steps.",
+      "words": 6,
+      "chars": 40,
+      "lines": 2,
+      "size": 44,
+      "vw": 3.1,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.47,
+      "top": 3989,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "01",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 3.6,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.23,
+      "top": 4225,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "02",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 3.6,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.23,
+      "top": 4225,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "03",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 3.6,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.23,
+      "top": 4225,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "A little inspiration goes a long way.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Fraunces",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.4,
+      "top": 4979,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 5,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Manrope",
+       "share": 0.14,
+       "mono": false
+      },
+      {
+       "family": "Inter Tight",
+       "share": 0.03,
+       "mono": false
+      },
+      {
+       "family": "Fraunces",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "Instrument Serif",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 5,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      26,
+      36,
+      44,
+      48,
+      52,
+      68
+     ],
+     "sizeCount": 16,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 13,
+      "leading": 1.35,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 68,
+      "vw": 4.7,
+      "font": "Instrument Serif",
+      "text": "Turn your ideas into images."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 9,
+     "microLabelShare": 0.034,
+     "microSamples": [
+      "Creative styles",
+      "Gallery",
+      "Features",
+      "How it works",
+      "Aspect ratio",
+      "Made with GlowUp AI"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0.21,
+     "smallText": 13
+    },
+    "eyebrows": [
+     {
+      "text": "Creative styles",
+      "above": "Jump-start your next idea",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1110
+     },
+     {
+      "text": "Gallery",
+      "above": "Artwork generated with GlowUp AI",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 2161
+     },
+     {
+      "text": "Features",
+      "above": "Everything you need to create",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3142
+     },
+     {
+      "text": "How it works",
+      "above": "Your imagination, in three simple steps.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3955
+     },
+     {
+      "text": "Made with GlowUp AI",
+      "above": "A little inspiration goes a long way.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 4947
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 52,
+      "top": 4225
+     },
+     {
+      "text": "02",
+      "size": 52,
+      "top": 4225
+     },
+     {
+      "text": "03",
+      "size": 52,
+      "top": 4225
+     }
+    ],
+    "color": {
+     "bodyBg": "#faf9ff",
+     "bodyBgHsl": {
+      "h": 250,
+      "s": 1,
+      "l": 0.99
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#faf9ff",
+       "top": 0,
+       "hsl": {
+        "h": 250,
+        "s": 1,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#fffbe1",
+       "top": 0,
+       "hsl": {
+        "h": 52,
+        "s": 1,
+        "l": 0.94
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 5893,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6680",
+       "share": 0.48
+      },
+      {
+       "color": "#26262a",
+       "share": 0.26
+      },
+      {
+       "color": "#242033",
+       "share": 0.15
+      },
+      {
+       "color": "#1d1d1d",
+       "share": 0.03
+      },
+      {
+       "color": "#8b5cf6",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#0c0c0f",
+      "hsl": {
+       "h": 240,
+       "s": 0.11,
+       "l": 0.05
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Fantasy",
+       "ratio": 1.9,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#f4a7c5",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Ready",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#10b981",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Creative styles",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Gallery",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Features",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "How it works",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 3,
+     "radius": 12,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 1,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start Creating",
+      "Create Your Image",
+      "Explore Gallery"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 37,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.inline-flex.min-h-9 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 15,
+     "scrims": 0,
+     "gradientSamples": [
+      "div.pointer-events-none.absolute → radial-gradient(rgba(255, 251, 225, 0.72) 0%, rgba(255, 251, 225, 0.38) 36%, rgba(0, 0, 0, 0) 60%)",
+      "div.relative.border-y → linear-gradient(oklab(0.999994 0.0000455677 0.0000200868 / 0.8) 0%, oklab(0.999994 0.0000455678 0.0000200868 /",
+      "button.group.relative → linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 248) 100%)",
+      "span.pointer-events-none.absolute → radial-gradient(130% 70% at 50% 100%, rgb(139, 92, 246), rgba(0, 0, 0, 0) 72%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 6,
+     "hairlineSamples": [
+      "div.relative.border-y 1440px",
+      "section#features.relative.scroll-mt-24 1440px",
+      "section#how-it-works.relative.scroll-mt-24 1440px",
+      "footer.border-t.border-border/60 1440px",
+      "div.border-t.border-border/60 1440px"
+     ],
+     "outlinedBoxes": 15,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 23,
+     "boxRadius": 16,
+     "squareMedia": 4,
+     "roundedMedia": 17,
+     "mediaRadius": 14,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1268
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 5,
+     "fixed": true,
+     "height": 77,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "fraunces",
+     "inter",
+     "manrope",
+     "instrument serif",
+     "inter tight"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 6528,
+    "margins": {
+     "left": 112,
+     "right": 72
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1",
+      "tag": "main",
+      "top": 77,
+      "height": 5815,
+      "words": 476,
+      "media": 12,
+      "middle": 520,
+      "heading": {
+       "text": "Turn your ideas into images.",
+       "size": 68,
+       "tag": "h1"
+      },
+      "left": 0,
+      "right": 0,
+      "textLeft": -607,
+      "textRight": -394,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.border-t.border-border/60",
+      "tag": "footer",
+      "top": 5892,
+      "height": 636,
+      "words": 70,
+      "media": 1,
+      "middle": 146,
+      "heading": {
+       "text": "Create & Explore",
+       "size": 12,
+       "tag": "h3"
+      },
+      "left": 112,
+      "right": 112,
+      "textLeft": 112,
+      "textRight": 112,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Turn your ideas into images.",
+      "size": 68,
+      "top": 283,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 112,
+      "n": 2
+     },
+     {
+      "x": 225,
+      "n": 2
+     },
+     {
+      "x": 529,
+      "n": 2
+     },
+     {
+      "x": 557,
+      "n": 2
+     },
+     {
+      "x": 985,
+      "n": 2
+     },
+     {
+      "x": 141,
+      "n": 1
+     },
+     {
+      "x": 973,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 12,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.97,
+    0.48,
+    0.89,
+    0.72,
+    0.77,
+    0.82,
+    0.9
+   ],
+   "motion": {
+    "elements": 58,
+    "css": 2,
+    "transitions": 19,
+    "scripted": 37,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 6442,
+     "screens": 6.3,
+     "words": 592,
+     "img": 20,
+     "video": 0,
+     "canvas": 4,
+     "svg": 29,
+     "sections": 6,
+     "horizontalOverflow": 16,
+     "overflowCulprits": [
+      "canvas.pointer-events-none.absolute (+16px)"
+     ],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 16,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "fantasy.jpg",
+      "fantasy.jpg",
+      "gallery-4.webp",
+      "gallery-4.webp",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "gallery-1.webp",
+      "gallery-1.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "chars": 28,
+     "lines": 2,
+     "size": 62,
+     "vw": 8.1,
+     "font": "Instrument Serif",
+     "weight": 400,
+     "tracking": -0.03,
+     "leading": 1.21,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.64,
+     "top": 338,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "lines": 2,
+     "size": 62,
+     "font": "Instrument Serif"
+    },
+    "headings": [
+     {
+      "text": "Turn your ideas into images.",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 62,
+      "vw": 8.1,
+      "font": "Instrument Serif",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.21,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.64,
+      "top": 338,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Jump-start your next idea",
+      "words": 4,
+      "chars": 25,
+      "lines": 1,
+      "size": 36,
+      "vw": 4.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 1232,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Artwork generated with GlowUp AI",
+      "words": 5,
+      "chars": 32,
+      "lines": 1,
+      "size": 36,
+      "vw": 4.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 1991,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Everything you need to create",
+      "words": 5,
+      "chars": 29,
+      "lines": 1,
+      "size": 36,
+      "vw": 4.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 2788,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Your imagination, in three simple steps.",
+      "words": 6,
+      "chars": 40,
+      "lines": 1,
+      "size": 36,
+      "vw": 4.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 3478,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "01",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 6.8,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.21,
+      "top": 3653,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "02",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 6.8,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.21,
+      "top": 3653,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "03",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 52,
+      "vw": 6.8,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.21,
+      "top": 3653,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "A little inspiration goes a long way.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Fraunces",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.75,
+      "top": 4271,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 9,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 5,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Manrope",
+       "share": 0.14,
+       "mono": false
+      },
+      {
+       "family": "Inter Tight",
+       "share": 0.03,
+       "mono": false
+      },
+      {
+       "family": "Fraunces",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "Instrument Serif",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 5,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      20,
+      36,
+      48,
+      52,
+      62
+     ],
+     "sizeCount": 13,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 13,
+      "leading": 1.35,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 62,
+      "vw": 8.1,
+      "font": "Instrument Serif",
+      "text": "Turn your ideas into images."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 9,
+     "microLabelShare": 0.035,
+     "microSamples": [
+      "Creative styles",
+      "Gallery",
+      "Features",
+      "How it works",
+      "Aspect ratio",
+      "Made with GlowUp AI"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0.21,
+     "smallText": 13
+    },
+    "eyebrows": [
+     {
+      "text": "Creative styles",
+      "above": "Jump-start your next idea",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1202
+     },
+     {
+      "text": "Gallery",
+      "above": "Artwork generated with GlowUp AI",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1961
+     },
+     {
+      "text": "Features",
+      "above": "Everything you need to create",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 2758
+     },
+     {
+      "text": "How it works",
+      "above": "Your imagination, in three simple steps.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3444
+     },
+     {
+      "text": "Made with GlowUp AI",
+      "above": "A little inspiration goes a long way.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 4239
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 52,
+      "top": 3653
+     },
+     {
+      "text": "02",
+      "size": 52,
+      "top": 3653
+     },
+     {
+      "text": "03",
+      "size": 52,
+      "top": 3653
+     }
+    ],
+    "color": {
+     "bodyBg": "#faf9ff",
+     "bodyBgHsl": {
+      "h": 250,
+      "s": 1,
+      "l": 0.99
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#faf9ff",
+       "top": 0,
+       "hsl": {
+        "h": 250,
+        "s": 1,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#fffbe1",
+       "top": 0,
+       "hsl": {
+        "h": 52,
+        "s": 1,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6680",
+       "share": 0.49
+      },
+      {
+       "color": "#26262a",
+       "share": 0.26
+      },
+      {
+       "color": "#242033",
+       "share": 0.15
+      },
+      {
+       "color": "#1d1d1d",
+       "share": 0.03
+      },
+      {
+       "color": "#8b5cf6",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#0c0c0f",
+      "hsl": {
+       "h": 240,
+       "s": 0.11,
+       "l": 0.05
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Fantasy",
+       "ratio": 1.9,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#f4a7c5",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Ready",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#10b981",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Creative styles",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Gallery",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Features",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "How it works",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 3,
+     "radius": 12,
+     "height": 55,
+     "withShadow": 0,
+     "withGradient": 1,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Start Creating",
+      "Create Your Image",
+      "Explore Gallery"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 37,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.inline-flex.min-h-9 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 14,
+     "scrims": 0,
+     "gradientSamples": [
+      "div.pointer-events-none.absolute → radial-gradient(rgba(255, 251, 225, 0.62) 0%, rgba(255, 251, 225, 0.3) 38%, rgba(0, 0, 0, 0) 62%)",
+      "div.relative.border-y → linear-gradient(oklab(0.999994 0.0000455677 0.0000200868 / 0.8) 0%, oklab(0.999994 0.0000455678 0.0000200868 /",
+      "button.group.relative → linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 248) 100%)",
+      "span.pointer-events-none.absolute → radial-gradient(130% 70% at 50% 100%, rgb(139, 92, 246), rgba(0, 0, 0, 0) 72%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 6,
+     "hairlineSamples": [
+      "div.relative.border-y 768px",
+      "section#features.relative.scroll-mt-24 768px",
+      "section#how-it-works.relative.scroll-mt-24 768px",
+      "footer.border-t.border-border/60 768px",
+      "div.border-t.border-border/60 768px"
+     ],
+     "outlinedBoxes": 15,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 23,
+     "boxRadius": 16,
+     "squareMedia": 4,
+     "roundedMedia": 16,
+     "mediaRadius": 14,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1360
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 5,
+     "fixed": true,
+     "height": 77,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "fraunces",
+     "inter",
+     "manrope",
+     "instrument serif",
+     "inter tight"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 6442,
+    "margins": {
+     "left": 32,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1",
+      "tag": "main",
+      "top": 77,
+      "height": 5623,
+      "words": 474,
+      "media": 11,
+      "middle": 897,
+      "heading": {
+       "text": "Turn your ideas into images.",
+       "size": 62,
+       "tag": "h1"
+      },
+      "left": 0,
+      "right": 0,
+      "textLeft": -430,
+      "textRight": -987,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.border-t.border-border/60",
+      "tag": "footer",
+      "top": 5700,
+      "height": 742,
+      "words": 70,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Create & Explore",
+       "size": 12,
+       "tag": "h3"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 32,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Turn your ideas into images.",
+      "size": 62,
+      "top": 338,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [
+     {
+      "text": "Generate multiple images and revisit recent result",
+      "side": "right",
+      "px": 8
+     }
+    ],
+    "edges": [
+     {
+      "x": 32,
+      "n": 2
+     },
+     {
+      "x": 237,
+      "n": 2
+     },
+     {
+      "x": 304,
+      "n": 2
+     },
+     {
+      "x": 605,
+      "n": 2
+     },
+     {
+      "x": 61,
+      "n": 1
+     },
+     {
+      "x": 546,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 10,
+    "bodySize": 13,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 10,
+   "filled": [
+    0.94,
+    0.69,
+    0.86,
+    0.68,
+    0.83,
+    0.75,
+    0.92,
+    0.62,
+    0.77,
+    1
+   ],
+   "motion": {
+    "elements": 57,
+    "css": 2,
+    "transitions": 18,
+    "scripted": 37,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 8343,
+     "screens": 9.9,
+     "words": 590,
+     "img": 20,
+     "video": 0,
+     "canvas": 4,
+     "svg": 29,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 17,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "fantasy.jpg",
+      "fantasy.jpg",
+      "gallery-4.webp",
+      "gallery-4.webp",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "high-level-description-a-photorealistic-_4-jT9CL",
+      "gallery-1.webp",
+      "gallery-1.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "chars": 28,
+     "lines": 2,
+     "size": 46,
+     "vw": 11.8,
+     "font": "Instrument Serif",
+     "weight": 400,
+     "tracking": -0.03,
+     "leading": 1.17,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 289,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Turn your ideas into images.",
+     "words": 5,
+     "lines": 2,
+     "size": 46,
+     "font": "Instrument Serif"
+    },
+    "headings": [
+     {
+      "text": "HOME",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.043,
+      "leading": 1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.88,
+      "top": 88,
+      "tag": "li",
+      "kind": "statement"
+     },
+     {
+      "text": "FEATURES",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.043,
+      "leading": 1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.88,
+      "top": 131,
+      "tag": "li",
+      "kind": "statement"
+     },
+     {
+      "text": "HOW IT WORKS",
+      "words": 3,
+      "chars": 12,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.043,
+      "leading": 1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.88,
+      "top": 174,
+      "tag": "li",
+      "kind": "statement"
+     },
+     {
+      "text": "CREATE",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.043,
+      "leading": 1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.88,
+      "top": 218,
+      "tag": "li",
+      "kind": "statement"
+     },
+     {
+      "text": "Turn your ideas into images.",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 46,
+      "vw": 11.8,
+      "font": "Instrument Serif",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.17,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 289,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Jump-start your next idea",
+      "words": 4,
+      "chars": 25,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1052,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Artwork generated with GlowUp AI",
+      "words": 5,
+      "chars": 32,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 3254,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Everything you need to create",
+      "words": 5,
+      "chars": 29,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 4007,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Your imagination, in three simple steps.",
+      "words": 6,
+      "chars": 40,
+      "lines": 2,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Manrope",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 4710,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "01",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 40,
+      "vw": 10.3,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 4923,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "02",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 40,
+      "vw": 10.3,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 5274,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "03",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 40,
+      "vw": 10.3,
+      "font": "Manrope",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 5672,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "A little inspiration goes a long way.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Fraunces",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 6327,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 13,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 4,
+     "centered": 5,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Manrope",
+       "share": 0.14,
+       "mono": false
+      },
+      {
+       "family": "Inter Tight",
+       "share": 0.03,
+       "mono": false
+      },
+      {
+       "family": "Fraunces",
+       "share": 0.01,
+       "mono": false
+      },
+      {
+       "family": "Instrument Serif",
+       "share": 0.01,
+       "mono": false
+      }
+     ],
+     "familyCount": 5,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      30,
+      35,
+      36,
+      40,
+      46
+     ],
+     "sizeCount": 13,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 13,
+      "leading": 1.35,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 46,
+      "vw": 11.8,
+      "font": "Instrument Serif",
+      "text": "Turn your ideas into images."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 9,
+     "microLabelShare": 0.035,
+     "microSamples": [
+      "Creative styles",
+      "Gallery",
+      "Features",
+      "How it works",
+      "Aspect ratio",
+      "Made with GlowUp AI"
+     ],
+     "upperShare": 0.04,
+     "centerShare": 0.21,
+     "smallText": 14
+    },
+    "eyebrows": [
+     {
+      "text": "Creative styles",
+      "above": "Jump-start your next idea",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1022
+     },
+     {
+      "text": "Gallery",
+      "above": "Artwork generated with GlowUp AI",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3224
+     },
+     {
+      "text": "Features",
+      "above": "Everything you need to create",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3977
+     },
+     {
+      "text": "How it works",
+      "above": "Your imagination, in three simple steps.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 4676
+     },
+     {
+      "text": "Made with GlowUp AI",
+      "above": "A little inspiration goes a long way.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 6295
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 40,
+      "top": 4923
+     },
+     {
+      "text": "02",
+      "size": 40,
+      "top": 5274
+     },
+     {
+      "text": "03",
+      "size": 40,
+      "top": 5672
+     }
+    ],
+    "color": {
+     "bodyBg": "#faf9ff",
+     "bodyBgHsl": {
+      "h": 250,
+      "s": 1,
+      "l": 0.99
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#faf9ff",
+       "top": 0,
+       "hsl": {
+        "h": 250,
+        "s": 1,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#e9dfff",
+       "top": 0,
+       "hsl": {
+        "h": 259,
+        "s": 1,
+        "l": 0.94
+       }
+      },
+      {
+       "color": "#8b5cf6",
+       "top": 0,
+       "hsl": {
+        "h": 258,
+        "s": 0.9,
+        "l": 0.66
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#fffbe1",
+       "top": 0,
+       "hsl": {
+        "h": 52,
+        "s": 1,
+        "l": 0.94
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6680",
+       "share": 0.49
+      },
+      {
+       "color": "#26262a",
+       "share": 0.26
+      },
+      {
+       "color": "#242033",
+       "share": 0.14
+      },
+      {
+       "color": "#1d1d1d",
+       "share": 0.03
+      },
+      {
+       "color": "#8b5cf6",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#1d1d1d",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.11
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Fantasy",
+       "ratio": 1.9,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#f4a7c5",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Creative styles",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Gallery",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Features",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "How it works",
+       "ratio": 4,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b5cf6",
+       "bg": "#faf9ff"
+      },
+      {
+       "text": "Cinematic",
+       "ratio": 4.2,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#8b5cf6",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": 8,
+     "height": 42,
+     "withShadow": 0,
+     "withGradient": 1,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Create Your Image",
+      "Explore Gallery"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 34,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.inline-flex.min-h-9 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 18,
+     "scrims": 0,
+     "gradientSamples": [
+      "div.pointer-events-none.absolute → radial-gradient(rgba(255, 251, 225, 0.55) 0%, rgba(255, 251, 225, 0.22) 40%, rgba(0, 0, 0, 0) 64%)",
+      "div.relative.border-y → linear-gradient(oklab(0.999994 0.0000455677 0.0000200868 / 0.8) 0%, oklab(0.999994 0.0000455678 0.0000200868 /",
+      "div.pointer-events-none.absolute → linear-gradient(to right, rgb(250, 249, 255) 0%, oklab(0.98457 0.00328258 -0.0072813 / 0.8) 50%, rgba(0, 0, 0,",
+      "div.pointer-events-none.absolute → linear-gradient(to left, rgb(250, 249, 255) 0%, oklab(0.98457 0.00328258 -0.0072813 / 0.8) 50%, rgba(0, 0, 0, "
+     ],
+     "gradientText": 0,
+     "hairlines": 5,
+     "hairlineSamples": [
+      "div.relative.border-y 390px",
+      "section#features.relative.scroll-mt-24 390px",
+      "section#how-it-works.relative.scroll-mt-24 390px",
+      "footer.border-t.border-border/60 390px",
+      "div.border-t.border-border/60 390px"
+     ],
+     "outlinedBoxes": 12,
+     "dashed": 0,
+     "blurred": 2,
+     "roundedBoxes": 20,
+     "boxRadius": 16,
+     "squareMedia": 3,
+     "roundedMedia": 13,
+     "mediaRadius": 14,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1236
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 65,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "fraunces",
+     "inter",
+     "manrope",
+     "instrument serif",
+     "inter tight"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 8343,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1",
+      "tag": "main",
+      "top": 65,
+      "height": 7304,
+      "words": 470,
+      "media": 12,
+      "middle": 1009,
+      "heading": {
+       "text": "Turn your ideas into images.",
+       "size": 46,
+       "tag": "h1"
+      },
+      "left": 0,
+      "right": 0,
+      "textLeft": -695,
+      "textRight": -1100,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.border-t.border-border/60",
+      "tag": "footer",
+      "top": 7369,
+      "height": 974,
+      "words": 70,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Create & Explore",
+       "size": 12,
+       "tag": "h3"
+      },
+      "left": 20,
+      "right": 27,
+      "textLeft": 20,
+      "textRight": 27,
+      "fullBleed": true,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Turn your ideas into images.",
+      "size": 46,
+      "top": 289,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 45,
+      "n": 4
+     },
+     {
+      "x": 20,
+      "n": 2
+     },
+     {
+      "x": 97,
+      "n": 1
+     },
+     {
+      "x": 343,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 8,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "width": 1440,
+   "message": "5 eyebrow/kicker label(s) above headings: \"Creative styles\" above \"Jump-start your next idea\"; \"Gallery\" above \"Artwork generated with GlowUp AI\"; \"Features\" above \"Everything you need to create\"; \"How it works\" above \"Your imagination, in three simple steps.\"; \"Made with GlowUp AI\" above \"A little inspiration goes a long way.\"",
+   "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "numbering",
+   "width": 1440,
+   "message": "Decorative index numbers: \"01\", \"02\", \"03\"",
+   "fix": "Remove them. If order truly matters, write it into the words (\"First, …\") or use a real <ol>.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "9 tiny uppercase letter-spaced labels (e.g. \"Creative styles\", \"Gallery\", \"Features\", \"How it works\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "width": 1440,
+   "message": "15 gradient fill(s): div.pointer-events-none.absolute → radial-gradient(rgba(255, 251, 225, 0.72) 0%, rgba(255, 251, 225, 0.38) 36%, rgba(0, 0, 0, 0) 60%) | div.relative.border-y → linear-gradient(oklab(0.999994 0.0000455677 0.0000200868 / 0.8) 0%, oklab(0.999994 0.0000455678 0.0000200868 / | button.group.relative → linear-gradient(rgb(255, 255, 255) 0%, rgb(246, 246, 248) 100%)",
+   "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "width": 1440,
+   "message": "37 box-shadow(s) on elements at rest: button.inline-flex.min-h-9 → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | span.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "button-fx",
+   "width": 1440,
+   "message": "Buttons with gradient fill.",
+   "fix": "Flat fill, one colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "width": 1440,
+   "message": "6 thin rule(s)/divider line(s): div.relative.border-y 1440px | section#features.relative.scroll-mt-24 1440px | section#how-it-works.relative.scroll-mt-24 1440px | footer.border-t.border-border/60 1440px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "15 boxes drawn with a 1px outline.",
+   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "width": 1440,
+   "message": "2 backdrop-blur surfaces.",
+   "fix": "One blurred sticky bar at most; glass cards are a tell.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (section #fffbe1).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "palette-purple",
+   "width": 1440,
+   "message": "Indigo / violet (text #8b5cf6).",
+   "fix": "Use the accent from the drawn palette.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Unreadable text: \"Fantasy\" 1.9:1 (#f4a7c5 on #ffffff); \"Ready\" 2.5:1 (#10b981 on #ffffff)",
+   "fix": "Raise contrast to at least 4.5:1 for text, 3:1 for large display.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "font-count",
+   "width": 1440,
+   "message": "3 typefaces in use (Inter, Manrope, Inter Tight).",
+   "fix": "Two at most.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "16 different font sizes (10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 26, 36, 44, 48, 52, 68).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 13px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 1440,
+   "message": "13 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "late-title",
+   "width": 1440,
+   "message": "The title is not readable 1.2s after the page loaded (something lies over it).",
+   "fix": "Put the headline in the HTML, painted on the first frame; the load sequence only adds arrival and is settled by 1.2s (references/motion.md, \"Load sequence in 1.2 seconds\"). No preloader, no gate, no waiting for the load event.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 112px on the left, 72px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "WARN",
+   "id": "ragged-edges",
+   "width": 1440,
+   "message": "Left-aligned text starts at 7 different lines (112px, 225px, 529px, 557px, 985px, 141px, 973px); the three most used hold only 50% of it.",
+   "fix": "Pick two or three anchor lines from the grid and start every heading and paragraph on one of them."
+  },
+  {
+   "level": "FAIL",
+   "id": "overflow",
+   "width": 768,
+   "message": "Page scrolls sideways by 16px at 768px. Widest offenders: canvas.pointer-events-none.absolute (+16px).",
+   "fix": "Constrain the element that is wider than the viewport (max-width: 100%, or overflow: clip on its section)."
+  },
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 768,
+   "message": "1 text block(s) sit within 16px of the screen edge: \"Generate multiple images and r\" (8px from the right)",
+   "fix": "Keep text inside the page margin (16–32px or more). Only display type deliberately bled past the edge may touch it."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\desktop-page-01.jpg",
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\tablet-page-01.jpg",
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\mobile-page-01.jpg",
+    "C:\\Users\\Shaheen Computer\\Downloads\\Glowup Ai\\glowup-ai\\frontend\\.taste-skill\\features\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

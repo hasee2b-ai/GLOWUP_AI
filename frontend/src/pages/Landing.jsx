@@ -15,6 +15,7 @@ import Gallery from '../components/Gallery.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ChromaGrid from '../components/ChromaGrid.jsx'
+import CoverflowFeatures from '../components/CoverflowFeatures.jsx'
 
 const FEATURES = [
   {
@@ -148,21 +149,11 @@ export default function Landing() {
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f, i) => (
-              <Reveal key={f.title} delay={i * 100} variant="up">
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10">
-                  {/* gradient top border on hover */}
-                  <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-secondary/15 ring-1 ring-border transition-transform duration-300 group-hover:scale-110">
-                    <f.icon size={22} className="text-primary" />
-                  </div>
-                  <h3 className="mt-5 font-display text-lg font-semibold">{f.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-mute">{f.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* Coverflow carousel: the centre feature sits at full size, the
+         rest recede toward the edges — arrows, dots, drag and ← / →. */}
+          <Reveal delay={120} variant="up" className="mt-12 sm:mt-14">
+            <CoverflowFeatures items={FEATURES} />
+          </Reveal>
         </div>
       </section>
 
