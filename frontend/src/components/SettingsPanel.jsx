@@ -18,12 +18,12 @@ export default function SettingsPanel({ settings, onChange }) {
   const set = (patch) => onChange({ ...settings, ...patch })
 
   return (
-    <div className="flex flex-1 flex-wrap items-center gap-2">
-      {/* Aspect ratio — segmented selector */}
+    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+      {/* Aspect ratio — full width on mobile, segmented selector */}
       <div
         role="group"
         aria-label="Aspect ratio"
-        className="inline-flex h-10 items-center gap-0.5 rounded-xl border border-border bg-surface-2 p-1"
+        className="flex h-10 w-full items-center gap-0.5 rounded-xl border border-border bg-surface-2 p-1 sm:w-auto sm:flex-1"
       >
         {ASPECT_RATIOS.map((r) => {
           const active = settings.size === r.size
@@ -35,7 +35,7 @@ export default function SettingsPanel({ settings, onChange }) {
               onClick={() => set({ size: r.size })}
               aria-pressed={active}
               aria-label={`${r.label} ${r.hint}`}
-              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium whitespace-nowrap transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50 ${
                 active
                   ? 'bg-primary/12 text-primary shadow-sm'
                   : 'text-mute hover:bg-surface hover:text-mist'
@@ -60,8 +60,10 @@ export default function SettingsPanel({ settings, onChange }) {
         })}
       </div>
 
-      {/* Image count */}
-      <div className="relative">
+      {/* Image count + toggles — second row on mobile */}
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Image count */}
+        <div className="relative">
         <select
           id="image-count"
           aria-label="Number of images"
@@ -117,6 +119,7 @@ export default function SettingsPanel({ settings, onChange }) {
           </button>
         )
       })}
+      </div>
     </div>
   )
 }

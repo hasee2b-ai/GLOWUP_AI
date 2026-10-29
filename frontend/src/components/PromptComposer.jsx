@@ -23,7 +23,7 @@ export default function PromptComposer({
   return (
     <section
       aria-label="Prompt and generation settings"
-      className="rounded-2xl border border-border bg-surface shadow-lg shadow-mist/[0.06] transition-colors duration-200 focus-within:border-primary/40 focus-within:ring-1 focus-within:ring-primary/15"
+      className="rounded-2xl border border-transparent bg-surface shadow-lg shadow-mist/[0.06] transition-colors duration-200 focus-visible:outline-none"
     >
       <PromptEditor prompt={prompt} onChange={onPromptChange} />
 

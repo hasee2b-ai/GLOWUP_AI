@@ -111,6 +111,13 @@ body {
   border-radius: 4px;
 }
 
+/* The prompt composer manages its own focus treatment; suppress the global
+   focus outline so a lavender ring does not linger while typing. */
+section[aria-label="Prompt and generation settings"],
+section[aria-label="Prompt and generation settings"] * {
+  outline: none !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

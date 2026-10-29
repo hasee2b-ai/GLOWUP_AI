@@ -34,7 +34,7 @@ export default function PromptEditor({ prompt, onChange }) {
         onChange={(e) => onChange(e.target.value.slice(0, MAX_PROMPT_LENGTH))}
         placeholder="Describe the image you want to create..."
         rows={3}
-        className="block min-h-[80px] w-full resize-none bg-transparent px-4 pt-3 pb-1 text-[15px] leading-6 text-mist placeholder:text-mute/50 focus:outline-none"
+        className="block min-h-[64px] sm:min-h-[80px] w-full resize-none bg-transparent px-4 pt-3 pb-1 text-[15px] leading-6 text-mist placeholder:text-mute/50 focus:outline-none focus-visible:outline-none"
       />
 
       {/* clear + counter sit under the field, inside the prompt zone */}
