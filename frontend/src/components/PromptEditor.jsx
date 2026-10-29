@@ -4,7 +4,7 @@ import { MAX_PROMPT_LENGTH } from '../utils/constants.js'
 
 // The composer may grow with the prompt, but never past ~4 lines: it must not
 // push the results out of the workspace.
-const MAX_TEXTAREA_HEIGHT = 132
+const MAX_TEXTAREA_HEIGHT = 160
 
 /**
  * The prompt half of the composer: one comfortable, borderless text area that
@@ -34,7 +34,7 @@ export default function PromptEditor({ prompt, onChange }) {
         onChange={(e) => onChange(e.target.value.slice(0, MAX_PROMPT_LENGTH))}
         placeholder="Describe the image you want to create..."
         rows={3}
-        className="block min-h-[88px] w-full resize-none bg-transparent px-4 pt-4 pb-1 text-[15px] leading-6 text-mist placeholder:text-mute/50 focus:outline-none"
+        className="block min-h-[80px] w-full resize-none bg-transparent px-4 pt-3 pb-1 text-[15px] leading-6 text-mist placeholder:text-mute/50 focus:outline-none"
       />
 
       {/* clear + counter sit under the field, inside the prompt zone */}

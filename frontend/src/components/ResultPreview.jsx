@@ -29,7 +29,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
         <img
           src={image.url}
           alt={`Generated variation ${index + 1}`}
-          className="block h-auto w-full"
+          className="block h-auto w-full max-h-[420px] object-contain"
           loading="lazy"
           onError={() => setFailed(true)}
         />
@@ -116,7 +116,7 @@ export default function ResultPreview({
           <RefreshCw size={15} className="animate-spin text-primary" />
           Creating your image...
         </div>
-        <div className={`grid w-full gap-4 ${count > 1 ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
+        <div className={`grid w-full max-w-[660px] mx-auto gap-4 ${count > 1 ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
           {Array.from({ length: count }).map((_, i) => (
             <Skeleton key={i} className={`w-full ${aspect}`} />
           ))}
@@ -176,16 +176,18 @@ export default function ResultPreview({
         </div>
       </div>
 
-      {/* images */}
-      <div className={`grid w-full gap-4 ${multi ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
+      {/* images — compact, portrait-bounded previews so the whole workspace
+          (image + history + composer) fits without page scrolling */}
+      <div className={`grid w-full gap-4 ${multi ? 'sm:grid-cols-2' : 'grid-cols-1'} justify-items-center`}>
         {images.map((img, i) => (
-          <ImageCard
-            key={`${img.url.slice(0, 48)}-${i}`}
-            image={img}
-            index={i}
-            copied={copied}
-            onCopyPrompt={onCopyPrompt}
-          />
+          <div key={`${img.url.slice(0, 48)}-${i}`} className="w-full max-w-[320px]">
+            <ImageCard
+              image={img}
+              index={i}
+              copied={copied}
+              onCopyPrompt={onCopyPrompt}
+            />
+          </div>
         ))}
       </div>
     </div>

@@ -27,7 +27,7 @@ export default function PromptComposer({
     >
       <PromptEditor prompt={prompt} onChange={onPromptChange} />
 
-      <div className="flex flex-col gap-3 border-t border-border/70 bg-surface-2/60 px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4">
+      <div className="flex flex-col gap-2 border-t border-border/70 bg-surface-2/60 px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-4">
         <SettingsPanel settings={settings} onChange={onSettingsChange} />
 
         <button
