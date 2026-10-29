@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Download, RefreshCw, Copy, Check, AlertTriangle, Image as ImageIcon } from 'lucide-react'
 import Skeleton from './Skeleton.jsx'
-import { downloadImage, imageFilename, copyText } from '../utils/helpers.js'
-import { useToast } from './Toast.jsx'
+import { downloadImage, imageFilename } from '../utils/helpers.js'
 
 /* ---------- Small building blocks ---------- */
 
@@ -19,7 +18,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
   const [failed, setFailed] = useState(false)
 
   return (
-    <div className="group relative">
+    <div className="group relative overflow-hidden rounded-2xl border border-border bg-surface">
       {failed ? (
         <div className="flex h-64 flex-col items-center justify-center gap-2 p-6 text-center">
           <AlertTriangle size={26} className="text-secondary" />
@@ -61,42 +60,39 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
   )
 }
 
-/* ---------- Main preview panel ---------- */
+// Skeleton boxes match the requested output ratio so the loading state
+// promises the shape of what is coming.
+const SKELETON_ASPECT = {
+  '1024x1024': 'aspect-square',
+  '1024x1536': 'aspect-[2/3]',
+  '1536x1024': 'aspect-[3/2]',
+}
 
-export default function ResultPreview({ status, result, error, n, onRegenerate, copied }) {
-  const toast = useToast()
-
-  const panel =
-    'overflow-hidden rounded-2xl border border-border bg-surface'
-
-  const header = (title, sub) => (
-    <div className="flex items-center justify-between gap-3 border-b border-border/60 px-5 py-3.5">
-      <div className="flex items-center gap-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
-          <ImageIcon size={14} className="text-primary" />
-        </span>
-        <div>
-          <h3 className="font-display text-sm font-semibold text-mist">{title}</h3>
-          {sub && <p className="text-[11px] text-mute">{sub}</p>}
-        </div>
-      </div>
-    </div>
-  )
-
-  /* Idle */
+/**
+ * The results area of the workspace: empty, loading, error and success states
+ * rendered straight on the canvas — no card around a card — so the generated
+ * images stay the most prominent thing on the page.
+ */
+export default function ResultPreview({
+  status,
+  result,
+  error,
+  n,
+  size,
+  onRegenerate,
+  onCopyPrompt,
+  copied,
+}) {
+  /* Idle — the quiet empty state */
   if (status === 'idle') {
     return (
-      <div className={panel}>
-        {header('Result preview', 'Your generated image will appear here')}
-        <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/15 to-secondary/15 ring-1 ring-border">
-            <ImageIcon size={28} className="text-primary" />
-          </div>
-          <h3 className="font-display text-lg font-semibold text-mist">Your canvas is ready</h3>
-          <p className="max-w-xs text-sm leading-relaxed text-mute">
-            Describe your idea on the left and hit Generate to create your first visual.
-          </p>
-        </div>
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-14 text-center">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-mist sm:text-2xl">
+          What will you create?
+        </h2>
+        <p className="mt-3 max-w-xs text-sm leading-relaxed text-mute">
+          Describe an image below, then press Generate.
+        </p>
       </div>
     )
   }
@@ -112,19 +108,18 @@ export default function ResultPreview({ status, result, error, n, onRegenerate, 
         : Array.isArray(result?.images) && result.images.length > 0
           ? result.images.length
           : 1
+    const aspect = SKELETON_ASPECT[size] || SKELETON_ASPECT['1024x1024']
+
     return (
-      <div className={panel}>
-        {header('Generating', 'Bringing your idea to life...')}
-        <div className="p-5">
-          <div className="mb-4 flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
-            <RefreshCw size={16} className="animate-spin text-primary" />
-            <p className="text-sm text-mist">Creating your image...</p>
-          </div>
-          <div className={`grid gap-4 ${count > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-            {Array.from({ length: count }).map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
-            ))}
-          </div>
+      <div className="flex flex-1 flex-col justify-center py-6">
+        <div className="mb-4 flex items-center gap-2.5 text-sm text-mute">
+          <RefreshCw size={15} className="animate-spin text-primary" />
+          Creating your image...
+        </div>
+        <div className={`grid w-full gap-4 ${count > 1 ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
+          {Array.from({ length: count }).map((_, i) => (
+            <Skeleton key={i} className={`w-full ${aspect}`} />
+          ))}
         </div>
       </div>
     )
@@ -133,23 +128,20 @@ export default function ResultPreview({ status, result, error, n, onRegenerate, 
   /* Error */
   if (status === 'error') {
     return (
-      <div className={panel}>
-        {header('Generation failed', 'Something went wrong')}
-        <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary/10 ring-1 ring-secondary/15">
-            <AlertTriangle size={28} className="text-secondary" />
-          </div>
-          <h3 className="font-display text-lg font-semibold text-mist">Generation failed</h3>
-          <p className="max-w-sm text-sm leading-relaxed text-mute">{error}</p>
-          <button
-            type="button"
-            onClick={onRegenerate}
-            className="mt-2 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
-          >
-            <RefreshCw size={15} />
-            Try again
-          </button>
-        </div>
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-14 text-center">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+          <AlertTriangle size={20} />
+        </span>
+        <h2 className="mt-4 font-display text-lg font-semibold text-mist">Generation failed</h2>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-mute">{error}</p>
+        <button
+          type="button"
+          onClick={onRegenerate}
+          className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary/90 active:scale-[0.98]"
+        >
+          <RefreshCw size={15} />
+          Try again
+        </button>
       </div>
     )
   }
@@ -160,21 +152,23 @@ export default function ResultPreview({ status, result, error, n, onRegenerate, 
   const first = images[0]
 
   return (
-    <div className={`${panel} animate-fade-in`}>
-      {header(
-        'Result',
-        `${images.length} ${images.length === 1 ? 'image' : 'images'} generated`
-      )}
-
-      {/* metadata bar */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-border/60 bg-surface-2/60 px-5 py-3">
-        {first?.width && first?.height && <Meta icon={ImageIcon}>{first.width}×{first.height}</Meta>}
-        {first?.mime_type && <Meta icon={ImageIcon}>{first.mime_type.replace('image/', '').toUpperCase()}</Meta>}
-        <div className="ml-auto flex items-center gap-2">
+    <div className="animate-fade-in pt-1">
+      {/* prompt + actions above the images — stacked on mobile so the prompt
+          never gets squeezed into a narrow column by the actions */}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-x-6">
+        <p className="min-w-0 text-sm leading-relaxed text-mute sm:max-w-3xl sm:flex-1">
+          <span className="font-semibold text-mist/80">Prompt: </span>
+          {result.prompt}
+        </p>
+        <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2">
+          {first?.width && first?.height && <Meta icon={ImageIcon}>{first.width}×{first.height}</Meta>}
+          {first?.mime_type && (
+            <Meta icon={ImageIcon}>{first.mime_type.replace('image/', '').toUpperCase()}</Meta>
+          )}
           <button
             type="button"
             onClick={onRegenerate}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-primary to-secondary px-3 py-1.5 text-xs font-semibold text-white transition-all hover:brightness-110"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-mist transition-colors hover:border-primary/45 hover:text-primary"
           >
             <RefreshCw size={13} />
             Regenerate
@@ -182,34 +176,17 @@ export default function ResultPreview({ status, result, error, n, onRegenerate, 
         </div>
       </div>
 
-      {/* the prompt used */}
-      <div className="border-b border-border/60 px-5 py-3">
-        <p className="line-clamp-2 text-xs leading-relaxed text-mute">
-          <span className="font-semibold text-mist/70">Prompt: </span>
-          {result.prompt}
-        </p>
-      </div>
-
       {/* images */}
-      <div className="p-5">
-        <div className={`grid gap-4 ${multi ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
-          {images.map((img, i) => (
-            <ImageCard
-              key={`${img.url.slice(0, 48)}-${i}`}
-              image={img}
-              index={i}
-              copied={copied}
-              onCopyPrompt={async () => {
-                try {
-                  await copyText(result.prompt)
-                  toast.success('Prompt copied to clipboard')
-                } catch {
-                  toast.error('Could not copy to clipboard')
-                }
-              }}
-            />
-          ))}
-        </div>
+      <div className={`grid w-full gap-4 ${multi ? 'sm:grid-cols-2' : 'mx-auto max-w-2xl grid-cols-1'}`}>
+        {images.map((img, i) => (
+          <ImageCard
+            key={`${img.url.slice(0, 48)}-${i}`}
+            image={img}
+            index={i}
+            copied={copied}
+            onCopyPrompt={onCopyPrompt}
+          />
+        ))}
       </div>
     </div>
   )

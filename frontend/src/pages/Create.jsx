@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Sparkles, Wand2, Zap } from 'lucide-react'
 import { generateImage, checkHealth } from '../services/api.js'
 import { useLocalStorage } from '../hooks/useLocalStorage.js'
 import { useToast } from '../components/Toast.jsx'
 import { copyText, makeThumbnail } from '../utils/helpers.js'
-import PromptEditor from '../components/PromptEditor.jsx'
-import SettingsPanel from '../components/SettingsPanel.jsx'
+import PromptComposer from '../components/PromptComposer.jsx'
 import ResultPreview from '../components/ResultPreview.jsx'
 import HistoryStrip from '../components/HistoryStrip.jsx'
 
@@ -182,13 +180,6 @@ export default function Create() {
 
   const loading = status === 'loading'
 
-  // Count images, not generation entries: an entry holds one or two images.
-  // Tolerates legacy/corrupt entries whose images field is missing or invalid.
-  const imageCount = (Array.isArray(history) ? history : []).reduce(
-    (total, entry) => total + (Array.isArray(entry?.images) ? entry.images.length : 0),
-    0
-  )
-
   const historyList = Array.isArray(history) ? history : []
   const userSelectedId = userSelectedIdRef.current
   const userEntryExists =
@@ -209,77 +200,24 @@ export default function Create() {
   }
 
   return (
-    <div className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 lg:py-12">
-      {/* Page heading */}
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-            <Sparkles size={13} />
-            Studio
-          </span>
-          <h1 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            Create your image
-          </h1>
-          <p className="mt-1.5 text-sm text-mute">
-            Describe what you imagine, tune the settings, and generate.
-          </p>
-        </div>
-        {history.length > 0 && (
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-xs text-mute">
-            <Zap size={13} className="text-primary" />
-            {imageCount} image{imageCount === 1 ? '' : 's'} in history
-          </div>
-        )}
+    <section className="mx-auto flex h-[calc(100dvh_-_var(--nav-h,64px))] min-h-[460px] w-full max-w-7xl flex-col gap-3 px-5 pt-4 pb-5 sm:gap-4 sm:px-8">
+      <h1 className="sr-only">Create your image</h1>
+
+      {/* Results workspace — scrolls on its own, above the composer */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain">
+        <ResultPreview
+          status={status}
+          result={result}
+          error={error}
+          n={settings.n}
+          size={settings.size}
+          onRegenerate={handleRegenerate}
+          onCopyPrompt={() => handleCopyPrompt(result?.prompt || prompt)}
+          copied={copied}
+        />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
-        {/* ------------------------- Controls ------------------------- */}
-        <div className="space-y-5">
-          <section className="overflow-hidden rounded-2xl border border-border bg-surface">
-            {/* panel header */}
-            <div className="flex items-center gap-2.5 border-b border-border/60 px-6 py-4">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/15 to-secondary/15">
-                <Wand2 size={15} className="text-primary" />
-              </span>
-              <h2 className="font-display text-sm font-semibold tracking-wide text-mist">
-                Prompt &amp; Settings
-              </h2>
-            </div>
-            <div className="space-y-6 p-6">
-              <PromptEditor prompt={prompt} onChange={setPrompt} loading={loading} />
-              <div className="h-px bg-mist/5" />
-              <SettingsPanel settings={settings} onChange={setSettings} />
-            </div>
-            {/* generate button pinned to panel bottom */}
-            <div className="border-t border-border/60 bg-surface-2/60 p-5">
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={loading}
-                className="group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-primary to-secondary px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:shadow-primary/25 hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
-              >
-                <Sparkles size={18} className={loading ? 'animate-pulse' : ''} />
-                {loading ? 'Generating...' : 'Generate Image'}
-              </button>
-            </div>
-          </section>
-        </div>
-
-        {/* ------------------------- Preview ------------------------- */}
-        <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
-          <ResultPreview
-            status={status}
-            result={result}
-            error={error}
-            n={settings.n}
-            onRegenerate={handleRegenerate}
-            onCopyPrompt={() => handleCopyPrompt(result?.prompt || prompt)}
-            copied={copied}
-          />
-        </div>
-      </div>
-
-      {/* ------------------------- History ------------------------- */}
+      {/* Recent generations — compact tray pinned above the composer */}
       <HistoryStrip
         history={history}
         selectedId={activeId}
@@ -287,6 +225,16 @@ export default function Create() {
         onClear={handleClearHistory}
         onCopyPrompt={handleCopyPrompt}
       />
-    </div>
+
+      {/* Composer — prompt, settings and Generate, anchored at the bottom */}
+      <PromptComposer
+        prompt={prompt}
+        onPromptChange={setPrompt}
+        settings={settings}
+        onSettingsChange={setSettings}
+        loading={loading}
+        onGenerate={handleGenerate}
+      />
+    </section>
   )
 }

@@ -1,138 +1,122 @@
 import { Sparkles, Droplet, ChevronDown } from 'lucide-react'
 import { ASPECT_RATIOS, IMAGE_COUNTS } from '../utils/constants.js'
 
-function Toggle({ label, hint, checked, onChange, icon: Icon }) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      onClick={() => onChange(!checked)}
-      className="group flex w-full items-center justify-between gap-3 rounded-xl border border-border bg-surface-2 px-4 py-3 text-left transition-all duration-200 hover:border-mist/20 hover:bg-surface-2/80 active:scale-[0.99]"
-    >
-      <span className="flex min-w-0 items-start gap-3">
-        {Icon && (
-          <span
-            className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
-              checked ? 'bg-primary/15 text-primary' : 'bg-mist/5 text-mute group-hover:text-mist'
-            }`}
-          >
-            <Icon size={15} />
-          </span>
-        )}
-        <span className="min-w-0">
-          <span className="block text-sm font-medium text-mist">{label}</span>
-          {hint && (
-            <span className="mt-0.5 block text-xs leading-relaxed text-mute">{hint}</span>
-          )}
-        </span>
-      </span>
-
-      {/* Switch track + knob */}
-      <span
-        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-300 ${
-          checked
-            ? 'bg-gradient-to-r from-primary to-secondary shadow-md shadow-primary/20'
-            : 'bg-mist/15'
-        }`}
-      >
-        <span
-          className={`absolute left-0 h-[18px] w-[18px] rounded-full bg-white shadow-md transition-transform duration-300 ease-out ${
-            checked ? 'translate-x-[22px]' : 'translate-x-[4px]'
-          }`}
-        />
-      </span>
-    </button>
-  )
+// Simple ratio indicators: a rounded rectangle whose proportions mirror the
+// ratio, instead of the previous checkbox-shaped glyph.
+const RATIO_BOX = {
+  square: { width: 14, height: 14 },
+  portrait: { width: 10, height: 16 },
+  landscape: { width: 16, height: 10 },
 }
 
+/**
+ * Compact secondary row of the composer: aspect ratio, image count and the two
+ * optional generation switches. All controls share one height, radius, border
+ * and typography so the row reads as a single toolbar.
+ */
 export default function SettingsPanel({ settings, onChange }) {
   const set = (patch) => onChange({ ...settings, ...patch })
 
   return (
-    <div className="space-y-5">
-      {/* Aspect ratio */}
-      <div>
-        <span className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-mute">
-          Aspect ratio
-        </span>
-        <div className="grid grid-cols-3 gap-2">
-          {ASPECT_RATIOS.map((r) => {
-            const active = settings.size === r.size
-            return (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => set({ size: r.size })}
-                aria-pressed={active}
-                className={`flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 transition-all ${
-                  active
-                    ? 'border-primary/60 bg-primary/10 text-mist shadow-md shadow-primary/10'
-                    : 'border-border bg-surface-2 text-mute hover:border-mist/25'
+    <div className="flex flex-1 flex-wrap items-center gap-2">
+      {/* Aspect ratio — segmented selector */}
+      <div
+        role="group"
+        aria-label="Aspect ratio"
+        className="inline-flex h-10 items-center gap-0.5 rounded-xl border border-border bg-surface-2 p-1"
+      >
+        {ASPECT_RATIOS.map((r) => {
+          const active = settings.size === r.size
+          const box = RATIO_BOX[r.id]
+          return (
+            <button
+              key={r.id}
+              type="button"
+              onClick={() => set({ size: r.size })}
+              aria-pressed={active}
+              aria-label={`${r.label} ${r.hint}`}
+              className={`inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50 ${
+                active
+                  ? 'bg-primary/12 text-primary shadow-sm'
+                  : 'text-mute hover:bg-surface hover:text-mist'
+              }`}
+            >
+              <span
+                className={`shrink-0 rounded-[3px] border-2 transition-colors ${
+                  active ? 'border-primary' : 'border-mute/40'
+                }`}
+                style={{ width: box.width, height: box.height }}
+              />
+              <span>{r.label}</span>
+              <span
+                className={`tabular-nums ${
+                  active ? 'text-primary/70' : 'text-mute/60'
                 }`}
               >
-                <span
-                  className={`rounded-[4px] border-2 ${
-                    active ? 'border-primary' : 'border-mute/30'
-                  }`}
-                  style={{
-                    width: r.id === 'landscape' ? 30 : r.id === 'portrait' ? 20 : 24,
-                    height: r.id === 'landscape' ? 20 : r.id === 'portrait' ? 30 : 24,
-                  }}
-                />
-                <span className="text-xs font-medium">{r.label}</span>
-                <span className="text-[10px] text-mute/60">{r.hint}</span>
-              </button>
-            )
-          })}
-        </div>
+                {r.hint}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Image count */}
-      <div>
-        <label
-          htmlFor="image-count"
-          className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-mute"
+      <div className="relative">
+        <select
+          id="image-count"
+          aria-label="Number of images"
+          value={settings.n}
+          onChange={(e) => set({ n: Number(e.target.value) })}
+          className="h-10 appearance-none rounded-xl border border-border bg-surface pl-3.5 pr-9 text-xs font-medium text-mist transition-colors duration-150 hover:border-mist/30 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Images
-        </label>
-        <div className="relative">
-          <select
-            id="image-count"
-            value={settings.n}
-            onChange={(e) => set({ n: Number(e.target.value) })}
-            className="w-full appearance-none rounded-xl border border-border bg-surface-2 px-4 py-3 pr-11 text-sm font-medium text-mist transition-colors hover:border-mist/25 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
-          >
-            {IMAGE_COUNTS.map((c) => (
-              <option key={c} value={c}>
-                {c} {c === 1 ? 'image' : 'images'}
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            size={16}
-            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-mute"
-          />
-        </div>
+          {IMAGE_COUNTS.map((c) => (
+            <option key={c} value={c}>
+              {c} {c === 1 ? 'image' : 'images'}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          size={14}
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-mute"
+        />
       </div>
 
-      {/* Toggles */}
-      <div className="space-y-2.5">
-        <Toggle
-          label="Prompt enhancement"
-          hint="Let the model expand your prompt for richer detail"
-          icon={Sparkles}
-          checked={settings.promptExtend}
-          onChange={(v) => set({ promptExtend: v })}
-        />
-        <Toggle
-          label="Watermark"
-          hint="Add a subtle provider watermark to images"
-          icon={Droplet}
-          checked={settings.watermark}
-          onChange={(v) => set({ watermark: v })}
-        />
-      </div>
+      {/* Enhance / Watermark */}
+      {[
+        { key: 'promptExtend', label: 'Prompt enhancement', visibleLabel: 'Enhance', icon: Sparkles },
+        { key: 'watermark', label: 'Watermark', visibleLabel: 'Watermark', icon: Droplet },
+      ].map(({ key, label, visibleLabel, icon: Icon }) => {
+        const checked = settings[key]
+        return (
+          <button
+            key={key}
+            type="button"
+            role="switch"
+            aria-checked={checked}
+            aria-label={label}
+            title={label}
+            onClick={() => set({ [key]: !checked })}
+            className={`inline-flex h-10 items-center gap-2.5 rounded-xl border px-3.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50 ${
+              checked
+                ? 'border-primary/40 bg-primary/8 text-mist'
+                : 'border-border bg-surface text-mute hover:border-mist/30 hover:text-mist'
+            }`}
+          >
+            <Icon size={14} className={checked ? 'text-primary' : 'text-mute/70'} />
+            <span>{visibleLabel}</span>
+            <span
+              className={`relative h-4 w-7 shrink-0 rounded-full transition-colors duration-200 ${
+                checked ? 'bg-primary' : 'bg-mist/20'
+              }`}
+            >
+              <span
+                className="absolute top-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-[left] duration-200"
+                style={{ left: checked ? '14px' : '2px' }}
+              />
+            </span>
+          </button>
+        )
+      })}
     </div>
   )
 }

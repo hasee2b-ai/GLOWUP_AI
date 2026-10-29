@@ -82,41 +82,46 @@ export default function Navbar() {
           <Logo height={36} />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-8 md:flex">
-          <NavLink to="/" end className={linkBase}>
-            Home
-          </NavLink>
-          <a href="/#features" className={linkBase} onClick={(e) => {
-            if (window.location.pathname === '/') {
-              e.preventDefault()
-              document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
-            }
-          }}>
-            Features
-          </a>
-          <a href="/#how-it-works" className={linkBase} onClick={(e) => {
-            if (window.location.pathname === '/') {
-              e.preventDefault()
-              document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
-            }
-          }}>
-            How it works
-          </a>
-          <NavLink to="/create" className={linkBase}>
-            Create
-          </NavLink>
-        </div>
+        {/* Desktop nav — hidden on the Create page, where only the logo stays. */}
+        {pathname !== '/create' && (
+          <div className="hidden items-center gap-8 md:flex">
+            <NavLink to="/" end className={linkBase}>
+              Home
+            </NavLink>
+            <a href="/#features" className={linkBase} onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault()
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}>
+              Features
+            </a>
+            <a href="/#how-it-works" className={linkBase} onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault()
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}>
+              How it works
+            </a>
+            <NavLink to="/create" className={linkBase}>
+              Create
+            </NavLink>
+          </div>
+        )}
 
-        <div className="hidden md:block">
-          <StarBorder
-            onClick={goCreate}
-            className="group focus-visible:outline-[color:var(--color-primary)]!"
-          >
-            Start Creating
-            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-          </StarBorder>
-        </div>
+        {/* Hidden on the Create page: only the logo stays. */}
+        {pathname !== '/create' && (
+          <div className="hidden md:block">
+            <StarBorder
+              onClick={goCreate}
+              className="group focus-visible:outline-[color:var(--color-primary)]!"
+            >
+              Start Creating
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+            </StarBorder>
+          </div>
+        )}
       </nav>
 
       {/*
@@ -127,6 +132,7 @@ export default function Navbar() {
         back in. overflow-hidden clips the panel/prelayers that park off the
         right edge while closed (the non-fixed mode has no clipping of its own).
       */}
+      {pathname !== '/create' && (
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[100dvh] overflow-hidden md:hidden">
         <StaggeredMenu
           position="right"
@@ -142,6 +148,7 @@ export default function Navbar() {
           onItemClick={handleMenuItemClick}
         />
       </div>
+      )}
     </header>
   )
 }
