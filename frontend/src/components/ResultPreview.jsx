@@ -18,7 +18,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
   const [failed, setFailed] = useState(false)
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-border bg-surface">
+    <div className="group relative w-full overflow-hidden rounded-2xl border border-border bg-surface">
       {failed ? (
         <div className="flex h-64 flex-col items-center justify-center gap-2 p-6 text-center">
           <AlertTriangle size={26} className="text-secondary" />
@@ -29,7 +29,7 @@ function ImageCard({ image, index, onCopyPrompt, copied }) {
         <img
           src={image.url}
           alt={`Generated variation ${index + 1}`}
-          className="block h-auto w-full max-h-[320px] sm:max-h-[420px] object-contain"
+          className="block h-auto w-full max-h-[70vh] object-contain"
           loading="lazy"
           onError={() => setFailed(true)}
         />
@@ -178,9 +178,9 @@ export default function ResultPreview({
 
       {/* images — compact, portrait-bounded previews so the whole workspace
           (image + history + composer) fits without page scrolling */}
-      <div className={`grid w-full gap-3 sm:gap-4 ${multi ? 'sm:grid-cols-2' : 'grid-cols-1'} justify-items-center`}>
+      <div className={`grid w-full gap-2 sm:gap-3 lg:gap-4 ${multi ? 'sm:grid-cols-2' : 'grid-cols-1'} justify-items-center`}>
         {images.map((img, i) => (
-          <div key={`${img.url.slice(0, 48)}-${i}`} className="w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px]">
+          <div key={`${img.url.slice(0, 48)}-${i}`} className="w-full max-w-none">
             <ImageCard
               image={img}
               index={i}

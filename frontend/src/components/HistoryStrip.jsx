@@ -18,7 +18,7 @@ export default function HistoryStrip({ history, selectedId, onSelect, onClear, o
   return (
     <section
       aria-label="Recent generations"
-      className="flex items-center gap-2 border-t border-border/60 pt-2 sm:gap-3 sm:pt-3"
+      className="mx-auto flex w-full max-w-[60%] items-center gap-2 border-t border-border/60 pt-1.5 sm:gap-3 sm:pt-2"
     >
       <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         <History size={14} className="text-mute" aria-hidden="true" />

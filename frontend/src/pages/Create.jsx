@@ -200,7 +200,7 @@ export default function Create() {
   }
 
   return (
-    <section className="mx-auto flex min-h-[calc(100dvh_-_var(--nav-h,64px))] h-[calc(100svh_-_var(--nav-h,64px))] w-full max-w-7xl flex-col gap-1.5 px-3 pt-2 pb-3 sm:gap-2 sm:px-4 md:px-6 sm:pt-3 sm:pb-4">
+    <section className="mx-auto flex min-h-[calc(100dvh_-_var(--nav-h,64px))] h-[calc(100svh_-_var(--nav-h,64px))] w-full max-w-[1600px] flex-col gap-1 px-2 pt-1.5 pb-2 sm:gap-1.5 sm:px-3 md:px-4 sm:pt-2 sm:pb-3">
       <h1 className="sr-only">Create your image</h1>
 
       {/* Results workspace — scrolls on its own, above the composer */}
