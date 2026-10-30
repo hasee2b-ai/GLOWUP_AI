@@ -18,7 +18,7 @@ export default function Create() {
   // Always land at the top of the page when navigating here (e.g. from a
   // prompt card on the landing page) instead of the browser keeping scroll.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }, [])
 
   // Prefill the prompt from ?prompt= (e.g. "Try this prompt" on the landing
@@ -53,10 +53,10 @@ export default function Create() {
           toast.info('The backend is running but no provider API key is configured yet.')
         }
       })
-      .catch(() => {
-        if (!cancelled) {
-          toast.error('Cannot reach the backend. Is the FastAPI server running?')
-        }
+      .catch((err) => {
+        if (cancelled) return
+        console.error('Health check failed:', err)
+        toast.error('Cannot reach the backend. Is the FastAPI server running?')
       })
     return () => {
       cancelled = true
@@ -200,7 +200,7 @@ export default function Create() {
   }
 
   return (
-    <section className="mx-auto flex h-[calc(100dvh_-_var(--nav-h,64px))] min-h-[460px] w-full max-w-7xl flex-col gap-3 px-5 pt-4 pb-5 sm:gap-4 sm:px-8">
+    <section className="mx-auto flex min-h-[calc(100dvh_-_var(--nav-h,64px))] h-[calc(100svh_-_var(--nav-h,64px))] w-full max-w-7xl flex-col gap-1.5 px-3 pt-2 pb-3 sm:gap-2 sm:px-4 md:px-6 sm:pt-3 sm:pb-4">
       <h1 className="sr-only">Create your image</h1>
 
       {/* Results workspace — scrolls on its own, above the composer */}

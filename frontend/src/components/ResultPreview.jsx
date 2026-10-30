@@ -86,11 +86,11 @@ export default function ResultPreview({
   /* Idle — the quiet empty state */
   if (status === 'idle') {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 sm:py-14 text-center">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-mist sm:text-2xl">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-6 sm:px-6 sm:py-8 md:py-14 text-center">
+        <h2 className="font-display text-lg font-semibold tracking-tight text-mist sm:text-xl md:text-2xl">
           What will you create?
         </h2>
-        <p className="mt-3 max-w-xs text-sm leading-relaxed text-mute">
+        <p className="mt-2 max-w-xs text-sm leading-relaxed text-mute sm:mt-3">
           Describe an image below, then press Generate.
         </p>
       </div>
@@ -111,12 +111,12 @@ export default function ResultPreview({
     const aspect = SKELETON_ASPECT[size] || SKELETON_ASPECT['1024x1024']
 
     return (
-      <div className="flex flex-1 flex-col justify-center py-6">
-        <div className="mb-4 flex items-center gap-2.5 text-sm text-mute">
+      <div className="flex flex-1 flex-col justify-center py-4 sm:py-6">
+        <div className="mb-3 flex items-center gap-2.5 text-sm text-mute sm:mb-4">
           <RefreshCw size={15} className="animate-spin text-primary" />
           Creating your image...
         </div>
-        <div className={`grid w-full max-w-[280px] sm:max-w-[660px] mx-auto gap-4 ${count > 1 ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
+        <div className={`grid w-full max-w-[260px] sm:max-w-[520px] md:max-w-[660px] mx-auto gap-3 sm:gap-4 ${count > 1 ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
           {Array.from({ length: count }).map((_, i) => (
             <Skeleton key={i} className={`w-full ${aspect}`} />
           ))}
@@ -128,12 +128,12 @@ export default function ResultPreview({
   /* Error */
   if (status === 'error') {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-14 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6 sm:py-14 text-center">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
           <AlertTriangle size={20} />
         </span>
         <h2 className="mt-4 font-display text-lg font-semibold text-mist">Generation failed</h2>
-        <p className="mt-2 max-w-md text-sm leading-relaxed text-mute">{error}</p>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-mute break-words">{error}</p>
         <button
           type="button"
           onClick={onRegenerate}
@@ -152,15 +152,15 @@ export default function ResultPreview({
   const first = images[0]
 
   return (
-    <div className="animate-fade-in pt-1">
+    <div className="animate-fade-in pt-0.5 sm:pt-1">
       {/* prompt + actions above the images — stacked on mobile so the prompt
           never gets squeezed into a narrow column by the actions */}
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-x-6">
-        <p className="min-w-0 text-sm leading-relaxed text-mute sm:max-w-3xl sm:flex-1">
+      <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-start sm:justify-between sm:gap-x-6">
+        <p className="min-w-0 text-sm leading-relaxed text-mute sm:max-w-3xl sm:flex-1 break-words">
           <span className="font-semibold text-mist/80">Prompt: </span>
           {result.prompt}
         </p>
-        <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-x-4 sm:gap-y-2">
           {first?.width && first?.height && <Meta icon={ImageIcon}>{first.width}×{first.height}</Meta>}
           {first?.mime_type && (
             <Meta icon={ImageIcon}>{first.mime_type.replace('image/', '').toUpperCase()}</Meta>
@@ -168,7 +168,7 @@ export default function ResultPreview({
           <button
             type="button"
             onClick={onRegenerate}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-mist transition-colors hover:border-primary/45 hover:text-primary"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-semibold text-mist transition-colors hover:border-primary/45 hover:text-primary sm:px-3 sm:py-1.5"
           >
             <RefreshCw size={13} />
             Regenerate
@@ -178,9 +178,9 @@ export default function ResultPreview({
 
       {/* images — compact, portrait-bounded previews so the whole workspace
           (image + history + composer) fits without page scrolling */}
-      <div className={`grid w-full gap-4 ${multi ? 'sm:grid-cols-2' : 'grid-cols-1'} justify-items-center`}>
+      <div className={`grid w-full gap-3 sm:gap-4 ${multi ? 'sm:grid-cols-2' : 'grid-cols-1'} justify-items-center`}>
         {images.map((img, i) => (
-          <div key={`${img.url.slice(0, 48)}-${i}`} className="w-full max-w-[280px] sm:max-w-[320px]">
+          <div key={`${img.url.slice(0, 48)}-${i}`} className="w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px]">
             <ImageCard
               image={img}
               index={i}

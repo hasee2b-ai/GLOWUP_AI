@@ -23,18 +23,19 @@ export default function PromptComposer({
   return (
     <section
       aria-label="Prompt and generation settings"
-      className="rounded-2xl border border-transparent bg-surface shadow-lg shadow-mist/[0.06] transition-colors duration-200 focus-visible:outline-none"
+      className="relative overflow-hidden rounded-2xl border border-primary/10 bg-gradient-to-b from-surface to-surface-2/60 shadow-[0_8px_40px_-12px_rgba(139,92,246,0.4)] transition-all duration-200 focus-visible:outline-none"
     >
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       <PromptEditor prompt={prompt} onChange={onPromptChange} />
 
-      <div className="flex flex-col gap-2 border-t border-border/70 bg-surface-2/60 px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-4">
+      <div className="flex flex-col gap-1.5 border-t border-border/60 bg-surface-2/40 px-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:px-2.5">
         <SettingsPanel settings={settings} onChange={onSettingsChange} />
 
         <button
           type="button"
           onClick={onGenerate}
           disabled={loading}
-          className="inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-white shadow-sm shadow-primary/20 transition-colors duration-150 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none sm:w-auto"
+          className="inline-flex h-9 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-violet-500 px-4 text-sm font-semibold text-white shadow-md shadow-primary/25 transition-all duration-150 hover:shadow-primary/40 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none sm:w-auto sm:h-9 sm:px-5"
         >
           {loading ? (
             <Loader2 size={16} className="animate-spin" />

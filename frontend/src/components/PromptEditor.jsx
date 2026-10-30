@@ -4,7 +4,7 @@ import { MAX_PROMPT_LENGTH } from '../utils/constants.js'
 
 // The composer may grow with the prompt, but never past ~4 lines: it must not
 // push the results out of the workspace.
-const MAX_TEXTAREA_HEIGHT = 160
+const MAX_TEXTAREA_HEIGHT = 120
 
 /**
  * The prompt half of the composer: one comfortable, borderless text area that
@@ -23,7 +23,7 @@ export default function PromptEditor({ prompt, onChange }) {
   }, [prompt])
 
   return (
-    <div>
+    <div className="relative">
       <label htmlFor="prompt" className="sr-only">
         Your prompt
       </label>
@@ -33,23 +33,23 @@ export default function PromptEditor({ prompt, onChange }) {
         value={prompt}
         onChange={(e) => onChange(e.target.value.slice(0, MAX_PROMPT_LENGTH))}
         placeholder="Describe the image you want to create..."
-        rows={3}
-        className="block min-h-[64px] sm:min-h-[80px] w-full resize-none bg-transparent px-4 pt-3 pb-1 text-[15px] leading-6 text-mist placeholder:text-mute/50 focus:outline-none focus-visible:outline-none"
+        rows={2}
+        className="block min-h-[56px] sm:min-h-[64px] w-full resize-none bg-transparent px-4 pt-3 pb-8 text-sm sm:text-[15px] leading-5 sm:leading-6 text-mist placeholder:text-mute/60 focus:outline-none focus-visible:outline-none"
       />
 
       {/* clear + counter sit under the field, inside the prompt zone */}
-      <div className="flex items-center justify-end gap-1 px-3 pb-1.5">
+      <div className="absolute bottom-1 right-2 flex items-center gap-1 sm:right-3">
         <button
           type="button"
           onClick={() => onChange('')}
           disabled={!prompt}
-          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-medium text-mute transition-colors hover:bg-mist/5 hover:text-mist disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex items-center gap-1 rounded-lg px-1.5 py-0.5 text-[11px] font-medium text-mute transition-colors hover:bg-mist/5 hover:text-mist disabled:cursor-not-allowed disabled:opacity-40 sm:px-2 sm:py-1"
         >
-          <Eraser size={12} />
-          Clear
+          <Eraser size={11} className="sm:w-3 sm:h-3" />
+          <span className="hidden xs:inline">Clear</span>
         </button>
         <span
-          className={`px-1.5 text-[11px] tabular-nums ${
+          className={`px-1 text-[10px] tabular-nums sm:text-[11px] ${
             nearLimit ? 'font-semibold text-mist' : 'text-mute/60'
           }`}
         >
