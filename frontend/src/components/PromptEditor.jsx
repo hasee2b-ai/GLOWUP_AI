@@ -10,7 +10,7 @@ const MAX_TEXTAREA_HEIGHT = 120
  * The prompt half of the composer: one comfortable, borderless text area that
  * grows with what is written, plus the clear action and character counter.
  */
-export default function PromptEditor({ prompt, onChange }) {
+export default function PromptEditor({ prompt, onChange, onSubmit }) {
   const textareaRef = useRef(null)
   const remaining = MAX_PROMPT_LENGTH - prompt.length
   const nearLimit = remaining <= 200
@@ -22,6 +22,15 @@ export default function PromptEditor({ prompt, onChange }) {
     el.style.height = `${Math.min(el.scrollHeight, MAX_TEXTAREA_HEIGHT)}px`
   }, [prompt])
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      if (onSubmit && prompt && prompt.trim()) {
+        onSubmit()
+      }
+    }
+  }
+
   return (
     <div className="relative">
       <label htmlFor="prompt" className="sr-only">
@@ -32,7 +41,8 @@ export default function PromptEditor({ prompt, onChange }) {
         ref={textareaRef}
         value={prompt}
         onChange={(e) => onChange(e.target.value.slice(0, MAX_PROMPT_LENGTH))}
-        placeholder="Describe the image you want to create..."
+        onKeyDown={handleKeyDown}
+        placeholder="Describe the image you want to create... (Enter to generate, Shift+Enter for new line)"
         rows={2}
         className="block min-h-[56px] sm:min-h-[64px] w-full resize-none bg-transparent px-4 pt-3 pb-8 text-sm sm:text-[15px] leading-5 sm:leading-6 text-mist placeholder:text-mute/50 focus:outline-none focus-visible:outline-none"
       />
