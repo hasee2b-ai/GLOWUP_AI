@@ -33,7 +33,6 @@ export default function SettingsPanel({ settings, onChange }) {
       </div>
 
       {/* Image count + toggles — second row on mobile */}
-      {/* Image count + toggles — second row on mobile */}
       <div className="flex w-full flex-wrap items-center gap-1.5 sm:w-auto sm:gap-2">
         {/* Image count */}
         <div className="relative flex-1 min-w-[110px] sm:flex-none">
