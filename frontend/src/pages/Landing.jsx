@@ -16,6 +16,7 @@ import Reveal from '../components/Reveal.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ChromaGrid from '../components/ChromaGrid.jsx'
 import CoverflowFeatures from '../components/CoverflowFeatures.jsx'
+import RippleCard from '../components/RippleCard.tsx'
 
 const FEATURES = [
   {
@@ -336,18 +337,28 @@ export default function Landing() {
             </p>
           </Reveal>
 
-          {/* artwork cards */}
+          {/* artwork cards — WebGL ripple on hover (RippleCard) */}
           <Reveal delay={120} className="mt-12">
             <div className="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
               {INSPIRATION.map((item) => (
                 <div key={item.src}>
+                  {/*
+                   * The wrapper owns the visible chrome (border, rounded-2xl,
+                   * shadow) and clips the card, so the ripple's own clip is
+                   * 0 — a tighter inner radius than the wrapper's would leave
+                   * a transparent wedge at each corner.
+                   */}
                   <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      loading="lazy"
-                      className="aspect-[4/5] w-full object-cover"
-                    />
+                    <div className="aspect-[4/5]">
+                      <RippleCard
+                        image={{ src: item.src, alt: item.alt }}
+                        cardWidth="100%"
+                        cardHeight="100%"
+                        rounded={0}
+                        intensity={70}
+                        size={45}
+                      />
+                    </div>
                   </div>
                   <span className="mt-3 block text-sm font-medium text-mute">
                     {item.label}
